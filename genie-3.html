@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GENIE: A Fine-Grained Measure for Novelty</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --bg2: #f7f7f5;
+  --bg3: #f0efe9;
+  --text: #1a1a18;
+  --text2: #5a5a55;
+  --text3: #8a8a82;
+  --border: rgba(0,0,0,0.1);
+  --border2: rgba(0,0,0,0.18);
+  --radius: 8px;
+  --radius-lg: 12px;
+  --c-agent: #7F77DD;
+  --c-perspective: #1D9E75;
+  --c-plot: #378ADD;
+  --c-setting: #EF9F27;
+  --c-social: #D85A30;
+  --c-style: #D4537E;
+  --c-agent-l: #EEEDFE;
+  --c-perspective-l: #E1F5EE;
+  --c-plot-l: #E6F1FB;
+  --c-setting-l: #FAEEDA;
+  --c-social-l: #FAECE7;
+  --c-style-l: #FBEAF0;
+}
+[data-theme="dark"] {
+  --bg: #18181a;
+  --bg2: #222224;
+  --bg3: #2a2a2c;
+  --text: #f0f0ec;
+  --text2: #a0a09a;
+  --text3: #686864;
+  --border: rgba(255,255,255,0.1);
+  --border2: rgba(255,255,255,0.18);
+  --c-agent-l: #26215C;
+  --c-perspective-l: #04342C;
+  --c-plot-l: #042C53;
+  --c-setting-l: #412402;
+  --c-social-l: #4A1B0C;
+  --c-style-l: #4B1528;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  min-height: 100vh;
+}
+.site-header {
+  border-bottom: 0.5px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 100;
+}
+.site-header .logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  height: 36px;
+}
+.site-header .logo img {
+  height: 32px;
+  width: auto;
+  object-fit: contain;
+}
+.logo-fallback {
+  display: none;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+  color: var(--text);
+}
+.header-right { display: flex; align-items: center; gap: 8px; }
+.dark-toggle {
+  width: 36px; height: 36px;
+  border: 0.5px solid var(--border2);
+  border-radius: var(--radius);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+}
+.dark-toggle:hover { background: var(--bg2); }
+
+.layout { display: flex; min-height: calc(100vh - 52px); }
+.sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  border-right: 0.5px solid var(--border);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 52px;
+  height: calc(100vh - 52px);
+  overflow-y: auto;
+}
+.sidebar nav { display: flex; flex-direction: column; gap: 2px; padding: 0 0.75rem; }
+.nav-item {
+  font-size: 13px;
+  color: var(--text2);
+  padding: 7px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: left;
+  width: 100%;
+  display: flex; align-items: center; gap: 8px;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--bg2); color: var(--text); }
+.nav-item.active { background: var(--bg2); color: var(--text); font-weight: 500; }
+
+.main { flex: 1; padding: 2.5rem 3rem; max-width: 900px; }
+
+.section { display: block; }
+.section + .section { margin-top: 1rem; }
+.section { scroll-margin-top: 68px; }
+
+h1 { font-size: 26px; font-weight: 600; line-height: 1.25; letter-spacing: -0.5px; margin-bottom: 0.5rem; }
+h2 { font-size: 18px; font-weight: 600; margin-bottom: 1rem; margin-top: 2rem; letter-spacing: -0.2px; }
+h2:first-child { margin-top: 0; }
+h3 { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
+p { color: var(--text2); margin-bottom: 1rem; }
+p:last-child { margin-bottom: 0; }
+
+/* Elegant abstract — no box, subtle left border */
+.abstract-text {
+  margin: 1.1rem 0 1.5rem;
+  font-size: 15px;
+  line-height: 1.9;
+  color: var(--text);
+  max-width: 680px;
+  border-left: 2.5px solid var(--border2);
+  padding-left: 1.25rem;
+}
+.abstract-text strong { color: var(--text); }
+
+/* Link row */
+.link-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 1.25rem 0; }
+.link-btn {
+  font-size: 13px; padding: 7px 14px;
+  border-radius: var(--radius);
+  border: 0.5px solid var(--border2);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex; align-items: center; gap: 6px;
+  text-decoration: none;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.link-btn:hover { background: var(--bg2); }
+.link-btn.primary { background: #185FA5; color: #fff; border-color: #185FA5; }
+.link-btn.primary:hover { background: #0C447C; }
+
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; margin: 1.5rem 0; }
+.stat-card { background: var(--bg2); border-radius: var(--radius); padding: 1rem; text-align: center; border: 0.5px solid var(--border); }
+.stat-card .num { font-size: 22px; font-weight: 600; color: var(--text); margin-bottom: 3px; }
+.stat-card .lbl { font-size: 12px; color: var(--text3); }
+
+.divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
+
+/* 4-up single row pipeline */
+.pipeline-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin: 1.5rem 0;
+}
+.pipe-step {
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+}
+.step-num {
+  font-size: 11px; font-weight: 600;
+  color: #185FA5; background: #E6F1FB;
+  border-radius: var(--radius); padding: 3px 8px;
+  display: inline-block; margin-bottom: 8px;
+}
+[data-theme="dark"] .step-num { background: #042C53; color: #85B7EB; }
+.pipe-step h3 { font-size: 13px; margin-bottom: 6px; }
+.pipe-step p { font-size: 12px; color: var(--text2); margin: 0; }
+
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+.filter-btn {
+  font-size: 12px; padding: 4px 12px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border2);
+  background: transparent; color: var(--text2);
+  cursor: pointer; font-family: inherit;
+}
+.filter-btn:hover, .filter-btn.on {
+  background: var(--bg2); color: var(--text);
+  border-color: var(--border2); font-weight: 500;
+}
+
+.model-list { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+.model-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  border: 0.5px solid var(--border);
+  background: var(--bg);
+}
+.model-row:hover { border-color: var(--border2); background: var(--bg2); }
+.model-name { font-size: 13px; font-weight: 500; width: 200px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.stacked-bar { flex: 1; height: 18px; display: flex; border-radius: 4px; overflow: hidden; }
+.bar-seg { height: 100%; cursor: pointer; transition: filter 0.1s; }
+.bar-seg:hover { filter: brightness(1.12); }
+.fam-badge {
+  font-size: 10px; padding: 2px 7px;
+  border-radius: 20px; font-weight: 500;
+  width: 60px; text-align: center; flex-shrink: 0;
+}
+.fam-Gemma { background: #E1F5EE; color: #085041; }
+.fam-Llama { background: #E6F1FB; color: #0C447C; }
+.fam-OLMo  { background: #FAEEDA; color: #633806; }
+.fam-Qwen  { background: #EEEDFE; color: #3C3489; }
+.fam-GPT   { background: #EAF3DE; color: #27500A; }
+.fam-Claude{ background: #FAECE7; color: #712B13; }
+.fam-Other { background: var(--bg3); color: var(--text2); }
+[data-theme="dark"] .fam-Gemma { background: #04342C; color: #5DCAA5; }
+[data-theme="dark"] .fam-Llama { background: #042C53; color: #85B7EB; }
+[data-theme="dark"] .fam-OLMo  { background: #412402; color: #EF9F27; }
+[data-theme="dark"] .fam-Qwen  { background: #26215C; color: #AFA9EC; }
+[data-theme="dark"] .fam-GPT   { background: #173404; color: #97C459; }
+[data-theme="dark"] .fam-Claude{ background: #4A1B0C; color: #F0997B; }
+.type-label { font-size: 10px; color: var(--text3); width: 44px; flex-shrink: 0; }
+
+.tooltip-lb {
+  position: fixed;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.tooltip-lb.show { opacity: 1; }
+
+.lb-loading {
+  font-size: 13px; color: var(--text3);
+  padding: 2rem; text-align: center;
+}
+.lb-error { color: #D85A30; }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="#overview" class="logo">
+    <img src="genie.png" alt="GENIE" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
+    <span class="logo-fallback">GENIE</span>
+  </a>
+  <div class="header-right">
+    <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
+  </div>
+</header>
+
+<div id="tooltipLb" class="tooltip-lb"></div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <nav>
+      <a class="nav-item active" href="#overview">&#8962; Overview</a>
+      <a class="nav-item" href="#dataset">&#9112; Dataset</a>
+      <a class="nav-item" href="#leaderboard">&#9745; Model scores</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+
+  <!-- ── OVERVIEW ── -->
+  <div id="overview" class="section">
+    <h1>GENIE: A Fine-Grained Measure for Novelty</h1>
+
+    <div class="abstract-text">
+      Large Language Models have consistently demonstrated a lack of creativity and diversity across tasks. We propose <strong>GENIE</strong> (Granular Evaluation of Novel Ideas with Explainability) — a fine-grained evaluation metric that measures the novelty of responses along task-specific features with respect to a population of responses.
+    </div>
+
+    <div class="link-row">
+      <a href="#" class="link-btn primary">&#128196;&nbsp;Paper</a>
+      <a href="#" class="link-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="#" class="link-btn">🤗&nbsp;HuggingFace</a>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>How GENIE works</h2>
+    <p>GENIE evaluates novelty in four stages: automatic feature discovery, question generation, population building, and population-relative dissimilarity scoring.</p>
+
+    <div class="pipeline-steps">
+      <div class="pipe-step">
+        <div class="step-num">Step 1</div>
+        <h3>Discover Features</h3>
+        <p>Cluster LLM-generated features/descriptions given a task.</p>
+      </div>
+      <div class="pipe-step">
+        <div class="step-num">Step 2</div>
+        <h3>Generate Questions</h3>
+        <p>Form and map prompt-specific questions to discovered features.</p>
+      </div>
+      <div class="pipe-step">
+        <div class="step-num">Step 3</div>
+        <h3>Build Population</h3>
+        <p>Define a population of responses and extract answers to the questions.</p>
+      </div>
+      <div class="pipe-step">
+        <div class="step-num">Step 4</div>
+        <h3>Compute GENIE</h3>
+        <p>Extract answers from a target response. The average dissimilarity between target and population answers per feature yields fine-grained novelty scores.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── DATASET ── -->
+  <div id="dataset" class="section">
+    <h2>Dataset statistics</h2>
+    <div class="stat-grid">
+      <div class="stat-card"><div class="num">6</div><div class="lbl">Creative Writing Features</div></div>
+      <div class="stat-card"><div class="num">3,404</div><div class="lbl">Population responses</div></div>
+      <div class="stat-card"><div class="num">4,500</div><div class="lbl">Target responses</div></div>
+      <div class="stat-card"><div class="num">39</div><div class="lbl">Models used</div></div>
+      <div class="stat-card"><div class="num">50</div><div class="lbl">Writing prompts</div></div>
+    </div>
+    <div class="divider"></div>
+    <h2>Novelty score distribution by feature</h2>
+    <p>Kernel density estimates of GENIE scores across the target document set, per feature. Data loaded from <code>genie.json</code> (Feature and GENIE columns).</p>
+    <div id="distStatus" style="font-size:12px;color:var(--text3);margin-bottom:0.5rem"></div>
+    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text2)" id="distLegend"></div>
+    <div style="position:relative;width:100%;height:300px">
+      <canvas id="distChart" role="img" aria-label="Kernel density estimate of GENIE novelty scores per feature"></canvas>
+    </div>
+    <div class="divider"></div>
+  </div>
+
+  <!-- ── LEADERBOARD ── -->
+  <div id="leaderboard" class="section">
+    <h2>Model novelty scores</h2>
+    <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score. Data loaded from <code>model_genie.json</code>.</p>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
+      <div class="filter-row" id="famFilters" style="margin:0">
+        <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
+      </div>
+      <div class="filter-row" id="typeFilters" style="margin:0">
+        <button class="filter-btn on" onclick="filterType('all',this)">All</button>
+        <button class="filter-btn" onclick="filterType('base',this)">Base</button>
+        <button class="filter-btn" onclick="filterType('instruct',this)">Instruct</button>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Perspective</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block"></span>Plot</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27;display:inline-block"></span>Setting</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social atm.</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4537E;display:inline-block"></span>Style</span>
+    </div>
+
+    <div class="model-list" id="modelList">
+      <div class="lb-loading">Loading model_genie.json&hellip;</div>
+    </div>
+  </div>
+
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ─── SMOOTH SCROLL + ACTIVE NAV via IntersectionObserver ─────────────────────
+document.querySelectorAll('.nav-item').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+
+// Highlight nav item whose section is most visible in viewport
+const navLinks = document.querySelectorAll('.nav-item');
+const sections = document.querySelectorAll('.section');
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.id;
+      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
+
+      // Lazy-init data when sections scroll into view
+      if (id === 'dataset'     && !window._distDone) initDistChart();
+      if (id === 'leaderboard' && !window._lbDone)   initLeaderboard();
+    }
+  });
+}, { rootMargin: '-20% 0px -60% 0px' });
+
+sections.forEach(s => observer.observe(s));
+
+function toggleDark() {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  document.getElementById('darkBtn').innerHTML = dark ? '&#9790;' : '&#9728;';
+}
+
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
+const FEAT_COLORS = {agent:'#7F77DD',perspective:'#1D9E75',plot:'#378ADD',setting:'#EF9F27',social:'#D85A30',style:'#D4537E'};
+const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
+const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Soc. atm.','Style'];
+
+const FEAT_KEY_MAP = {
+  'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
+  'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
+  'social_atm':'social','social':'social','style':'style'
+};
+function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
+
+function inferFamily(n) {
+  n = (n||'').toLowerCase();
+  if (n.includes('gemma'))  return 'Gemma';
+  if (n.includes('llama'))  return 'Llama';
+  if (n.includes('olmo'))   return 'OLMo';
+  if (n.includes('qwen'))   return 'Qwen';
+  if (n.includes('gpt'))    return 'GPT';
+  if (n.includes('claude')) return 'Claude';
+  return 'Other';
+}
+function inferType(n) {
+  n = (n||'').toLowerCase();
+  if (n.includes('instruct')||n.includes('-it')||n.includes('chat')||
+      n.includes('sonnet')||n.includes('opus')||n.includes('haiku')) return 'instruct';
+  return 'base';
+}
+
+// ─── LEADERBOARD ──────────────────────────────────────────────────────────────
+let modelData = [], famFilter='all', typeFilter='all';
+
+async function initLeaderboard() {
+  window._lbDone = true;
+  const listEl = document.getElementById('modelList');
+  try {
+    const res = await fetch('model_genie.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+
+    // Handle both array-of-rows and pandas column-oriented {col: {idx: val}}
+    let rows;
+    if (Array.isArray(raw)) {
+      rows = raw;
+    } else {
+      const keys = Object.keys(raw);
+      const indices = Object.keys(raw[keys[0]]);
+      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
+    }
+
+    const byModel = {};
+    rows.forEach(row => {
+      const model = row['Model'] || row['model'] || '';
+      const feat  = normFeature(row['Feature'] || row['feature'] || '');
+      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+      if (!model || !feat || isNaN(score)) return;
+      if (!byModel[model]) byModel[model] = { name: model };
+      byModel[model][feat] = score;
+    });
+
+    modelData = Object.values(byModel).map(m => ({
+      name: m.name,
+      family: inferFamily(m.name),
+      type:   inferType(m.name),
+      agent:       m.agent       || 0,
+      perspective: m.perspective || 0,
+      plot:        m.plot        || 0,
+      setting:     m.setting     || 0,
+      social:      m.social      || 0,
+      style:       m.style       || 0,
+    }));
+
+    modelData.sort((a,b) => {
+      const ta = FEAT_NAMES.reduce((s,f)=>s+a[f],0);
+      const tb = FEAT_NAMES.reduce((s,f)=>s+b[f],0);
+      return tb-ta;
+    });
+
+    buildFamFilters();
+    renderModels();
+  } catch(err) {
+    listEl.innerHTML = `<div class="lb-loading lb-error">
+      Could not load model_genie.json: ${err.message}<br>
+      <span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span>
+    </div>`;
+  }
+}
+
+function buildFamFilters() {
+  const families = [...new Set(modelData.map(m=>m.family))].sort();
+  const el = document.getElementById('famFilters');
+  el.innerHTML = `<button class="filter-btn on" onclick="filterFam('all',this)">All</button>` +
+    families.map(f=>`<button class="filter-btn" onclick="filterFam('${f}',this)">${f}</button>`).join('');
+}
+
+function filterFam(f,btn) {
+  famFilter=f;
+  document.querySelectorAll('#famFilters .filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); renderModels();
+}
+function filterType(t,btn) {
+  typeFilter=t;
+  document.querySelectorAll('#typeFilters .filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on'); renderModels();
+}
+
+const tipEl = document.getElementById('tooltipLb');
+function showTip(evt,text){ tipEl.textContent=text; tipEl.classList.add('show'); moveTip(evt); }
+function moveTip(evt){ tipEl.style.left=(evt.clientX+14)+'px'; tipEl.style.top=(evt.clientY-32)+'px'; }
+function hideTip(){ tipEl.classList.remove('show'); }
+
+function renderModels() {
+  const list = document.getElementById('modelList');
+  if (!modelData.length) { list.innerHTML='<div class="lb-loading">No data.</div>'; return; }
+  const filtered = modelData.filter(m =>
+    (famFilter==='all'||m.family===famFilter) &&
+    (typeFilter==='all'||m.type===typeFilter)
+  );
+  if (!filtered.length) { list.innerHTML='<div class="lb-loading">No models match filters.</div>'; return; }
+
+  const maxTotal = Math.max(...filtered.map(m=>FEAT_NAMES.reduce((s,f)=>s+m[f],0)));
+
+  list.innerHTML = filtered.map(m => {
+    const total    = FEAT_NAMES.reduce((s,f)=>s+m[f],0);
+    const widthPct = maxTotal>0 ? Math.round((total/maxTotal)*100) : 0;
+    const segs = FEAT_NAMES.map((f,i) => {
+      const pct = total>0 ? ((m[f]/total)*100).toFixed(2) : 0;
+      const lbl = `${FEAT_LABELS[i]}: ${m[f].toFixed(3)}`;
+      return `<div class="bar-seg" style="width:${pct}%;background:${FEAT_COLORS[f]}"
+        onmouseenter="showTip(event,'${lbl}')"
+        onmousemove="moveTip(event)"
+        onmouseleave="hideTip()"></div>`;
+    }).join('');
+    return `<div class="model-row">
+      <div class="model-name" title="${m.name}">${m.name}</div>
+      <span class="fam-badge fam-${m.family}">${m.family}</span>
+      <span class="type-label">${m.type}</span>
+      <div style="flex:1"><div class="stacked-bar" style="width:${widthPct}%">${segs}</div></div>
+    </div>`;
+  }).join('');
+}
+
+// ─── DISTRIBUTION CHART ───────────────────────────────────────────────────────
+function gaussianKDE(values, bw) {
+  const pts=[];
+  for (let x=0;x<=1;x+=0.005) {
+    let sum=0;
+    values.forEach(v=>{ const z=(x-v)/bw; sum+=Math.exp(-0.5*z*z); });
+    pts.push({x:parseFloat(x.toFixed(3)),y:sum/(values.length*bw*Math.sqrt(2*Math.PI))});
+  }
+  return pts;
+}
+
+let distChart;
+
+function buildDistLegend() {
+  document.getElementById('distLegend').innerHTML = FEAT_NAMES.map((f,i)=>
+    `<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>${FEAT_LABELS[i]}</span>`
+  ).join('');
+}
+
+async function initDistChart() {
+  window._distDone = true;
+  buildDistLegend();
+
+  let src = null;
+
+  try {
+    const res = await fetch('genie.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
+
+    // Handle both array-of-rows and pandas column-oriented {col: {idx: val}}
+    let rows;
+    if (Array.isArray(raw)) {
+      rows = raw;
+    } else {
+      const keys = Object.keys(raw);
+      const indices = Object.keys(raw[keys[0]]);
+      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
+    }
+
+    const grouped = {};
+    FEAT_NAMES.forEach(f => grouped[f] = []);
+
+    rows.forEach(row => {
+      const feat  = normFeature(row['Feature'] || row['feature'] || '');
+      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+      if (feat && !isNaN(score)) grouped[feat].push(score);
+    });
+
+    const total = FEAT_NAMES.reduce((s,f)=>s+grouped[f].length, 0);
+    if (total === 0) throw new Error('No valid Feature/GENIE rows found');
+
+    src = grouped;
+    document.getElementById('distStatus').textContent = `Loaded ${rows.length} rows from genie.json`;
+  } catch(err) {
+    document.getElementById('distStatus').textContent = `Could not load genie.json (${err.message}) — showing simulated data`;
+    function genSample(mean,std,n=80) {
+      return Array.from({length:n},()=>{
+        let u=0,v=0;
+        while(!u)u=Math.random(); while(!v)v=Math.random();
+        return Math.max(0.05,Math.min(0.99,mean+std*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)));
+      });
+    }
+    src = {
+      agent:genSample(0.63,0.12), perspective:genSample(0.48,0.15),
+      plot:genSample(0.61,0.11),  setting:genSample(0.57,0.13),
+      social:genSample(0.59,0.12), style:genSample(0.52,0.14),
+    };
+  }
+
+  const datasets = FEAT_NAMES.map((f,i) => ({
+    label: FEAT_LABELS[i],
+    data: gaussianKDE(src[f].length > 0 ? src[f] : [0.5], 0.07),
+    borderColor: FEAT_COLORS[f],
+    backgroundColor: FEAT_COLORS[f] + '22',
+    borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4,
+    parsing: {xAxisKey:'x', yAxisKey:'y'},
+  }));
+
+  if (distChart) distChart.destroy();
+  distChart = new Chart(document.getElementById('distChart'), {
+    type: 'line', data: {datasets},
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {legend: {display: false}},
+      scales: {
+        x: {type:'linear',min:0,max:1,title:{display:true,text:'GENIE score',font:{size:12}},ticks:{font:{size:11}}},
+        y: {title:{display:true,text:'Density',font:{size:12}},ticks:{font:{size:11}},grid:{color:'rgba(128,128,128,0.1)'}}
+      }
+    }
+  });
+}
+</script>
+</body>
+</html>

@@ -381,7 +381,7 @@ p:last-child { margin-bottom: 0; }
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Perspective</span>
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block"></span>Plot</span>
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27;display:inline-block"></span>Setting</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social atm.</span>
+      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social Atmosphere.</span>
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4537E;display:inline-block"></span>Style</span>
     </div>
 
@@ -435,9 +435,9 @@ const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
 const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Soc. atm.','Style'];
 
 const FEAT_KEY_MAP = {
-  'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
-  'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
-  'social_atm':'social','social':'social','style':'style'
+  'Agent':'agent','Perspective':'perspective','Plot':'plot','Setting':'setting',
+  'Social Atmosphere':'social','social_atmosphere':'social','social atm':'social',
+  'social_atm':'social','social':'social','Style':'style'
 };
 function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
 

@@ -481,7 +481,7 @@ async function initLeaderboard() {
 
     const byModel = {};
     rows.forEach(row => {
-      const model = row['Model'] || row['model'] || '';
+      const model = row['Model_1'] || row['model'] || '';
       const feat  = normFeature(row['Feature'] || row['feature'] || '');
       const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
       if (!model || !feat || isNaN(score)) return;

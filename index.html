@@ -365,7 +365,7 @@ p:last-child { margin-bottom: 0; }
     <h2>Model novelty scores</h2>
     <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score. Data loaded from <code>model_genie.json</code>.</p>
 
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
+    <!-- <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
       <div class="filter-row" id="famFilters" style="margin:0">
         <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
       </div>
@@ -374,7 +374,7 @@ p:last-child { margin-bottom: 0; }
         <button class="filter-btn" onclick="filterType('base',this)">Base</button>
         <button class="filter-btn" onclick="filterType('instruct',this)">Instruct</button>
       </div>
-    </div>
+    </div> -->
 
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
@@ -435,9 +435,9 @@ const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
 const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Social Atmosphere','Style'];
 
 const FEAT_KEY_MAP = {
-  'Agent':'agent','Perspective':'perspective','Plot':'plot','Setting':'setting',
-  'Social Atmosphere':'social','social_atmosphere':'social','social atm':'social',
-  'social_atm':'social','social':'social','Style':'style'
+  'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
+  'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
+  'social_atm':'social','social':'social','style':'style'
 };
 function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
 

@@ -365,16 +365,16 @@ p:last-child { margin-bottom: 0; }
     <h2>Model novelty scores</h2>
     <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score. Data loaded from <code>model_genie.json</code>.</p>
 
-    <!-- <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
+    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
       <div class="filter-row" id="famFilters" style="margin:0">
         <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
       </div>
-      <div class="filter-row" id="typeFilters" style="margin:0">
+      <!-- <div class="filter-row" id="typeFilters" style="margin:0">
         <button class="filter-btn on" onclick="filterType('all',this)">All</button>
         <button class="filter-btn" onclick="filterType('base',this)">Base</button>
         <button class="filter-btn" onclick="filterType('instruct',this)">Instruct</button>
-      </div>
-    </div> -->
+      </div> -->
+    </div>
 
     <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
       <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
@@ -419,7 +419,7 @@ const observer = new IntersectionObserver(entries => {
       if (id === 'leaderboard' && !window._lbDone)   initLeaderboard();
     }
   });
-}, { rootMargin: '-20% 0px -60% 0px' });
+}, { rootMargin: '-20% 0px -20% 0px' });
 
 sections.forEach(s => observer.observe(s));
 

@@ -1,11 +1,9 @@
 # GENIE: A Fine-Grained Measure for Novelty
-Authors: 
+Authors: Ramya Namuduri, Manya Wadhwa, Anshun Asher Zheng, Greg Durrett, Junyi Jessy Li
 
 GENIE finds the fine-grained novelty of LLM-generated responses with respect to a population defined by you! This repo currently demonstrates how to find the novelty of creative writing responses.
 
-Check out the paper at: 
-
-Data can be found at: 
+Check out the paper and [data](https://huggingface.co/collections/AlliteraryAlligator/genie)!
 
 ## Getting Started
 Install dependencies:

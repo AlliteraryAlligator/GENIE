@@ -1,0 +1,182 @@
+default_instruct_small: &instruct_small
+  gpus: 1
+  time: "1:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 30
+  type: "Instruct"
+
+default_instruct_medium: &instruct_medium
+  gpus: 2
+  time: "1:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 50
+  type: "Instruct"
+
+default_base_small: &base_small
+  gpus: 1
+  time: "1:30:00"
+  tokens: 350
+  numgen: 10
+  memory: 30
+  type: "Base"
+
+default_base_medium: &base_medium
+  gpus: 2
+  time: "1:30:00"
+  tokens: 350
+  numgen: 10
+  memory: 50
+  type: "Base"
+
+api_model: &api
+  gpus: null
+  time: null
+  tokens: 750
+  numgen: 5
+  memory: null
+  type: "Instruct"
+
+
+# --- Model Repository Configurations ---
+
+gemma-2-27b-it:
+  <<: *instruct_medium
+  prefix: "google"
+  path: "google/gemma-2-27b-it"
+  role: "Population"
+
+gemma-2-9b-it:
+  <<: *instruct_small
+  prefix: "google"
+  path: "google/gemma-2-9b-it"
+  role: "Population"
+
+Llama-2-70b-chat-hf:
+  prefix: "meta-llama"
+  path: "meta-llama/Llama-2-70b-chat-hf"
+  gpus: 4
+  time: "3:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 150
+  role: "Population"
+  type: "Instruct"
+
+OLMo-2-0325-32B-Instruct:
+  <<: *instruct_medium
+  prefix: "allenai"
+  path: "allenai/OLMo-2-0325-32B-Instruct"
+  role: "Population"
+
+Qwen2.5-14B-Instruct:
+  <<: *instruct_small
+  prefix: "Qwen"
+  path: "Qwen/Qwen2.5-14B-Instruct"
+  role: "Population"
+
+
+OLMo-2-1124-13B-Instruct:
+  <<: *instruct_small
+  prefix: "allenai"
+  path: "allenai/OLMo-2-1124-13B-Instruct"
+  role: "Population"
+
+gemma-7b-it:
+  <<: *instruct_small
+  prefix: "google"
+  path: "google/gemma-7b-it"
+  numgen: 10
+  role: "Population"
+
+Llama-2-13b-chat-hf:
+  <<: *instruct_small
+  prefix: "meta-llama"
+  path: "meta-llama/Llama-2-13b-chat-hf"
+  role: "Population"
+
+
+Qwen2.5-32B-Instruct:
+  <<: *instruct_medium
+  prefix: "Qwen"
+  path: "Qwen/Qwen2.5-32B-Instruct"
+  role: "Population"
+
+Llama-2-13B-hf:
+  <<: *base_small
+  prefix: "meta-llama"
+  path: "meta-llama/Llama-2-13B-hf"
+  role: "Population"
+
+Qwen2.5-32B:
+  <<: *base_medium
+  prefix: "Qwen"
+  path: "Qwen/Qwen2.5-32B"
+  role: "Population"
+
+Qwen2.5-14B:
+  <<: *base_small
+  prefix: "Qwen"
+  path: "Qwen/Qwen2.5-14B"
+  role: "Population"
+
+gemma-7b:
+  <<: *base_small
+  prefix: "google"
+  path: "google/gemma-7b"
+  role: "Population"
+
+gemma-2-27b:
+  <<: *base_medium
+  prefix: "google"
+  path: "google/gemma-2-27b"
+  role: "Population"
+
+gemma-2-9b:
+  <<: *base_small
+  prefix: "google"
+  path: "google/gemma-2-9b"
+  role: "Population"
+
+OLMo-2-0325-32B:
+  <<: *base_medium
+  prefix: "allenai"
+  path: "allenai/OLMo-2-0325-32B"
+  role: "Population"
+
+
+OLMo-2-1124-13B:
+  <<: *base_small
+  prefix: "allenai"
+  path: "allenai/OLMo-2-1124-13B"
+  role: "Population"
+
+Llama-2-70b-hf:
+  prefix: "meta-llama"
+  path: "meta-llama/Llama-2-70b-hf"
+  gpus: 2
+  time: "2:00:00"
+  tokens: 350
+  numgen: 15
+  memory: 100
+  role: "Population"
+  type: "Base"
+
+gpt-4.1:
+  <<: *api
+  prefix: "gpt"
+  path: "gpt-4.1"
+  role: "Population"
+
+gpt-5:
+  <<: *api
+  prefix: "gpt"
+  path: "gpt-5"
+  role: "Population"
+
+claude-sonnet-4-0:
+  <<: *api
+  prefix: "claude"
+  path: "claude-sonnet-4-0"
+  role: "Population"

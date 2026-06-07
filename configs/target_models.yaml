@@ -1,0 +1,164 @@
+default_instruct_small: &instruct_small
+  gpus: 1
+  time: "1:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 30
+  type: "Instruct"
+
+default_instruct_medium: &instruct_medium
+  gpus: 2
+  time: "1:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 50
+  type: "Instruct"
+
+default_base_small: &base_small
+  gpus: 1
+  time: "1:30:00"
+  tokens: 350
+  numgen: 10
+  memory: 30
+  type: "Base"
+
+default_base_medium: &base_medium
+  gpus: 2
+  time: "1:30:00"
+  tokens: 350
+  numgen: 10
+  memory: 50
+  type: "Base"
+
+api_model: &api
+  gpus: null
+  time: null
+  tokens: 750
+  numgen: 5
+  memory: null
+  type: "Instruct"
+
+
+# --- Model Repository Configurations ---
+
+gemma-3-27b-it:
+  <<: *instruct_medium
+  prefix: "google"
+  path: "google/gemma-3-27b-it"
+  role: "Target"
+
+Olmo-3.1-32B-Instruct:
+  <<: *instruct_medium
+  prefix: "allenai"
+  path: "allenai/Olmo-3.1-32B-Instruct"
+  role: "Target"
+
+
+Meta-Llama-3.1-70B-Instruct:
+  prefix: "meta-llama"
+  path: "meta-llama/Meta-Llama-3.1-70B-Instruct"
+  gpus: 4
+  time: "3:00:00"
+  tokens: 750
+  numgen: 5
+  memory: 150
+  role: "Target"
+  type: "Instruct"
+
+Qwen3-8B:
+  <<: *instruct_small
+  prefix: "Qwen"
+  path: "Qwen/Qwen3-8B"
+  numgen: 10
+  role: "Target"
+  type: "Thinking"
+
+gemma-3-12b-it:
+  <<: *instruct_small
+  prefix: "google"
+  path: "google/gemma-3-12b-it"
+  role: "Target"
+
+Olmo-3-7B-Instruct:
+  <<: *instruct_small
+  prefix: "allenai"
+  path: "allenai/Olmo-3-7B-Instruct"
+  role: "Target"
+
+Meta-Llama-3.1-8B-Instruct:
+  <<: *instruct_small
+  prefix: "meta-llama"
+  path: "meta-llama/Meta-Llama-3.1-8B-Instruct"
+  role: "Target"
+
+Qwen3-32B:
+  <<: *instruct_medium
+  prefix: "Qwen"
+  path: "Qwen/Qwen3-32B"
+  role: "Target"
+  type: "Thinking"
+
+Meta-Llama-3.1-8B:
+  <<: *base_small
+  prefix: "meta-llama"
+  path: "meta-llama/Meta-Llama-3.1-8B"
+  role: "Target"
+
+Llama-3.1-70B:
+  prefix: "meta-llama"
+  path: "meta-llama/Llama-3.1-70B"
+  gpus: 4
+  time: "2:00:00"
+  tokens: 350
+  numgen: 15
+  memory: 100
+  role: "Target"
+  type: "Base"
+
+Qwen3-8B-Base:
+  <<: *base_small
+  prefix: "Qwen"
+  path: "Qwen/Qwen3-8B-Base"
+  role: "Target"
+
+gemma-3-27b-pt:
+  <<: *base_medium
+  prefix: "google"
+  path: "google/gemma-3-27b-pt"
+  role: "Target"
+
+gemma-3-12b-pt:
+  <<: *base_small
+  prefix: "google"
+  path: "google/gemma-3-12b-pt"
+  role: "Target"
+
+Olmo-3-1125-32B:
+  <<: *base_medium
+  prefix: "allenai"
+  path: "allenai/Olmo-3-1125-32B"
+  role: "Target"
+
+Olmo-3-1025-7B:
+  <<: *base_small
+  prefix: "allenai"
+  path: "allenai/Olmo-3-1025-7B"
+  role: "Target"
+
+gpt-5.1:
+  <<: *api
+  prefix: "gpt"
+  path: "gpt-5.1"
+  role: "Target"
+
+claude-sonnet-4-6:
+  <<: *api
+  prefix: "claude"
+  path: "claude-sonnet-4-6"
+  role: "Target"
+
+claude-haiku-4-5:
+  <<: *api
+  prefix: "claude"
+  path: "claude-haiku-4-5"
+  role: "Target"

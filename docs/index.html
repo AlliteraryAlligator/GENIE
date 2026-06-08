@@ -751,11 +751,11 @@ async function initQGenie() {
   let popRows, qRows;
 
   try {
-    statusEl.textContent = 'Loading sample_population_answers.json…';
-    const popRaw = await fetchLocalJSON('sample_population_answers.json');
+    statusEl.textContent = 'Loading sampled_population_answers.json…';
+    const popRaw = await fetchLocalJSON('sampled_population_answers.json');
     popRows = normalizeRows(popRaw);
   } catch(err) {
-    showQGEmpty('Could not load <code>sample_population_answers.json</code>: ' + err.message);
+    showQGEmpty('Could not load <code>sampled_population_answers.json</code>: ' + err.message);
     statusEl.style.display = 'none';
     return;
   }

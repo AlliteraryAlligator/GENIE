@@ -56,6 +56,8 @@ body {
   background: var(--bg);
   min-height: 100vh;
 }
+
+/* ── STICKY HEADER ── */
 .site-header {
   border-bottom: 0.5px solid var(--border);
   padding: 0 2rem;
@@ -87,6 +89,32 @@ body {
   color: var(--text);
 }
 .header-right { display: flex; align-items: center; gap: 8px; }
+
+/* ── TOP NAV TABS ── */
+.top-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+.nav-tab {
+  font-size: 13px;
+  color: var(--text2);
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  text-align: center;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.12s, color 0.12s;
+}
+.nav-tab:hover { background: var(--bg2); color: var(--text); }
+.nav-tab.active { background: var(--bg2); color: var(--text); font-weight: 500; }
+
 .dark-toggle {
   width: 36px; height: 36px;
   border: 0.5px solid var(--border2);
@@ -96,42 +124,26 @@ body {
   color: var(--text2);
   font-size: 16px;
   display: flex; align-items: center; justify-content: center;
+  margin-left: 8px;
 }
 .dark-toggle:hover { background: var(--bg2); }
 
-.layout { display: flex; min-height: calc(100vh - 52px); }
-.sidebar {
-  width: 200px;
-  flex-shrink: 0;
-  border-right: 0.5px solid var(--border);
-  padding: 1.5rem 0;
-  position: sticky;
-  top: 52px;
-  height: calc(100vh - 52px);
-  overflow-y: auto;
-}
-.sidebar nav { display: flex; flex-direction: column; gap: 2px; padding: 0 0.75rem; }
-.nav-item {
-  font-size: 13px;
-  color: var(--text2);
-  padding: 7px 12px;
-  border-radius: var(--radius);
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  text-align: left;
+/* ── LAYOUT ── */
+.layout { display: flex; min-height: calc(100vh - 52px); justify-content: center; }
+.main { 
+  flex: 1; 
+  padding: 2.5rem 3rem; 
+  max-width: 900px; 
   width: 100%;
-  display: flex; align-items: center; gap: 8px;
-  text-decoration: none;
 }
-.nav-item:hover { background: var(--bg2); color: var(--text); }
-.nav-item.active { background: var(--bg2); color: var(--text); font-weight: 500; }
 
-.main { flex: 1; padding: 2.5rem 3rem; max-width: 900px; }
+/* ── PAGE VISIBILITY ── */
+.page { display: none; }
+.page.active { display: block; }
 
-.section { display: block; }
+/* ── SECTIONS ── */
+.section { display: block; scroll-margin-top: 68px; }
 .section + .section { margin-top: 1rem; }
-.section { scroll-margin-top: 68px; }
 
 h1 { font-size: 26px; font-weight: 600; line-height: 1.25; letter-spacing: -0.5px; margin-bottom: 0.5rem; }
 h2 { font-size: 18px; font-weight: 600; margin-bottom: 1rem; margin-top: 2rem; letter-spacing: -0.2px; }
@@ -140,7 +152,6 @@ h3 { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
 p { color: var(--text2); margin-bottom: 1rem; }
 p:last-child { margin-bottom: 0; }
 
-/* Elegant abstract — no box, subtle left border */
 .abstract-text {
   margin: 1.1rem 0 1.5rem;
   font-size: 15px;
@@ -152,7 +163,6 @@ p:last-child { margin-bottom: 0; }
 }
 .abstract-text strong { color: var(--text); }
 
-/* Link row */
 .link-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 1.25rem 0; }
 .link-btn {
   font-size: 13px; padding: 7px 14px;
@@ -177,28 +187,24 @@ p:last-child { margin-bottom: 0; }
 
 .divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
 
-/* 4-up single row pipeline */
-.pipeline-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+/* Pipeline figure */
+.pipeline-figure {
   margin: 1.5rem 0;
-}
-.pipe-step {
-  background: var(--bg2);
-  border: 0.5px solid var(--border);
   border-radius: var(--radius-lg);
-  padding: 1.25rem;
+  overflow: hidden;
+  border: 0.5px solid var(--border);
 }
-.step-num {
-  font-size: 11px; font-weight: 600;
-  color: #185FA5; background: #E6F1FB;
-  border-radius: var(--radius); padding: 3px 8px;
-  display: inline-block; margin-bottom: 8px;
+.pipeline-figure img {
+  width: 100%;
+  display: block;
 }
-[data-theme="dark"] .step-num { background: #042C53; color: #85B7EB; }
-.pipe-step h3 { font-size: 13px; margin-bottom: 6px; }
-.pipe-step p { font-size: 12px; color: var(--text2); margin: 0; }
+.pipeline-figure figcaption {
+  font-size: 12px;
+  color: var(--text3);
+  padding: 0.6rem 1rem;
+  background: var(--bg2);
+  text-align: center;
+}
 
 .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
 .filter-btn {
@@ -245,9 +251,8 @@ p:last-child { margin-bottom: 0; }
 [data-theme="dark"] .fam-GPT   { background: #173404; color: #97C459; }
 [data-theme="dark"] .fam-Claude{ background: #4A1B0C; color: #F0997B; }
 .type-label { font-size: 10px; color: var(--text3); width: 44px; flex-shrink: 0; }
-[data-theme="dark"] .logo img {
-  mix-blend-mode: screen;
-}
+[data-theme="dark"] .logo img { mix-blend-mode: screen; }
+
 .tooltip-lb {
   position: fixed;
   background: var(--text);
@@ -268,402 +273,756 @@ p:last-child { margin-bottom: 0; }
   padding: 2rem; text-align: center;
 }
 .lb-error { color: #D85A30; }
+
+
+
+/* ══════════════════════════════════════════════
+   Q-GENIE VISUALIZER
+══════════════════════════════════════════════ */
+#qgenie-page {
+  padding-bottom: 2rem;
+}
+
+.qg-nav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.qg-nav-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.qg-question-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qg-prompt-label {
+  font-size: 11px;
+  color: var(--text3);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.qg-feat-pill {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.qg-counter {
+  font-size: 12px;
+  color: var(--text3);
+  flex-shrink: 0;
+}
+
+.qg-arrow {
+  width: 32px; height: 32px;
+  border: 0.5px solid var(--border2);
+  border-radius: var(--radius);
+  background: transparent;
+  cursor: pointer;
+  color: var(--text2);
+  font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.qg-arrow:hover { background: var(--bg); color: var(--text); }
+.qg-arrow:disabled { opacity: 0.3; cursor: default; }
+
+/* Canvas wrapper */
+.qg-canvas-wrap {
+  position: relative;
+  width: 100%;
+  background: var(--bg2);
+  border: 0.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.qg-canvas-wrap svg {
+  display: block;
+  width: 100%;
+}
+
+/* Tooltip */
+.qg-tooltip {
+  position: fixed;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.12s;
+  max-width: 280px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.qg-tooltip.show { opacity: 1; }
+
+/* Legend */
+.qg-legend {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  font-size: 12px;
+  color: var(--text2);
+}
+.qg-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.qg-legend-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.qg-empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  font-size: 13px;
+  color: var(--text3);
+}
+.qg-empty-state strong {
+  display: block;
+  font-size: 15px;
+  color: var(--text2);
+  margin-bottom: 0.5rem;
+}
 </style>
 </head>
 <body>
 
+<div id="tooltipLb" class="tooltip-lb"></div>
+<div id="qgTooltip" class="qg-tooltip"></div>
+
 <header class="site-header">
-  <a href="#overview" class="logo">
+  <a href="#" class="logo" onclick="showPage('overview');return false;">
     <img src="genie.png" alt="GENIE" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
     <span class="logo-fallback">GENIE</span>
   </a>
-  <div class="header-right">
-    <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
-  </div>
+
+  <nav class="top-nav">
+    <a class="nav-tab active" id="tab-overview" href="#" onclick="showPage('overview');return false;">&#8962; Overview</a>
+    <a class="nav-tab" id="tab-dataset" href="#" onclick="showPage('dataset');return false;">&#9112; Dataset</a>
+    <a class="nav-tab" id="tab-leaderboard" href="#" onclick="showPage('leaderboard');return false;">&#9745; Model scores</a>
+    <a class="nav-tab" id="tab-qgenie" href="#" onclick="showPage('qgenie');return false;">&#9678; Q-GENIE</a>
+  </nav>
+
+  <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
 </header>
 
-<div id="tooltipLb" class="tooltip-lb"></div>
-
 <div class="layout">
-  <aside class="sidebar">
-    <nav>
-      <a class="nav-item active" href="#overview">&#8962; Overview</a>
-      <a class="nav-item" href="#dataset">&#9112; Dataset</a>
-      <a class="nav-item" href="#leaderboard">&#9745; Model scores</a>
-    </nav>
-  </aside>
-
   <main class="main">
 
-  <!-- ── OVERVIEW ── -->
-  <div id="overview" class="section">
-    <h1>GENIE: A Fine-Grained Measure for Novelty</h1>
-
-    <div class="abstract-text">
-      Large Language Models have consistently demonstrated a lack of creativity and diversity across tasks. We propose <strong>GENIE</strong> (Granular Evaluation of Novel Ideas with Explainability) — a fine-grained evaluation metric that measures the novelty of responses along task-specific features with respect to a population of responses.
-    </div>
-
-    <div class="link-row">
-      <a href="#" class="link-btn primary">&#128196;&nbsp;Paper</a>
-      <a href="https://github.com/AlliteraryAlligator/GENIE" class="link-btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-        Code
-      </a>
-      <a href="https://huggingface.co/collections/AlliteraryAlligator/genie" class="link-btn">🤗&nbsp;Data</a>
-    </div>
-
-    <div class="divider"></div>
-
-    <h2>How GENIE works</h2>
-    <p>GENIE evaluates novelty in four stages: automatic feature discovery, question generation, population building, and population-relative dissimilarity scoring.</p>
-
-    <div class="pipeline-steps">
-      <div class="pipe-step">
-        <div class="step-num">Step 1</div>
-        <h3>Discover Features</h3>
-        <p>Cluster LLM-generated features/descriptions given a task.</p>
+    <!-- ── OVERVIEW ── -->
+    <div id="overview-page" class="page active">
+      <h1>GENIE: A Fine-Grained Measure for Novelty</h1>
+      <div class="abstract-text">
+        Large Language Models have consistently demonstrated a lack of creativity and diversity across tasks. We propose <strong>GENIE</strong> (Granular Evaluation of Novel Ideas with Explainability) — a fine-grained evaluation metric that measures the novelty of responses along task-specific features with respect to a population of responses.
       </div>
-      <div class="pipe-step">
-        <div class="step-num">Step 2</div>
-        <h3>Generate Questions</h3>
-        <p>Form and map prompt-specific questions to discovered features.</p>
+      <div class="link-row">
+        <a href="#" class="link-btn primary">&#128196;&nbsp;Paper</a>
+        <a href="https://github.com/AlliteraryAlligator/GENIE" class="link-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Code
+        </a>
+        <a href="https://huggingface.co/collections/AlliteraryAlligator/genie" class="link-btn">🤗&nbsp;Data</a>
       </div>
-      <div class="pipe-step">
-        <div class="step-num">Step 3</div>
-        <h3>Build Population</h3>
-        <p>Define a population of responses and extract answers to the questions.</p>
+
+      <div class="divider"></div>
+
+      <h2>How GENIE works</h2>
+      <p>GENIE evaluates novelty in four stages: automatic feature discovery, question generation, population building, and population-relative dissimilarity scoring.</p>
+
+      <figure class="pipeline-figure">
+        <img src="pipeline.png" alt="GENIE pipeline diagram" onerror="this.parentElement.innerHTML='<div style=\'padding:3rem;text-align:center;color:var(--text3);font-size:13px\'>[pipeline.png — place in the same directory as this file]</div>'">
+        <figcaption>Figure 1. The GENIE evaluation pipeline.</figcaption>
+      </figure>
+    </div>
+
+    <!-- ── DATASET ── -->
+    <div id="dataset-page" class="page">
+      <h2 style="margin-top:0">Dataset statistics</h2>
+      <div class="stat-grid">
+        <div class="stat-card"><div class="num">6</div><div class="lbl">Creative Writing Features</div></div>
+        <div class="stat-card"><div class="num">3,404</div><div class="lbl">Population responses</div></div>
+        <div class="stat-card"><div class="num">4,500</div><div class="lbl">Target responses</div></div>
+        <div class="stat-card"><div class="num">39</div><div class="lbl">Models used</div></div>
+        <div class="stat-card"><div class="num">50</div><div class="lbl">Writing prompts</div></div>
       </div>
-      <div class="pipe-step">
-        <div class="step-num">Step 4</div>
-        <h3>Compute GENIE</h3>
-        <p>Extract answers from a target response. The average dissimilarity between target and population answers per feature yields fine-grained novelty scores.</p>
+      <div class="divider"></div>
+      <h2>Novelty score distribution by feature</h2>
+      <p>Kernel density estimates of GENIE scores across the target document set, per feature.</p>
+      <div id="distStatus" style="font-size:12px;color:var(--text3);margin-bottom:0.5rem"></div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text2)" id="distLegend"></div>
+      <div style="position:relative;width:100%;height:300px">
+        <canvas id="distChart" role="img" aria-label="Kernel density estimate of GENIE novelty scores per feature"></canvas>
+      </div>
+      <div class="divider"></div>
+    </div>
+
+    <!-- ── LEADERBOARD ── -->
+    <div id="leaderboard-page" class="page">
+      <h2 style="margin-top:0">Model novelty scores</h2>
+      <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
+        <div class="filter-row" id="famFilters" style="margin:0">
+          <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Perspective</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block"></span>Plot</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27;display:inline-block"></span>Setting</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social Atmosphere.</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4537E;display:inline-block"></span>Style</span>
+      </div>
+      <div class="model-list" id="modelList">
+        <div class="lb-loading">Switch to this tab to load scores&hellip;</div>
       </div>
     </div>
-  </div>
 
-  <!-- ── DATASET ── -->
-  <div id="dataset" class="section">
-    <h2>Dataset statistics</h2>
-    <div class="stat-grid">
-      <div class="stat-card"><div class="num">6</div><div class="lbl">Creative Writing Features</div></div>
-      <div class="stat-card"><div class="num">3,404</div><div class="lbl">Population responses</div></div>
-      <div class="stat-card"><div class="num">4,500</div><div class="lbl">Target responses</div></div>
-      <div class="stat-card"><div class="num">39</div><div class="lbl">Models used</div></div>
-      <div class="stat-card"><div class="num">50</div><div class="lbl">Writing prompts</div></div>
-    </div>
-    <div class="divider"></div>
-    <h2>Novelty score distribution by feature</h2>
-    <p>Kernel density estimates of GENIE scores across the target document set, per feature.</p>
-    <div id="distStatus" style="font-size:12px;color:var(--text3);margin-bottom:0.5rem"></div>
-    <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text2)" id="distLegend"></div>
-    <div style="position:relative;width:100%;height:300px">
-      <canvas id="distChart" role="img" aria-label="Kernel density estimate of GENIE novelty scores per feature"></canvas>
-    </div>
-    <div class="divider"></div>
-  </div>
+    <!-- ── Q-GENIE ── -->
+    <div id="qgenie-page" class="page">
+      <h2 style="margin-top:0">Q-GENIE Visualizer</h2>
+      <p>Explore how individual answers compare to the population along each feature and question.</p>
 
-  <!-- ── LEADERBOARD ── -->
-  <div id="leaderboard" class="section">
-    <h2>Model novelty scores</h2>
-    <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score.</p>
 
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
-      <div class="filter-row" id="famFilters" style="margin:0">
-        <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
+      <div id="qgenie-ui" style="display:none">
+        <div class="qg-nav">
+          <button class="qg-arrow" id="qgPrev" onclick="qgNav(-1)">&#8592;</button>
+          <div class="qg-nav-info">
+            <div class="qg-question-label" id="qgQuestion">—</div>
+            <div class="qg-prompt-label" id="qgPrompt">—</div>
+          </div>
+          <span class="qg-feat-pill" id="qgFeatPill">—</span>
+          <span class="qg-counter" id="qgCounter">Q 0 of 0</span>
+          <button class="qg-arrow" id="qgNext" onclick="qgNav(1)">&#8594;</button>
+        </div>
+
+        <div class="qg-canvas-wrap" id="qgCanvasWrap">
+          <svg id="qgSvg" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg"></svg>
+        </div>
+
+        <div class="qg-legend">
+          <div class="qg-legend-item"><div class="qg-legend-dot" style="background:#185FA5"></div> Population</div>
+          <div class="qg-legend-item"><div class="qg-legend-dot" style="background:#9ca3af"></div> Low novelty (0–0.4)</div>
+          <div class="qg-legend-item"><div class="qg-legend-dot" style="background:#1D9E75"></div> Medium novelty (0.4–0.8)</div>
+          <div class="qg-legend-item"><div class="qg-legend-dot" style="background:#EF9F27"></div> High novelty (0.8–1.0)</div>
+        </div>
       </div>
-      <!-- <div class="filter-row" id="typeFilters" style="margin:0">
-        <button class="filter-btn on" onclick="filterType('all',this)">All</button>
-        <button class="filter-btn" onclick="filterType('base',this)">Base</button>
-        <button class="filter-btn" onclick="filterType('instruct',this)">Instruct</button>
-      </div> -->
-    </div>
 
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Perspective</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block"></span>Plot</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27;display:inline-block"></span>Setting</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social Atmosphere.</span>
-      <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4537E;display:inline-block"></span>Style</span>
-    </div>
+      <div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div>
 
-    <div class="model-list" id="modelList">
-      <div class="lb-loading">Loading model_genie.json&hellip;</div>
+      <div id="qgenie-empty" class="qg-empty-state" style="display:none">
+        <strong>Dataset not yet available</strong>
+        The target-q-genie dataset has not been published yet. Check back soon.
+      </div>
     </div>
-  </div>
 
   </main>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
-// ─── SMOOTH SCROLL + ACTIVE NAV via IntersectionObserver ─────────────────────
-document.querySelectorAll('.nav-item').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(link.getAttribute('href'));
-    if (target) target.scrollIntoView({ behavior: 'smooth' });
-  });
-});
-
-// Highlight nav item whose section is most visible in viewport
-const navLinks = document.querySelectorAll('.nav-item');
-const sections = document.querySelectorAll('.section');
-
-const observer = new IntersectionObserver(entries => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      const id = entry.target.id;
-      navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + id));
-
-      // Lazy-init data when sections scroll into view
-      if (id === 'dataset'     && !window._distDone) initDistChart();
-      if (id === 'leaderboard' && !window._lbDone)   initLeaderboard();
-    }
-  });
-}, { rootMargin: '-20% 0px -20% 0px' });
-
-sections.forEach(s => observer.observe(s));
-
+// ─── DARK MODE ────────────────────────────────────────────────────────────────
 function toggleDark() {
   const dark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
   document.getElementById('darkBtn').innerHTML = dark ? '&#9790;' : '&#9728;';
+  if (window._qgData) renderQG();
+}
+
+// ─── TAB NAV ──────────────────────────────────────────────────────────────────
+const PAGES = ['overview','dataset','leaderboard','qgenie'];
+
+function showPage(id) {
+  PAGES.forEach(p => {
+    document.getElementById(p+'-page').classList.toggle('active', p===id);
+    document.getElementById('tab-'+p).classList.toggle('active', p===id);
+  });
+  if (id==='dataset'     && !window._distDone) initDistChart();
+  if (id==='leaderboard' && !window._lbDone)   initLeaderboard();
+  if (id==='qgenie'      && !window._qgDone)   initQGenie();
 }
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const FEAT_COLORS = {agent:'#7F77DD',perspective:'#1D9E75',plot:'#378ADD',setting:'#EF9F27',social:'#D85A30',style:'#D4537E'};
 const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
 const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Social Atmosphere','Style'];
-
 const FEAT_KEY_MAP = {
   'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
   'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
   'social_atm':'social','social':'social','style':'style'
 };
 function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
-
 function inferFamily(n) {
-  n = (n||'').toLowerCase();
-  if (n.includes('gemma'))  return 'Gemma';
-  if (n.includes('llama'))  return 'Llama';
-  if (n.includes('olmo'))   return 'OLMo';
-  if (n.includes('qwen'))   return 'Qwen';
-  if (n.includes('gpt'))    return 'GPT';
-  if (n.includes('claude')) return 'Claude';
-  return 'Other';
+  n=(n||'').toLowerCase();
+  if(n.includes('gemma'))return'Gemma'; if(n.includes('llama'))return'Llama';
+  if(n.includes('olmo'))return'OLMo';   if(n.includes('qwen'))return'Qwen';
+  if(n.includes('gpt'))return'GPT';     if(n.includes('claude'))return'Claude';
+  return'Other';
 }
 function inferType(n) {
-  n = (n||'').toLowerCase();
-  if (n.includes('instruct')||n.includes('-it')||n.includes('chat')||
-      n.includes('sonnet')||n.includes('opus')||n.includes('haiku')) return 'instruct';
-  return 'base';
+  n=(n||'').toLowerCase();
+  if(n.includes('instruct')||n.includes('-it')||n.includes('chat')||
+     n.includes('sonnet')||n.includes('opus')||n.includes('haiku'))return'instruct';
+  return'base';
+}
+
+// ─── LOCAL JSON FETCHER ──────────────────────────────────────────────────────
+async function fetchLocalJSON(path) {
+  const res = await fetch(path);
+  if (!res.ok) throw new Error(`HTTP ${res.status} loading ${path}`);
+  return res.json();
+}
+
+function normalizeRows(raw) {
+  if (Array.isArray(raw)) return raw;
+  // Handle Pandas orient='records' or orient='columns' (dict-of-arrays)
+  const keys = Object.keys(raw);
+  const indices = Object.keys(raw[keys[0]]);
+  return indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
 }
 
 // ─── LEADERBOARD ──────────────────────────────────────────────────────────────
-let modelData = [], famFilter='all', typeFilter='all';
+let modelData=[], famFilter='all', typeFilter='all';
 
 async function initLeaderboard() {
-  window._lbDone = true;
-  const listEl = document.getElementById('modelList');
+  window._lbDone=true;
+  const listEl=document.getElementById('modelList');
   try {
-    const res = await fetch('model_genie.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const raw = await res.json();
-
-    // Handle both array-of-rows and pandas column-oriented {col: {idx: val}}
+    const res=await fetch('model_genie.json');
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const raw=await res.json();
     let rows;
-    if (Array.isArray(raw)) {
-      rows = raw;
-    } else {
-      const keys = Object.keys(raw);
-      const indices = Object.keys(raw[keys[0]]);
-      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
-    }
-
-    const byModel = {};
-    rows.forEach(row => {
-      const model = row['Model_1'] || row['model'] || '';
-      const feat  = normFeature(row['Feature'] || row['feature'] || '');
-      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
-      if (!model || !feat || isNaN(score)) return;
-      if (!byModel[model]) byModel[model] = { name: model };
-      byModel[model][feat] = score;
+    if(Array.isArray(raw)){rows=raw;}
+    else{const keys=Object.keys(raw);const indices=Object.keys(raw[keys[0]]);rows=indices.map(i=>Object.fromEntries(keys.map(k=>[k,raw[k][i]])));}
+    const byModel={};
+    rows.forEach(row=>{
+      const model=row['Model_1']||row['model']||'';
+      const feat=normFeature(row['Feature']||row['feature']||'');
+      const score=parseFloat(row['GENIE']??row['genie']??NaN);
+      if(!model||!feat||isNaN(score))return;
+      if(!byModel[model])byModel[model]={name:model};
+      byModel[model][feat]=score;
     });
-
-    modelData = Object.values(byModel).map(m => ({
-      name: m.name,
-      family: inferFamily(m.name),
-      type:   inferType(m.name),
-      agent:       m.agent       || 0,
-      perspective: m.perspective || 0,
-      plot:        m.plot        || 0,
-      setting:     m.setting     || 0,
-      social:      m.social      || 0,
-      style:       m.style       || 0,
+    modelData=Object.values(byModel).map(m=>({
+      name:m.name,family:inferFamily(m.name),type:inferType(m.name),
+      agent:m.agent||0,perspective:m.perspective||0,plot:m.plot||0,
+      setting:m.setting||0,social:m.social||0,style:m.style||0,
     }));
-
-    modelData.sort((a,b) => {
-      const ta = FEAT_NAMES.reduce((s,f)=>s+a[f],0);
-      const tb = FEAT_NAMES.reduce((s,f)=>s+b[f],0);
+    modelData.sort((a,b)=>{
+      const ta=FEAT_NAMES.reduce((s,f)=>s+a[f],0);
+      const tb=FEAT_NAMES.reduce((s,f)=>s+b[f],0);
       return tb-ta;
     });
-
-    buildFamFilters();
-    renderModels();
+    buildFamFilters(); renderModels();
   } catch(err) {
-    listEl.innerHTML = `<div class="lb-loading lb-error">
-      Could not load model_genie.json: ${err.message}<br>
-      <span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span>
-    </div>`;
+    listEl.innerHTML=`<div class="lb-loading lb-error">Could not load model_genie.json: ${err.message}<br><span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span></div>`;
   }
 }
 
-function buildFamFilters() {
-  const families = [...new Set(modelData.map(m=>m.family))].sort();
-  const el = document.getElementById('famFilters');
-  el.innerHTML = `<button class="filter-btn on" onclick="filterFam('all',this)">All</button>` +
+function buildFamFilters(){
+  const families=[...new Set(modelData.map(m=>m.family))].sort();
+  const el=document.getElementById('famFilters');
+  el.innerHTML=`<button class="filter-btn on" onclick="filterFam('all',this)">All</button>`+
     families.map(f=>`<button class="filter-btn" onclick="filterFam('${f}',this)">${f}</button>`).join('');
 }
+function filterFam(f,btn){famFilter=f;document.querySelectorAll('#famFilters .filter-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderModels();}
 
-function filterFam(f,btn) {
-  famFilter=f;
-  document.querySelectorAll('#famFilters .filter-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); renderModels();
-}
-function filterType(t,btn) {
-  typeFilter=t;
-  document.querySelectorAll('#typeFilters .filter-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on'); renderModels();
-}
+const tipEl=document.getElementById('tooltipLb');
+function showTip(evt,text){tipEl.textContent=text;tipEl.classList.add('show');moveTip(evt);}
+function moveTip(evt){tipEl.style.left=(evt.clientX+14)+'px';tipEl.style.top=(evt.clientY-32)+'px';}
+function hideTip(){tipEl.classList.remove('show');}
 
-const tipEl = document.getElementById('tooltipLb');
-function showTip(evt,text){ tipEl.textContent=text; tipEl.classList.add('show'); moveTip(evt); }
-function moveTip(evt){ tipEl.style.left=(evt.clientX+14)+'px'; tipEl.style.top=(evt.clientY-32)+'px'; }
-function hideTip(){ tipEl.classList.remove('show'); }
-
-function renderModels() {
-  const list = document.getElementById('modelList');
-  if (!modelData.length) { list.innerHTML='<div class="lb-loading">No data.</div>'; return; }
-  const filtered = modelData.filter(m =>
-    (famFilter==='all'||m.family===famFilter) &&
-    (typeFilter==='all'||m.type===typeFilter)
-  );
-  if (!filtered.length) { list.innerHTML='<div class="lb-loading">No models match filters.</div>'; return; }
-
-  const maxTotal = Math.max(...filtered.map(m=>FEAT_NAMES.reduce((s,f)=>s+m[f],0)));
-
-  list.innerHTML = filtered.map(m => {
-    const total    = FEAT_NAMES.reduce((s,f)=>s+m[f],0);
-    const widthPct = maxTotal>0 ? Math.round((total/maxTotal)*100) : 0;
-    const segs = FEAT_NAMES.map((f,i) => {
-      const pct = total>0 ? ((m[f]/total)*100).toFixed(2) : 0;
-      const lbl = `${FEAT_LABELS[i]}: ${m[f].toFixed(3)}`;
-      return `<div class="bar-seg" style="width:${pct}%;background:${FEAT_COLORS[f]}"
-        onmouseenter="showTip(event,'${lbl}')"
-        onmousemove="moveTip(event)"
-        onmouseleave="hideTip()"></div>`;
+function renderModels(){
+  const list=document.getElementById('modelList');
+  if(!modelData.length){list.innerHTML='<div class="lb-loading">No data.</div>';return;}
+  const filtered=modelData.filter(m=>(famFilter==='all'||m.family===famFilter)&&(typeFilter==='all'||m.type===typeFilter));
+  if(!filtered.length){list.innerHTML='<div class="lb-loading">No models match filters.</div>';return;}
+  const maxTotal=Math.max(...filtered.map(m=>FEAT_NAMES.reduce((s,f)=>s+m[f],0)));
+  list.innerHTML=filtered.map(m=>{
+    const total=FEAT_NAMES.reduce((s,f)=>s+m[f],0);
+    const widthPct=maxTotal>0?Math.round((total/maxTotal)*100):0;
+    const segs=FEAT_NAMES.map((f,i)=>{
+      const pct=total>0?((m[f]/total)*100).toFixed(2):0;
+      const lbl=`${FEAT_LABELS[i]}: ${m[f].toFixed(3)}`;
+      return`<div class="bar-seg" style="width:${pct}%;background:${FEAT_COLORS[f]}" onmouseenter="showTip(event,'${lbl}')" onmousemove="moveTip(event)" onmouseleave="hideTip()"></div>`;
     }).join('');
-    return `<div class="model-row">
-      <div class="model-name" title="${m.name}">${m.name}</div>
-      <span class="fam-badge fam-${m.family}">${m.family}</span>
-      <span class="type-label">${m.type}</span>
-      <div style="flex:1"><div class="stacked-bar" style="width:${widthPct}%">${segs}</div></div>
-    </div>`;
+    return`<div class="model-row"><div class="model-name" title="${m.name}">${m.name}</div><span class="fam-badge fam-${m.family}">${m.family}</span><span class="type-label">${m.type}</span><div style="flex:1"><div class="stacked-bar" style="width:${widthPct}%">${segs}</div></div></div>`;
   }).join('');
 }
 
-// ─── DISTRIBUTION CHART ───────────────────────────────────────────────────────
-function gaussianKDE(values, bw) {
+// ─── DISTRIBUTION CHART (from HuggingFace: AlliteraryAlligator/target-genie) ──
+function gaussianKDE(values,bw){
   const pts=[];
-  for (let x=0;x<=1;x+=0.005) {
+  for(let x=0;x<=1;x+=0.005){
     let sum=0;
-    values.forEach(v=>{ const z=(x-v)/bw; sum+=Math.exp(-0.5*z*z); });
+    values.forEach(v=>{const z=(x-v)/bw;sum+=Math.exp(-0.5*z*z);});
     pts.push({x:parseFloat(x.toFixed(3)),y:sum/(values.length*bw*Math.sqrt(2*Math.PI))});
   }
   return pts;
 }
-
 let distChart;
-
-function buildDistLegend() {
-  document.getElementById('distLegend').innerHTML = FEAT_NAMES.map((f,i)=>
+function buildDistLegend(){
+  document.getElementById('distLegend').innerHTML=FEAT_NAMES.map((f,i)=>
     `<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>${FEAT_LABELS[i]}</span>`
   ).join('');
 }
 
-async function initDistChart() {
-  window._distDone = true;
-  buildDistLegend();
-
+async function initDistChart(){
+  window._distDone=true; buildDistLegend();
   let src = null;
+  try {
+    const raw = await fetchLocalJSON('genie.json');
+    const rows = normalizeRows(raw);
+    const grouped={};FEAT_NAMES.forEach(f=>grouped[f]=[]);
+    rows.forEach(row=>{
+      const feat=normFeature(row['Feature']||row['feature']||'');
+      const score=parseFloat(row['GENIE']??row['genie']??NaN);
+      if(feat&&!isNaN(score))grouped[feat].push(score);
+    });
+    const total=FEAT_NAMES.reduce((s,f)=>s+grouped[f].length,0);
+    if(total===0)throw new Error('No valid rows in genie.json');
+    src=grouped;
+    document.getElementById('distStatus').textContent=`Loaded ${rows.length} rows`;
+  } catch(err){
+    document.getElementById('distStatus').textContent=`Could not load genie.json (${err.message}) — showing simulated data`;
+    function genSample(mean,std,n=80){return Array.from({length:n},()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.max(0.05,Math.min(0.99,mean+std*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)));});}
+    src={agent:genSample(0.63,0.12),perspective:genSample(0.48,0.15),plot:genSample(0.61,0.11),setting:genSample(0.57,0.13),social:genSample(0.59,0.12),style:genSample(0.52,0.14)};
+  }
+  const datasets=FEAT_NAMES.map((f,i)=>({
+    label:FEAT_LABELS[i],data:gaussianKDE(src[f].length>0?src[f]:[0.5],0.07),
+    borderColor:FEAT_COLORS[f],backgroundColor:FEAT_COLORS[f]+'22',
+    borderWidth:2,pointRadius:0,fill:true,tension:0.4,
+    parsing:{xAxisKey:'x',yAxisKey:'y'},
+  }));
+  if(distChart)distChart.destroy();
+  distChart=new Chart(document.getElementById('distChart'),{
+    type:'line',data:{datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{x:{type:'linear',min:0,max:1,title:{display:true,text:'GENIE score',font:{size:12}},ticks:{font:{size:11}}},
+               y:{title:{display:true,text:'Density',font:{size:12}},ticks:{font:{size:11}},grid:{color:'rgba(128,128,128,0.1)'}}}}
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Q-GENIE — load from HuggingFace (no file upload)
+// Datasets:
+//   population answers: AlliteraryAlligator/sample-population
+//   q-genie scores:     AlliteraryAlligator/target-q-genie
+// ═══════════════════════════════════════════════════════════════
+
+window._qgData = null;
+let qgIdx = 0;
+let popExpanded = false;
+
+async function initQGenie() {
+  window._qgDone = true;
+  const statusEl = document.getElementById('qgenie-load-status');
+
+  let popRows, qRows;
 
   try {
-    const res = await fetch('genie.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const raw = await res.json();
-
-    // Handle both array-of-rows and pandas column-oriented {col: {idx: val}}
-    let rows;
-    if (Array.isArray(raw)) {
-      rows = raw;
-    } else {
-      const keys = Object.keys(raw);
-      const indices = Object.keys(raw[keys[0]]);
-      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
-    }
-
-    const grouped = {};
-    FEAT_NAMES.forEach(f => grouped[f] = []);
-
-    rows.forEach(row => {
-      const feat  = normFeature(row['Feature'] || row['feature'] || '');
-      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
-      if (feat && !isNaN(score)) grouped[feat].push(score);
-    });
-
-    const total = FEAT_NAMES.reduce((s,f)=>s+grouped[f].length, 0);
-    if (total === 0) throw new Error('No valid Feature/GENIE rows found');
-
-    src = grouped;
-    document.getElementById('distStatus').textContent = `Loaded ${rows.length} rows from genie.json`;
+    statusEl.textContent = 'Loading sample_population_answers.json…';
+    const popRaw = await fetchLocalJSON('sample_population_answers.json');
+    popRows = normalizeRows(popRaw);
   } catch(err) {
-    document.getElementById('distStatus').textContent = `Could not load genie.json (${err.message}) — showing simulated data`;
-    function genSample(mean,std,n=80) {
-      return Array.from({length:n},()=>{
-        let u=0,v=0;
-        while(!u)u=Math.random(); while(!v)v=Math.random();
-        return Math.max(0.05,Math.min(0.99,mean+std*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)));
-      });
-    }
-    src = {
-      agent:genSample(0.63,0.12), perspective:genSample(0.48,0.15),
-      plot:genSample(0.61,0.11),  setting:genSample(0.57,0.13),
-      social:genSample(0.59,0.12), style:genSample(0.52,0.14),
-    };
+    showQGEmpty('Could not load <code>sample_population_answers.json</code>: ' + err.message);
+    statusEl.style.display = 'none';
+    return;
   }
 
-  const datasets = FEAT_NAMES.map((f,i) => ({
-    label: FEAT_LABELS[i],
-    data: gaussianKDE(src[f].length > 0 ? src[f] : [0.5], 0.07),
-    borderColor: FEAT_COLORS[f],
-    backgroundColor: FEAT_COLORS[f] + '22',
-    borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4,
-    parsing: {xAxisKey:'x', yAxisKey:'y'},
-  }));
+  try {
+    statusEl.textContent = 'Loading q_genie.json…';
+    const qRaw = await fetchLocalJSON('q_genie.json');
+    qRows = normalizeRows(qRaw);
+  } catch(err) {
+    showQGEmpty('Could not load <code>q_genie.json</code>: ' + err.message);
+    statusEl.style.display = 'none';
+    return;
+  }
 
-  if (distChart) distChart.destroy();
-  distChart = new Chart(document.getElementById('distChart'), {
-    type: 'line', data: {datasets},
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: {legend: {display: false}},
-      scales: {
-        x: {type:'linear',min:0,max:1,title:{display:true,text:'GENIE score',font:{size:12}},ticks:{font:{size:11}}},
-        y: {title:{display:true,text:'Density',font:{size:12}},ticks:{font:{size:11}},grid:{color:'rgba(128,128,128,0.1)'}}
-      }
-    }
+  statusEl.style.display = 'none';
+  processQGData(popRows, qRows);
+}
+
+function showQGEmpty(html) {
+  const el = document.getElementById('qgenie-empty');
+  el.innerHTML = html;
+  el.style.display = 'block';
+  document.getElementById('qgenie-ui').style.display = 'none';
+}
+
+function processQGData(popRows, qRows) {
+  // Build population map: (Prompt, Question, Feature) -> [Answer]
+  const popMap = {};
+  popRows.forEach(r => {
+    const k = key(r.Prompt||r.prompt, r.Question||r.question, r.Feature||r.feature);
+    if (!popMap[k]) popMap[k] = [];
+    popMap[k].push(String(r.Answer||r.answer||''));
   });
+
+  // Build q-genie map: same key -> [{Answer, Q_GENIE}] sorted ascending
+  const qMap = {};
+  qRows.forEach(r => {
+    const k = key(r.Prompt||r.prompt, r.Question||r.question, r.Feature||r.feature);
+    if (!qMap[k]) qMap[k] = [];
+    const score = parseFloat(r.Q_GENIE ?? r.q_genie ?? r.QGENIE ?? NaN);
+    qMap[k].push({ answer: String(r.Answer||r.answer||''), score });
+  });
+  Object.values(qMap).forEach(arr => arr.sort((a,b)=>a.score-b.score));
+
+  // Build combo index from q_genie rows
+  const seen = new Set();
+  const combos = [];
+  qRows.forEach(r => {
+    const p = r.Prompt||r.prompt||'';
+    const q = r.Question||r.question||'';
+    const f = r.Feature||r.feature||'';
+    const k = key(p, q, f);
+    if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
+  });
+
+  window._qgData = { combos, popMap, qMap };
+  qgIdx = 0;
+  popExpanded = false;
+
+  document.getElementById('qgenie-empty').style.display = 'none';
+  document.getElementById('qgenie-ui').style.display = 'block';
+  renderQG();
+}
+
+function key(p,q,f) { return [p,q,f].join('\x00'); }
+
+function qgNav(dir) {
+  if (!window._qgData) return;
+  const n = window._qgData.combos.length;
+  qgIdx = (qgIdx + dir + n) % n;
+  popExpanded = false;
+  renderQG();
+}
+
+// ── SVG DRAWING ──────────────────────────────────────────────────────────────
+const SVG_W = 800, SVG_H = 480;
+const POP_CX = 240, POP_CY = 240, POP_R = 90;
+const RING_RADII = [130, 175, 215, 255, 295];
+const DOT_R = 7;
+const ARC_START = -10, ARC_END = 200;
+
+const FEAT_BG = {
+  agent:'#EEEDFE',perspective:'#E1F5EE',plot:'#E6F1FB',
+  setting:'#FAEEDA',social:'#FAECE7',style:'#FBEAF0'
+};
+const FEAT_FG = {
+  agent:'#3C3489',perspective:'#085041',plot:'#0C447C',
+  setting:'#633806',social:'#712B13',style:'#7A1B3A'
+};
+const FEAT_LABEL = {
+  agent:'Agent',perspective:'Perspective',plot:'Plot',
+  setting:'Setting',social:'Social Atmosphere',style:'Style'
+};
+
+function bandColor(score) {
+  if (score < 0.4) return '#9ca3af';
+  if (score < 0.8) return '#1D9E75';
+  return '#EF9F27';
+}
+
+function deg2rad(d) { return d * Math.PI / 180; }
+
+function seededRand(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+const qgTip = document.getElementById('qgTooltip');
+function showQGTip(evt, text) {
+  qgTip.textContent = text;
+  qgTip.classList.add('show');
+  moveQGTip(evt);
+}
+function moveQGTip(evt) {
+  let x = evt.clientX + 14, y = evt.clientY - 38;
+  if (x + 290 > window.innerWidth) x = evt.clientX - 300;
+  qgTip.style.left = x + 'px';
+  qgTip.style.top  = y + 'px';
+}
+function hideQGTip() { qgTip.classList.remove('show'); }
+
+function renderQG() {
+  const data = window._qgData;
+  if (!data || !data.combos.length) return;
+
+  const combo = data.combos[qgIdx];
+  const n = data.combos.length;
+
+  document.getElementById('qgQuestion').textContent = combo.question;
+  document.getElementById('qgPrompt').textContent = combo.prompt;
+  document.getElementById('qgCounter').textContent = `Q ${qgIdx+1} of ${n}`;
+
+  const featKey = normFeature(combo.feature) || combo.feature.toLowerCase();
+  const pill = document.getElementById('qgFeatPill');
+  pill.textContent = FEAT_LABEL[featKey] || combo.feature;
+  pill.style.background = FEAT_BG[featKey] || '#eee';
+  pill.style.color = FEAT_FG[featKey] || '#333';
+
+  document.getElementById('qgPrev').disabled = false;
+  document.getElementById('qgNext').disabled = false;
+
+  const popAnswers = data.popMap[combo.key] || [];
+  const qItems     = data.qMap[combo.key]   || [];
+
+  drawViz(popAnswers, qItems, combo);
+}
+
+function drawViz(popAnswers, qItems, combo) {
+  const svg = document.getElementById('qgSvg');
+  svg.innerHTML = '';
+
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const bgColor    = isDark ? '#222224' : '#f7f7f5';
+  const ringStroke = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+  const pColor     = isDark ? '#2171C9' : '#185FA5';
+  const textOnPop  = '#fff';
+
+  function makeSVGEl(tag, attrs={}, parent=svg) {
+    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+    parent.appendChild(el);
+    return el;
+  }
+
+  makeSVGEl('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
+
+  const ringGroup = makeSVGEl('g', {id:'qgRingGroup', opacity:popExpanded?'0':'1',
+    style:'transition:opacity 0.3s ease; pointer-events:'+(popExpanded?'none':'all')});
+
+  RING_RADII.forEach(r => {
+    makeSVGEl('circle', {
+      cx:POP_CX, cy:POP_CY, r,
+      fill:'none', stroke:ringStroke, 'stroke-width':'1.5',
+      'stroke-dasharray':'4 6'
+    }, ringGroup);
+  });
+
+  const seed = combo.key.split('').reduce((a,c)=>a+(c.charCodeAt(0)),0);
+  const rand = seededRand(seed);
+  const ringAngles = RING_RADII.map(()=>[]);
+
+  qItems.forEach((item) => {
+    const band = Math.min(4, Math.floor(item.score * 5));
+    const ringR = RING_RADII[band];
+    let angle;
+    const attempts = 8;
+    const arcRange = ARC_END - ARC_START;
+    for (let a=0; a<attempts; a++) {
+      angle = ARC_START + rand() * arcRange;
+      const existing = ringAngles[band];
+      const minDist = existing.length ? Math.min(...existing.map(e=>Math.abs(e-angle))) : 999;
+      if (minDist > 14 || a===attempts-1) { ringAngles[band].push(angle); break; }
+    }
+    const rad = deg2rad(angle);
+    const cx = POP_CX + ringR * Math.cos(rad);
+    const cy = POP_CY + ringR * Math.sin(rad);
+    const color = bandColor(item.score);
+    const dot = makeSVGEl('circle', { cx, cy, r:DOT_R, fill:color, stroke:'none', style:'cursor:pointer;' }, ringGroup);
+    dot.addEventListener('mouseenter', e => showQGTip(e, item.answer));
+    dot.addEventListener('mousemove',  e => moveQGTip(e));
+    dot.addEventListener('mouseleave', hideQGTip);
+  });
+
+  const popGroup = makeSVGEl('g', {id:'qgPopGroup', style:'cursor:pointer'});
+
+  if (!popExpanded) {
+    makeSVGEl('circle', {cx:POP_CX, cy:POP_CY, r:POP_R, fill:pColor, opacity:'0.92'}, popGroup);
+    const label1 = makeSVGEl('text', {x:POP_CX, y:POP_CY-8,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop,'font-size':'14','font-weight':'600','font-family':'Inter,sans-serif'}, popGroup);
+    label1.textContent = 'Population';
+    const label2 = makeSVGEl('text', {x:POP_CX, y:POP_CY+12,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop+'bb','font-size':'11','font-family':'Inter,sans-serif'}, popGroup);
+    label2.textContent = `${popAnswers.length} answers  ↗ click to expand`;
+    popGroup.addEventListener('click', () => { popExpanded = true; renderQG(); });
+  } else {
+    const EX = SVG_W/2, EY = SVG_H/2, ER = Math.min(SVG_W, SVG_H)*0.46;
+    makeSVGEl('circle', {cx:EX, cy:EY, r:ER, fill:pColor, opacity:'0.93'}, popGroup);
+    const hdr = makeSVGEl('text', {x:EX, y:EY-ER+38,'text-anchor':'middle',fill:textOnPop,'font-size':'15','font-weight':'600','font-family':'Inter,sans-serif'}, popGroup);
+    hdr.textContent = `Population · ${popAnswers.length} answers`;
+    const collG = makeSVGEl('g', {style:'cursor:pointer'}, popGroup);
+    makeSVGEl('rect', {x:EX-55, y:EY-ER+52, width:110, height:24, rx:12, fill:'rgba(255,255,255,0.18)'}, collG);
+    const collTx = makeSVGEl('text', {x:EX, y:EY-ER+68,'text-anchor':'middle',fill:textOnPop,'font-size':'11','font-family':'Inter,sans-serif'}, collG);
+    collTx.textContent = '× click to collapse';
+    collG.addEventListener('click', () => { popExpanded=false; renderQG(); });
+    popGroup.addEventListener('click', e => { if(e.target===popGroup||e.target.tagName==='circle') { popExpanded=false; renderQG(); } });
+
+    const shuffled = [...popAnswers].sort(()=>Math.random()-0.5);
+    const featured = shuffled.slice(0, Math.min(6, shuffled.length));
+    const rest     = shuffled.slice(Math.min(6, shuffled.length));
+
+    const fPositions = [
+      {dx:-90, dy:-60}, {dx:60, dy:-80}, {dx:100, dy:20},
+      {dx:-110, dy:40}, {dx:20, dy:80}, {dx:-40, dy:-100}
+    ];
+    featured.forEach((ans, i) => {
+      const pos = fPositions[i] || {dx:0, dy:0};
+      const fcx = EX + pos.dx, fcy = EY + pos.dy;
+      const fr = 44;
+      const fg = makeSVGEl('g', {style:'cursor:default'}, popGroup);
+      makeSVGEl('circle', {cx:fcx, cy:fcy, r:fr, fill:'rgba(255,255,255,0.18)'}, fg);
+      const words = ans.split(/\s+/);
+      const line1 = words.slice(0,5).join(' ');
+      const line2 = words.slice(5,10).join(' ') + (words.length>10?'…':'');
+      const t1 = makeSVGEl('text', {x:fcx, y:fcy-(line2?7:0),'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop,'font-size':'9','font-family':'Inter,sans-serif'}, fg);
+      t1.textContent = line1;
+      if (line2) {
+        const t2 = makeSVGEl('text', {x:fcx, y:fcy+9,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop+'cc','font-size':'9','font-family':'Inter,sans-serif'}, fg);
+        t2.textContent = line2;
+      }
+      fg.addEventListener('mouseenter', e => showQGTip(e, ans));
+      fg.addEventListener('mousemove',  e => moveQGTip(e));
+      fg.addEventListener('mouseleave', hideQGTip);
+    });
+
+    const satR = ER - 20;
+    rest.forEach((ans, i) => {
+      const angle = (i / rest.length) * 2 * Math.PI - Math.PI/2;
+      const scx = EX + satR * Math.cos(angle);
+      const scy = EY + satR * Math.sin(angle);
+      const sd = makeSVGEl('circle', {cx:scx, cy:scy, r:6, fill:'none', stroke:textOnPop,'stroke-width':'1.5','stroke-dasharray':'3 3',style:'cursor:pointer'}, popGroup);
+      sd.addEventListener('mouseenter', e => showQGTip(e, ans));
+      sd.addEventListener('mousemove',  e => moveQGTip(e));
+      sd.addEventListener('mouseleave', hideQGTip);
+    });
+  }
 }
 </script>
 </body>

@@ -130,10 +130,10 @@ body {
 
 /* ── LAYOUT ── */
 .layout { display: flex; min-height: calc(100vh - 52px); justify-content: center; }
-.main { 
-  flex: 1; 
-  padding: 2.5rem 3rem; 
-  max-width: 900px; 
+.main {
+  flex: 1;
+  padding: 2.5rem 3rem;
+  max-width: 900px;
   width: 100%;
 }
 
@@ -274,8 +274,6 @@ p:last-child { margin-bottom: 0; }
 }
 .lb-error { color: #D85A30; }
 
-
-
 /* ══════════════════════════════════════════════
    Q-GENIE VISUALIZER
 ══════════════════════════════════════════════ */
@@ -283,72 +281,7 @@ p:last-child { margin-bottom: 0; }
   padding-bottom: 2rem;
 }
 
-.qg-nav {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 10px 14px;
-  background: var(--bg2);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.qg-nav-info {
-  flex: 1;
-  min-width: 0;
-}
-
-.qg-question-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.qg-prompt-label {
-  font-size: 11px;
-  color: var(--text3);
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.qg-feat-pill {
-  font-size: 11px;
-  font-weight: 600;
-  padding: 3px 10px;
-  border-radius: 20px;
-  flex-shrink: 0;
-}
-
-.qg-counter {
-  font-size: 12px;
-  color: var(--text3);
-  flex-shrink: 0;
-}
-
-.qg-arrow {
-  width: 32px; height: 32px;
-  border: 0.5px solid var(--border2);
-  border-radius: var(--radius);
-  background: transparent;
-  cursor: pointer;
-  color: var(--text2);
-  font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-family: inherit;
-  transition: background 0.12s;
-}
-.qg-arrow:hover { background: var(--bg); color: var(--text); }
-.qg-arrow:disabled { opacity: 0.3; cursor: default; }
-
-/* Canvas wrapper */
+/* ── Canvas wrapper: the SVG fills it, height is set by viewBox ── */
 .qg-canvas-wrap {
   position: relative;
   width: 100%;
@@ -360,6 +293,13 @@ p:last-child { margin-bottom: 0; }
 .qg-canvas-wrap svg {
   display: block;
   width: 100%;
+}
+
+/* ── Zoom overlay for smooth expand/collapse ── */
+#qgZoomLayer {
+  transform-origin: var(--zoom-ox, 240px) var(--zoom-oy, 240px);
+  transition: transform 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity  0.35s ease;
 }
 
 /* Tooltip */
@@ -375,7 +315,7 @@ p:last-child { margin-bottom: 0; }
   z-index: 9999;
   opacity: 0;
   transition: opacity 0.12s;
-  max-width: 280px;
+  max-width: 320px;
   white-space: pre-wrap;
   word-break: break-word;
 }
@@ -513,21 +453,10 @@ p:last-child { margin-bottom: 0; }
       <h2 style="margin-top:0">Q-GENIE Visualizer</h2>
       <p>Explore how individual answers compare to the population along each feature and question.</p>
 
-
       <div id="qgenie-ui" style="display:none">
-        <div class="qg-nav">
-          <button class="qg-arrow" id="qgPrev" onclick="qgNav(-1)">&#8592;</button>
-          <div class="qg-nav-info">
-            <div class="qg-question-label" id="qgQuestion">—</div>
-            <div class="qg-prompt-label" id="qgPrompt">—</div>
-          </div>
-          <span class="qg-feat-pill" id="qgFeatPill">—</span>
-          <span class="qg-counter" id="qgCounter">Q 0 of 0</span>
-          <button class="qg-arrow" id="qgNext" onclick="qgNav(1)">&#8594;</button>
-        </div>
-
+        <!-- Canvas: info panel is INSIDE the SVG on the right side -->
         <div class="qg-canvas-wrap" id="qgCanvasWrap">
-          <svg id="qgSvg" viewBox="0 0 800 480" xmlns="http://www.w3.org/2000/svg"></svg>
+          <svg id="qgSvg" viewBox="0 0 900 520" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
 
         <div class="qg-legend">
@@ -605,7 +534,6 @@ async function fetchLocalJSON(path) {
 
 function normalizeRows(raw) {
   if (Array.isArray(raw)) return raw;
-  // Handle Pandas orient='records' or orient='columns' (dict-of-arrays)
   const keys = Object.keys(raw);
   const indices = Object.keys(raw[keys[0]]);
   return indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
@@ -680,7 +608,7 @@ function renderModels(){
   }).join('');
 }
 
-// ─── DISTRIBUTION CHART (from HuggingFace: AlliteraryAlligator/target-genie) ──
+// ─── DISTRIBUTION CHART ───────────────────────────────────────────────────────
 function gaussianKDE(values,bw){
   const pts=[];
   for(let x=0;x<=1;x+=0.005){
@@ -733,16 +661,35 @@ async function initDistChart(){
   });
 }
 
-// ═══════════════════════════════════════════════════════════════
-// Q-GENIE — load from HuggingFace (no file upload)
-// Datasets:
-//   population answers: AlliteraryAlligator/sample-population
-//   q-genie scores:     AlliteraryAlligator/target-q-genie
-// ═══════════════════════════════════════════════════════════════
+// ════════════════════════════════════════════════════════════════════════
+// Q-GENIE VISUALIZER
+// Layout: SVG is 900×520
+//   Left half  (x 0–480):  population circle + rings (centred at 240,260)
+//   Right half (x 500–900): info panel (question, prompt, feature, nav)
+// ════════════════════════════════════════════════════════════════════════
+
+// SVG canvas size
+const SVG_W = 900, SVG_H = 520;
+
+// Population circle (left half, vertically centred)
+const POP_CX = 240, POP_CY = 260, POP_R = 88;
+
+// Rings for target dots — full 360°
+const RING_RADII = [128, 170, 210, 250, 290];
+
+// Info panel right edge bounds
+const INFO_X = 510, INFO_W = 370, INFO_MID = INFO_X + INFO_W / 2;
 
 window._qgData = null;
 let qgIdx = 0;
-let popExpanded = false;
+// Animation state: null = collapsed, 1 = expanded
+let popAnimState = null; // null | 'expanding' | 'expanded' | 'collapsing'
+let popAnimProgress = 0; // 0..1
+let popAnimRAF = null;
+
+function cancelPopAnim() {
+  if (popAnimRAF) { cancelAnimationFrame(popAnimRAF); popAnimRAF = null; }
+}
 
 async function initQGenie() {
   window._qgDone = true;
@@ -782,61 +729,92 @@ function showQGEmpty(html) {
 }
 
 function processQGData(popRows, qRows) {
-  // Build population map: (Prompt, Question, Feature) -> [Answer]
+  // Build population map: key -> [Answer]
   const popMap = {};
   popRows.forEach(r => {
-    const k = key(r.Prompt||r.prompt, r.Question||r.question, r.Feature||r.feature);
+    const k = key(
+      r.Prompt   || r.prompt   || '',
+      r.Question || r.question || '',
+      r.Feature  || r.feature  || ''
+    );
     if (!popMap[k]) popMap[k] = [];
-    popMap[k].push(String(r.Answer||r.answer||''));
+    popMap[k].push(String(r.Answer || r.answer || ''));
   });
 
-  // Build q-genie map: same key -> [{Answer, Q_GENIE}] sorted ascending
+  // Build q-genie map: key -> [{answer, score}] sorted ascending
   const qMap = {};
   qRows.forEach(r => {
-    const k = key(r.Prompt||r.prompt, r.Question||r.question, r.Feature||r.feature);
+    const k = key(
+      r.Prompt   || r.prompt   || '',
+      r.Question || r.question || '',
+      r.Feature  || r.feature  || ''
+    );
     if (!qMap[k]) qMap[k] = [];
     const score = parseFloat(r.Q_GENIE ?? r.q_genie ?? r.QGENIE ?? NaN);
-    qMap[k].push({ answer: String(r.Answer||r.answer||''), score });
+    qMap[k].push({ answer: String(r.Answer || r.answer || ''), score });
   });
-  Object.values(qMap).forEach(arr => arr.sort((a,b)=>a.score-b.score));
+  Object.values(qMap).forEach(arr => arr.sort((a,b) => a.score - b.score));
 
   // Build combo index from q_genie rows
   const seen = new Set();
   const combos = [];
   qRows.forEach(r => {
-    const p = r.Prompt||r.prompt||'';
-    const q = r.Question||r.question||'';
-    const f = r.Feature||r.feature||'';
+    const p = r.Prompt   || r.prompt   || '';
+    const q = r.Question || r.question || '';
+    const f = r.Feature  || r.feature  || '';
     const k = key(p, q, f);
-    if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
+    if (!seen.has(k)) { seen.add(k); combos.push({ prompt:p, question:q, feature:f, key:k }); }
   });
 
   window._qgData = { combos, popMap, qMap };
   qgIdx = 0;
-  popExpanded = false;
+  popAnimState = null;
+  popAnimProgress = 0;
 
   document.getElementById('qgenie-empty').style.display = 'none';
   document.getElementById('qgenie-ui').style.display = 'block';
   renderQG();
 }
 
-function key(p,q,f) { return [p,q,f].join('\x00'); }
+function key(p, q, f) { return [p, q, f].join('\x00'); }
 
 function qgNav(dir) {
   if (!window._qgData) return;
+  cancelPopAnim();
   const n = window._qgData.combos.length;
   qgIdx = (qgIdx + dir + n) % n;
-  popExpanded = false;
+  popAnimState = null;
+  popAnimProgress = 0;
   renderQG();
 }
 
-// ── SVG DRAWING ──────────────────────────────────────────────────────────────
-const SVG_W = 800, SVG_H = 480;
-const POP_CX = 240, POP_CY = 240, POP_R = 90;
-const RING_RADII = [130, 175, 215, 255, 295];
-const DOT_R = 7;
-const ARC_START = -10, ARC_END = 200;
+// ─── Deterministic PRNG ──────────────────────────────────────────────────────
+function seededRand(seed) {
+  return function() {
+    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
 
+// ─── Tooltip ─────────────────────────────────────────────────────────────────
+const qgTip = document.getElementById('qgTooltip');
+function showQGTip(evt, text) {
+  qgTip.textContent = text;
+  qgTip.classList.add('show');
+  moveQGTip(evt);
+}
+function moveQGTip(evt) {
+  let x = evt.clientX + 14, y = evt.clientY - 38;
+  if (x + 330 > window.innerWidth) x = evt.clientX - 340;
+  if (y < 10) y = evt.clientY + 20;
+  qgTip.style.left = x + 'px';
+  qgTip.style.top  = y + 'px';
+}
+function hideQGTip() { qgTip.classList.remove('show'); }
+
+// ─── Feature badge colours ───────────────────────────────────────────────────
 const FEAT_BG = {
   agent:'#EEEDFE',perspective:'#E1F5EE',plot:'#E6F1FB',
   setting:'#FAEEDA',social:'#FAECE7',style:'#FBEAF0'
@@ -845,7 +823,7 @@ const FEAT_FG = {
   agent:'#3C3489',perspective:'#085041',plot:'#0C447C',
   setting:'#633806',social:'#712B13',style:'#7A1B3A'
 };
-const FEAT_LABEL = {
+const FEAT_LABEL_MAP = {
   agent:'Agent',perspective:'Perspective',plot:'Plot',
   setting:'Setting',social:'Social Atmosphere',style:'Style'
 };
@@ -856,173 +834,524 @@ function bandColor(score) {
   return '#EF9F27';
 }
 
-function deg2rad(d) { return d * Math.PI / 180; }
-
-function seededRand(seed) {
-  return function() {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
-}
-
-const qgTip = document.getElementById('qgTooltip');
-function showQGTip(evt, text) {
-  qgTip.textContent = text;
-  qgTip.classList.add('show');
-  moveQGTip(evt);
-}
-function moveQGTip(evt) {
-  let x = evt.clientX + 14, y = evt.clientY - 38;
-  if (x + 290 > window.innerWidth) x = evt.clientX - 300;
-  qgTip.style.left = x + 'px';
-  qgTip.style.top  = y + 'px';
-}
-function hideQGTip() { qgTip.classList.remove('show'); }
-
+// ─── Main render ─────────────────────────────────────────────────────────────
 function renderQG() {
   const data = window._qgData;
   if (!data || !data.combos.length) return;
 
-  const combo = data.combos[qgIdx];
-  const n = data.combos.length;
+  const combo  = data.combos[qgIdx];
+  const n      = data.combos.length;
+  const popAnswers = (data.popMap[combo.key] || []);
+  const qItems     = (data.qMap[combo.key]   || []);
+  const featKey    = normFeature(combo.feature) || combo.feature.toLowerCase();
 
-  document.getElementById('qgQuestion').textContent = combo.question;
-  document.getElementById('qgPrompt').textContent = combo.prompt;
-  document.getElementById('qgCounter').textContent = `Q ${qgIdx+1} of ${n}`;
+  const isDark  = document.documentElement.getAttribute('data-theme') === 'dark';
+  const bgColor = isDark ? '#222224' : '#f7f7f5';
+  const textCol = isDark ? '#f0f0ec' : '#1a1a18';
+  const text2   = isDark ? '#a0a09a' : '#5a5a55';
+  const text3   = isDark ? '#686864' : '#8a8a82';
+  const borderC = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+  const pColor  = isDark ? '#2171C9' : '#185FA5';
+  const pText   = '#ffffff';
 
-  const featKey = normFeature(combo.feature) || combo.feature.toLowerCase();
-  const pill = document.getElementById('qgFeatPill');
-  pill.textContent = FEAT_LABEL[featKey] || combo.feature;
-  pill.style.background = FEAT_BG[featKey] || '#eee';
-  pill.style.color = FEAT_FG[featKey] || '#333';
-
-  document.getElementById('qgPrev').disabled = false;
-  document.getElementById('qgNext').disabled = false;
-
-  const popAnswers = data.popMap[combo.key] || [];
-  const qItems     = data.qMap[combo.key]   || [];
-
-  drawViz(popAnswers, qItems, combo);
-}
-
-function drawViz(popAnswers, qItems, combo) {
   const svg = document.getElementById('qgSvg');
   svg.innerHTML = '';
 
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  const bgColor    = isDark ? '#222224' : '#f7f7f5';
-  const ringStroke = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
-  const pColor     = isDark ? '#2171C9' : '#185FA5';
-  const textOnPop  = '#fff';
-
-  function makeSVGEl(tag, attrs={}, parent=svg) {
-    const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
-    parent.appendChild(el);
-    return el;
+  function el(tag, attrs, parent) {
+    const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+    if (attrs) Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v));
+    (parent || svg).appendChild(e);
+    return e;
+  }
+  function text(str, attrs, parent) {
+    const t = el('text', attrs, parent);
+    t.textContent = str;
+    return t;
+  }
+  function wrapText(str, maxW, fontSize) {
+    // Approx char width at given font size
+    const charW = fontSize * 0.52;
+    const maxChars = Math.floor(maxW / charW);
+    if (str.length <= maxChars) return [str];
+    const words = str.split(' ');
+    const lines = [];
+    let cur = '';
+    for (const w of words) {
+      if ((cur + ' ' + w).trim().length > maxChars) {
+        if (cur) lines.push(cur);
+        cur = w;
+      } else {
+        cur = (cur + ' ' + w).trim();
+      }
+    }
+    if (cur) lines.push(cur);
+    return lines;
   }
 
-  makeSVGEl('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
+  // Background
+  el('rect', { x:0,y:0,width:SVG_W,height:SVG_H, fill:bgColor });
 
-  const ringGroup = makeSVGEl('g', {id:'qgRingGroup', opacity:popExpanded?'0':'1',
-    style:'transition:opacity 0.3s ease; pointer-events:'+(popExpanded?'none':'all')});
-
-  RING_RADII.forEach(r => {
-    makeSVGEl('circle', {
-      cx:POP_CX, cy:POP_CY, r,
-      fill:'none', stroke:ringStroke, 'stroke-width':'1.5',
-      'stroke-dasharray':'4 6'
-    }, ringGroup);
+  // ── Vertical divider ──────────────────────────────────────────────────────
+  el('line', {
+    x1: INFO_X - 15, y1: 20, x2: INFO_X - 15, y2: SVG_H - 20,
+    stroke: borderC, 'stroke-width': '0.8', 'stroke-dasharray': '4 5'
   });
 
-  const seed = combo.key.split('').reduce((a,c)=>a+(c.charCodeAt(0)),0);
-  const rand = seededRand(seed);
-  const ringAngles = RING_RADII.map(()=>[]);
+  // ══════════════════════════════════════════════════════════════════════════
+  // RIGHT PANEL: question, prompt, feature, nav arrows
+  // ══════════════════════════════════════════════════════════════════════════
+  drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, text, wrapText);
 
-  qItems.forEach((item) => {
+  // ══════════════════════════════════════════════════════════════════════════
+  // LEFT PANEL: population circle + rings (or expanded view)
+  // ══════════════════════════════════════════════════════════════════════════
+  const expanded = (popAnimState === 'expanded' || popAnimState === 'expanding' || popAnimState === 'collapsing');
+  const progress = popAnimProgress; // 0..1 for expand, 1..0 for collapse
+
+  if (popAnimState === 'expanded') {
+    drawExpandedPop(popAnswers, combo, isDark, pColor, pText, el, text, wrapText, borderC);
+  } else if (popAnimState === 'expanding' || popAnimState === 'collapsing') {
+    drawAnimatingPop(popAnswers, qItems, combo, progress, isDark, pColor, pText, borderC, el, text, wrapText);
+  } else {
+    // Collapsed: rings + dots + population circle
+    drawCollapsedView(popAnswers, qItems, combo, isDark, pColor, pText, borderC, textCol, text2, el, text);
+  }
+}
+
+// ─── Collapsed view: full-circle rings + target dots + pop circle ────────────
+function drawCollapsedView(popAnswers, qItems, combo, isDark, pColor, pText, borderC, textCol, text2, el, text) {
+  const ringStroke = borderC;
+  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  const rand = seededRand(seed);
+
+  // Rings (full 360°)
+  RING_RADII.forEach(r => {
+    el('circle', {
+      cx: POP_CX, cy: POP_CY, r,
+      fill: 'none', stroke: ringStroke, 'stroke-width': '1',
+      'stroke-dasharray': '3 5'
+    });
+  });
+
+  // Ring labels (subtle)
+  const isDark2 = document.documentElement.getAttribute('data-theme') === 'dark';
+  const labelC = isDark2 ? 'rgba(255,255,255,0.18)' : 'rgba(0,0,0,0.18)';
+  ['0–0.2','0.2–0.4','0.4–0.6','0.6–0.8','0.8–1.0'].forEach((lbl,i) => {
+    text(lbl, {
+      x: POP_CX + RING_RADII[i] + 4, y: POP_CY - 4,
+      'font-size': '9', fill: labelC,
+      'font-family': 'Inter,sans-serif'
+    });
+  });
+
+  // Target dots — placed across full 360°
+  const ringAngles = RING_RADII.map(() => []);
+  qItems.forEach(item => {
     const band = Math.min(4, Math.floor(item.score * 5));
     const ringR = RING_RADII[band];
     let angle;
-    const attempts = 8;
-    const arcRange = ARC_END - ARC_START;
-    for (let a=0; a<attempts; a++) {
-      angle = ARC_START + rand() * arcRange;
+    // Avoid 135°–225° where the population circle is
+    // Actually: pop is at the centre, so dots can go anywhere
+    const tries = 10;
+    for (let a = 0; a < tries; a++) {
+      angle = rand() * 360;
+      // Skip the centre label area (angle pointing straight down would overlap text)
       const existing = ringAngles[band];
-      const minDist = existing.length ? Math.min(...existing.map(e=>Math.abs(e-angle))) : 999;
-      if (minDist > 14 || a===attempts-1) { ringAngles[band].push(angle); break; }
+      const minDist = existing.length
+        ? Math.min(...existing.map(e => {
+            let d = Math.abs(e - angle); if (d > 180) d = 360 - d; return d;
+          }))
+        : 999;
+      if (minDist > 12 || a === tries - 1) { ringAngles[band].push(angle); break; }
     }
-    const rad = deg2rad(angle);
+    const rad = angle * Math.PI / 180;
     const cx = POP_CX + ringR * Math.cos(rad);
     const cy = POP_CY + ringR * Math.sin(rad);
     const color = bandColor(item.score);
-    const dot = makeSVGEl('circle', { cx, cy, r:DOT_R, fill:color, stroke:'none', style:'cursor:pointer;' }, ringGroup);
+    const dot = el('circle', { cx, cy, r: 7, fill: color, stroke: 'none', style: 'cursor:pointer;' });
     dot.addEventListener('mouseenter', e => showQGTip(e, item.answer));
     dot.addEventListener('mousemove',  e => moveQGTip(e));
     dot.addEventListener('mouseleave', hideQGTip);
   });
 
-  const popGroup = makeSVGEl('g', {id:'qgPopGroup', style:'cursor:pointer'});
+  // Population circle (on top)
+  const popG = el('g', { style: 'cursor:pointer' });
+  el('circle', { cx:POP_CX, cy:POP_CY, r:POP_R, fill:pColor, opacity:'0.93' }, popG);
+  text('Population', {
+    x:POP_CX, y:POP_CY - 10,
+    'text-anchor':'middle','dominant-baseline':'middle',
+    fill:pText,'font-size':'14','font-weight':'600','font-family':'Inter,sans-serif'
+  }, popG);
+  text(`${popAnswers.length} answers`, {
+    x:POP_CX, y:POP_CY + 10,
+    'text-anchor':'middle','dominant-baseline':'middle',
+    fill:pText+'bb','font-size':'11','font-family':'Inter,sans-serif'
+  }, popG);
+  text('↗ click to expand', {
+    x:POP_CX, y:POP_CY + 26,
+    'text-anchor':'middle','dominant-baseline':'middle',
+    fill:pText+'77','font-size':'10','font-family':'Inter,sans-serif'
+  }, popG);
 
-  if (!popExpanded) {
-    makeSVGEl('circle', {cx:POP_CX, cy:POP_CY, r:POP_R, fill:pColor, opacity:'0.92'}, popGroup);
-    const label1 = makeSVGEl('text', {x:POP_CX, y:POP_CY-8,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop,'font-size':'14','font-weight':'600','font-family':'Inter,sans-serif'}, popGroup);
-    label1.textContent = 'Population';
-    const label2 = makeSVGEl('text', {x:POP_CX, y:POP_CY+12,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop+'bb','font-size':'11','font-family':'Inter,sans-serif'}, popGroup);
-    label2.textContent = `${popAnswers.length} answers  ↗ click to expand`;
-    popGroup.addEventListener('click', () => { popExpanded = true; renderQG(); });
-  } else {
-    const EX = SVG_W/2, EY = SVG_H/2, ER = Math.min(SVG_W, SVG_H)*0.46;
-    makeSVGEl('circle', {cx:EX, cy:EY, r:ER, fill:pColor, opacity:'0.93'}, popGroup);
-    const hdr = makeSVGEl('text', {x:EX, y:EY-ER+38,'text-anchor':'middle',fill:textOnPop,'font-size':'15','font-weight':'600','font-family':'Inter,sans-serif'}, popGroup);
-    hdr.textContent = `Population · ${popAnswers.length} answers`;
-    const collG = makeSVGEl('g', {style:'cursor:pointer'}, popGroup);
-    makeSVGEl('rect', {x:EX-55, y:EY-ER+52, width:110, height:24, rx:12, fill:'rgba(255,255,255,0.18)'}, collG);
-    const collTx = makeSVGEl('text', {x:EX, y:EY-ER+68,'text-anchor':'middle',fill:textOnPop,'font-size':'11','font-family':'Inter,sans-serif'}, collG);
-    collTx.textContent = '× click to collapse';
-    collG.addEventListener('click', () => { popExpanded=false; renderQG(); });
-    popGroup.addEventListener('click', e => { if(e.target===popGroup||e.target.tagName==='circle') { popExpanded=false; renderQG(); } });
+  popG.addEventListener('click', () => {
+    cancelPopAnim();
+    popAnimState = 'expanding';
+    popAnimProgress = 0;
+    animatePop(true);
+  });
+}
 
-    const shuffled = [...popAnswers].sort(()=>Math.random()-0.5);
-    const featured = shuffled.slice(0, Math.min(6, shuffled.length));
-    const rest     = shuffled.slice(Math.min(6, shuffled.length));
+// ─── Animate expand / collapse ───────────────────────────────────────────────
+function animatePop(expanding) {
+  const duration = 550; // ms
+  const start = performance.now();
 
-    const fPositions = [
-      {dx:-90, dy:-60}, {dx:60, dy:-80}, {dx:100, dy:20},
-      {dx:-110, dy:40}, {dx:20, dy:80}, {dx:-40, dy:-100}
-    ];
-    featured.forEach((ans, i) => {
-      const pos = fPositions[i] || {dx:0, dy:0};
-      const fcx = EX + pos.dx, fcy = EY + pos.dy;
-      const fr = 44;
-      const fg = makeSVGEl('g', {style:'cursor:default'}, popGroup);
-      makeSVGEl('circle', {cx:fcx, cy:fcy, r:fr, fill:'rgba(255,255,255,0.18)'}, fg);
-      const words = ans.split(/\s+/);
-      const line1 = words.slice(0,5).join(' ');
-      const line2 = words.slice(5,10).join(' ') + (words.length>10?'…':'');
-      const t1 = makeSVGEl('text', {x:fcx, y:fcy-(line2?7:0),'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop,'font-size':'9','font-family':'Inter,sans-serif'}, fg);
-      t1.textContent = line1;
-      if (line2) {
-        const t2 = makeSVGEl('text', {x:fcx, y:fcy+9,'text-anchor':'middle','dominant-baseline':'middle',fill:textOnPop+'cc','font-size':'9','font-family':'Inter,sans-serif'}, fg);
-        t2.textContent = line2;
-      }
-      fg.addEventListener('mouseenter', e => showQGTip(e, ans));
-      fg.addEventListener('mousemove',  e => moveQGTip(e));
-      fg.addEventListener('mouseleave', hideQGTip);
+  function tick(now) {
+    const t = Math.min(1, (now - start) / duration);
+    // Ease: cubic-bezier(0.4,0,0.2,1)
+    const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+    popAnimProgress = expanding ? eased : 1 - eased;
+
+    if (t < 1) {
+      renderQG();
+      popAnimRAF = requestAnimationFrame(tick);
+    } else {
+      popAnimState = expanding ? 'expanded' : null;
+      popAnimProgress = expanding ? 1 : 0;
+      renderQG();
+    }
+  }
+  popAnimRAF = requestAnimationFrame(tick);
+}
+
+// ─── Animating transition (zoom-in effect) ───────────────────────────────────
+function drawAnimatingPop(popAnswers, qItems, combo, progress, isDark, pColor, pText, borderC, el, text, wrapText) {
+  // We interpolate the population circle: scale from POP_R to fill ~220px radius
+  // Rings fade out, expanded pills fade in
+  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  const rand = seededRand(seed + 99);
+
+  // Scale the pop circle centre and radius
+  const targetR = 220;
+  const curR = POP_R + (targetR - POP_R) * progress;
+  const alpha = progress;
+  const invAlpha = 1 - progress;
+
+  // Fade out rings + dots
+  if (invAlpha > 0.01) {
+    RING_RADII.forEach(r => {
+      el('circle', {
+        cx:POP_CX, cy:POP_CY, r,
+        fill:'none', stroke:borderC, 'stroke-width':'1',
+        'stroke-dasharray':'3 5', opacity: invAlpha.toFixed(3)
+      });
     });
 
-    const satR = ER - 20;
-    rest.forEach((ans, i) => {
-      const angle = (i / rest.length) * 2 * Math.PI - Math.PI/2;
-      const scx = EX + satR * Math.cos(angle);
-      const scy = EY + satR * Math.sin(angle);
-      const sd = makeSVGEl('circle', {cx:scx, cy:scy, r:6, fill:'none', stroke:textOnPop,'stroke-width':'1.5','stroke-dasharray':'3 3',style:'cursor:pointer'}, popGroup);
-      sd.addEventListener('mouseenter', e => showQGTip(e, ans));
-      sd.addEventListener('mousemove',  e => moveQGTip(e));
-      sd.addEventListener('mouseleave', hideQGTip);
+    const ringAngles2 = RING_RADII.map(() => []);
+    const rand2 = seededRand(seed);
+    qItems.forEach(item => {
+      const band = Math.min(4, Math.floor(item.score * 5));
+      const ringR = RING_RADII[band];
+      let angle;
+      const tries = 10;
+      for (let a = 0; a < tries; a++) {
+        angle = rand2() * 360;
+        const existing = ringAngles2[band];
+        const minDist = existing.length ? Math.min(...existing.map(e => { let d=Math.abs(e-angle);if(d>180)d=360-d;return d; })) : 999;
+        if (minDist > 12 || a===tries-1) { ringAngles2[band].push(angle); break; }
+      }
+      const rad = angle * Math.PI / 180;
+      const cx = POP_CX + ringR * Math.cos(rad);
+      const cy = POP_CY + ringR * Math.sin(rad);
+      el('circle', { cx, cy, r:7, fill:bandColor(item.score), opacity: invAlpha.toFixed(3) });
     });
   }
+
+  // Expanding circle
+  el('circle', { cx:POP_CX, cy:POP_CY, r:curR.toFixed(1), fill:pColor, opacity:'0.93' });
+
+  // Fade in pills
+  if (alpha > 0.15) {
+    const pillAlpha = ((alpha - 0.15) / 0.85).toFixed(3);
+    drawExpandedPills(popAnswers, combo, isDark, pColor, pText, el, text, wrapText, borderC, POP_CX, POP_CY, curR, pillAlpha);
+  }
+}
+
+// ─── Expanded pop view ───────────────────────────────────────────────────────
+function drawExpandedPop(popAnswers, combo, isDark, pColor, pText, el, text, wrapText, borderC) {
+  const cx = POP_CX, cy = POP_CY, r = 220;
+  el('circle', { cx, cy, r, fill:pColor, opacity:'0.93' });
+  drawExpandedPills(popAnswers, combo, isDark, pColor, pText, el, text, wrapText, borderC, cx, cy, r, '1');
+}
+
+// ─── Pill layout inside the expanded circle ───────────────────────────────────
+function drawExpandedPills(popAnswers, combo, isDark, pColor, pText, el, text, wrapText, borderC, cx, cy, r, opacityStr) {
+  if (!popAnswers.length) return;
+
+  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+  const rand = seededRand(seed + 7);
+
+  // Shuffle answers deterministically
+  const shuffled = [...popAnswers];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+
+  // Header inside circle
+  const headerY = cy - r + 32;
+  text('Population', {
+    x:cx, y: headerY,
+    'text-anchor':'middle', 'dominant-baseline':'middle',
+    fill:pText, 'font-size':'14', 'font-weight':'600',
+    'font-family':'Inter,sans-serif', opacity: opacityStr
+  });
+  text(`${popAnswers.length} answers`, {
+    x:cx, y: headerY + 18,
+    'text-anchor':'middle', 'dominant-baseline':'middle',
+    fill:pText+'cc', 'font-size':'11',
+    'font-family':'Inter,sans-serif', opacity: opacityStr
+  });
+
+  // Collapse button
+  const btnY = headerY + 38;
+  const btnG = el('g', { style:'cursor:pointer', opacity: opacityStr });
+  el('rect', { x:cx-42, y:btnY-11, width:84, height:22, rx:11, fill:'rgba(255,255,255,0.2)' }, btnG);
+  text('× collapse', {
+    x:cx, y:btnY+1, 'text-anchor':'middle', 'dominant-baseline':'middle',
+    fill:pText, 'font-size':'11', 'font-family':'Inter,sans-serif'
+  }, btnG);
+  if (opacityStr === '1') {
+    btnG.addEventListener('click', e => {
+      e.stopPropagation();
+      cancelPopAnim();
+      popAnimState = 'collapsing';
+      popAnimProgress = 1;
+      animatePop(false);
+    });
+  }
+
+  // ── Pill layout ────────────────────────────────────────────────────────────
+  // We'll scatter pills inside the circle using a simple row-based approach
+  // Each pill: variable width based on text, height 20 (single) or 34 (double row)
+  // We try to pack them in a horizontal band avoiding the header area
+
+  const PILL_H = 19;            // single-line pill height
+  const PILL_H2 = 32;           // double-line pill height
+  const PILL_PAD_X = 10;        // horizontal text padding
+  const PILL_GAP_X = 7;         // gap between pills in a row
+  const PILL_ROW_GAP = 7;       // gap between rows
+  const FONT_SIZE = 10;
+  const CHAR_W = FONT_SIZE * 0.52;
+  const MAX_PILL_TEXT_W = 110;   // max text width before double-row
+  const SHOW_TEXT = 15;          // pills with visible text
+  const AVAILABLE_W = r * 1.7;  // approx chord width at mid-circle
+
+  const contentStartY = btnY + 20;
+  const contentEndY   = cy + r - 18;
+  const contentH      = contentEndY - contentStartY;
+
+  // Truncate answer text for pills
+  function pillText(ans) {
+    const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
+    return words.length < ans.trim().length ? words + '…' : words;
+  }
+
+  // Compute pill dims
+  function pillDims(ans) {
+    const txt = pillText(ans);
+    const textW = Math.min(MAX_PILL_TEXT_W, txt.length * CHAR_W);
+    const needsWrap = txt.length * CHAR_W > MAX_PILL_TEXT_W;
+    return {
+      txt,
+      w: textW + PILL_PAD_X * 2,
+      h: needsWrap ? PILL_H2 : PILL_H,
+      twoLine: needsWrap
+    };
+  }
+
+  // Place pills in rows, centred horizontally
+  const shown = shuffled.slice(0, SHOW_TEXT);
+  const hoverable = shuffled.slice(SHOW_TEXT);
+
+  // Build rows greedily
+  const rows = [];
+  let curRow = [];
+  let curRowW = 0;
+  shown.forEach((ans, i) => {
+    const d = pillDims(ans);
+    const needed = curRow.length ? d.w + PILL_GAP_X : d.w;
+    if (curRow.length > 0 && curRowW + needed > AVAILABLE_W) {
+      rows.push(curRow);
+      curRow = [{ ans, ...d, idx:i }];
+      curRowW = d.w;
+    } else {
+      curRow.push({ ans, ...d, idx:i });
+      curRowW += needed;
+    }
+  });
+  if (curRow.length) rows.push(curRow);
+
+  // Total height of all rows
+  const totalH = rows.reduce((s, row, ri) => {
+    const rowH = Math.max(...row.map(p => p.h));
+    return s + rowH + (ri < rows.length - 1 ? PILL_ROW_GAP : 0);
+  }, 0);
+
+  let py = contentStartY + (contentH - totalH) / 2;
+  if (py < contentStartY) py = contentStartY;
+
+  rows.forEach(row => {
+    const rowH = Math.max(...row.map(p => p.h));
+    const rowW = row.reduce((s, p, i) => s + p.w + (i ? PILL_GAP_X : 0), 0);
+    let px = cx - rowW / 2;
+
+    row.forEach(p => {
+      // Draw pill
+      const pillG = el('g', { style:'cursor:default', opacity: opacityStr });
+      el('rect', {
+        x: px, y: py + (rowH - p.h) / 2,
+        width: p.w, height: p.h, rx: p.h / 2,
+        fill: 'rgba(255,255,255,0.18)', stroke: 'rgba(255,255,255,0.28)', 'stroke-width': '0.5'
+      }, pillG);
+
+      if (p.twoLine) {
+        const lines = wrapText(p.txt, MAX_PILL_TEXT_W, FONT_SIZE);
+        const line1 = lines[0] || '';
+        const line2 = lines.slice(1).join(' ') || '';
+        text(line1, {
+          x: px + p.w / 2, y: py + (rowH - p.h)/2 + 11,
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          fill: pText, 'font-size': FONT_SIZE, 'font-family':'Inter,sans-serif'
+        }, pillG);
+        text(line2, {
+          x: px + p.w / 2, y: py + (rowH - p.h)/2 + 23,
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          fill: pText + 'cc', 'font-size': FONT_SIZE, 'font-family':'Inter,sans-serif'
+        }, pillG);
+      } else {
+        text(p.txt, {
+          x: px + p.w / 2, y: py + (rowH - p.h)/2 + p.h/2,
+          'text-anchor':'middle', 'dominant-baseline':'middle',
+          fill: pText, 'font-size': FONT_SIZE, 'font-family':'Inter,sans-serif'
+        }, pillG);
+      }
+
+      // Full hover sensitive area (entire pill rect)
+      const hitRect = el('rect', {
+        x: px, y: py + (rowH - p.h)/2,
+        width: p.w, height: p.h, rx: p.h/2,
+        fill: 'transparent', style: 'cursor:pointer'
+      }, pillG);
+      const answerFull = p.ans;
+      hitRect.addEventListener('mouseenter', e => showQGTip(e, answerFull));
+      hitRect.addEventListener('mousemove',  e => moveQGTip(e));
+      hitRect.addEventListener('mouseleave', hideQGTip);
+
+      px += p.w + PILL_GAP_X;
+    });
+
+    py += rowH + PILL_ROW_GAP;
+  });
+
+  // Hoverable dots: scattered around the ring edge of the expanded circle
+  if (hoverable.length) {
+    hoverable.forEach((ans, i) => {
+      const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
+      const dr = r - 14;
+      const dcx = cx + dr * Math.cos(angle);
+      const dcy = cy + dr * Math.sin(angle);
+      const dotG = el('g', { style:'cursor:pointer', opacity: opacityStr });
+      el('circle', { cx:dcx, cy:dcy, r:5, fill:'rgba(255,255,255,0.35)', stroke:'rgba(255,255,255,0.6)', 'stroke-width':'1' }, dotG);
+      dotG.addEventListener('mouseenter', e => showQGTip(e, ans));
+      dotG.addEventListener('mousemove',  e => moveQGTip(e));
+      dotG.addEventListener('mouseleave', hideQGTip);
+    });
+  }
+}
+
+// ─── Right-panel info drawing ─────────────────────────────────────────────────
+function drawInfoPanel(combo, featKey, idx, total, isDark, textCol, text2, text3, borderC, el, text, wrapText) {
+  const x = INFO_X;
+  const midX = INFO_X + INFO_W / 2;
+
+  // Feature pill at top
+  const featLabel = FEAT_LABEL_MAP[featKey] || combo.feature;
+  const featBg = FEAT_BG[featKey] || '#eee';
+  const featFg = FEAT_FG[featKey] || '#333';
+  const pillW = Math.min(180, featLabel.length * 8.5 + 28);
+  const pillX = midX - pillW / 2;
+
+  el('rect', { x:pillX, y:30, width:pillW, height:26, rx:13, fill:featBg });
+  text(featLabel, {
+    x:midX, y:43, 'text-anchor':'middle', 'dominant-baseline':'middle',
+    fill:featFg, 'font-size':'12', 'font-weight':'600', 'font-family':'Inter,sans-serif'
+  });
+
+  // Question label
+  text('Question', {
+    x:x, y:85, 'text-anchor':'start', 'dominant-baseline':'middle',
+    fill:text3, 'font-size':'10', 'font-weight':'500',
+    'font-family':'Inter,sans-serif', 'letter-spacing':'0.05em'
+  });
+
+  // Question text (wrapped, up to 5 lines)
+  const qLines = wrapText(combo.question, INFO_W - 8, 14);
+  qLines.slice(0, 5).forEach((ln, i) => {
+    text(ln, {
+      x:x, y: 102 + i * 20,
+      'text-anchor':'start', 'dominant-baseline':'middle',
+      fill:textCol, 'font-size':'14', 'font-weight':'500',
+      'font-family':'Inter,sans-serif'
+    });
+  });
+
+  const afterQ = 102 + Math.min(qLines.length, 5) * 20 + 18;
+
+  // Separator line
+  el('line', { x1:x, y1:afterQ, x2:x+INFO_W, y2:afterQ, stroke:borderC, 'stroke-width':'0.5' });
+
+  // Prompt label
+  text('Prompt', {
+    x:x, y:afterQ + 18, 'text-anchor':'start', 'dominant-baseline':'middle',
+    fill:text3, 'font-size':'10', 'font-weight':'500',
+    'font-family':'Inter,sans-serif', 'letter-spacing':'0.05em'
+  });
+
+  const pLines = wrapText(combo.prompt, INFO_W - 8, 12);
+  pLines.slice(0, 6).forEach((ln, i) => {
+    text(ln, {
+      x:x, y: afterQ + 36 + i * 16,
+      'text-anchor':'start', 'dominant-baseline':'middle',
+      fill:text2, 'font-size':'12', 'font-family':'Inter,sans-serif'
+    });
+  });
+
+  // Nav arrows + counter at bottom of panel
+  const navY = SVG_H - 38;
+
+  // Prev arrow button
+  const prevG = el('g', { style:`cursor:${idx>0?'pointer':'default'}`, opacity: idx>0?'1':'0.3' });
+  el('rect', { x:x, y:navY-16, width:32, height:32, rx:6,
+    fill:'transparent', stroke:borderC, 'stroke-width':'0.8' }, prevG);
+  text('←', { x:x+16, y:navY, 'text-anchor':'middle','dominant-baseline':'middle',
+    fill:textCol,'font-size':'16','font-family':'Inter,sans-serif' }, prevG);
+  if (idx > 0) prevG.addEventListener('click', () => qgNav(-1));
+
+  // Counter
+  text(`${idx+1} / ${total}`, {
+    x:x+50, y:navY, 'text-anchor':'start','dominant-baseline':'middle',
+    fill:text3,'font-size':'12','font-family':'Inter,sans-serif'
+  });
+
+  // Next arrow button
+  const nextX = x + INFO_W - 32;
+  const nextG = el('g', { style:`cursor:${idx<total-1?'pointer':'default'}`, opacity:idx<total-1?'1':'0.3' });
+  el('rect', { x:nextX, y:navY-16, width:32, height:32, rx:6,
+    fill:'transparent', stroke:borderC, 'stroke-width':'0.8' }, nextG);
+  text('→', { x:nextX+16, y:navY, 'text-anchor':'middle','dominant-baseline':'middle',
+    fill:textCol,'font-size':'16','font-family':'Inter,sans-serif' }, nextG);
+  if (idx < total - 1) nextG.addEventListener('click', () => qgNav(1));
 }
 </script>
 </body>

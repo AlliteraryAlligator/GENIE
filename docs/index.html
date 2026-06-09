@@ -984,170 +984,340 @@ function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) 
   drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
 }
 
-// ─── Pill layout inside expanded circle ───────────────────────────────────────
+// New func
 function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
-  if (!popAnswers.length) return;
+if (!popAnswers.length) return;
 
-  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-  const rand = seededRand(seed + 7);
-  const shuffled = [...popAnswers];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  const pText = '#ffffff';
-  const headerY = cy - r + 28;
-  txt('Population', {
-    x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
-  });
-  txt(`${popAnswers.length} answers`, {
-    x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
-  });
-  txt('click outside to close', {
-    x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
-  });
-
-  // Pill layout constants — smaller pills so we can show more
-  const PILL_H    = 18;
-  const PILL_H2   = 28;
-  const PAD_X     = 10;
-  const GAP_X     = 6;
-  const ROW_GAP   = 6;
-  const FS        = 9;
-  const CHAR_W    = FS * 0.52;
-  const MAX_TXT_W = 120;
-  const AVAIL_W   = r * 1.6;
-  const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
-
-  const contentStartY = headerY + 40;
-  const contentEndY   = cy + r - 20;
-  const contentH      = contentEndY - contentStartY;
-
-  function pillText(ans) {
-    const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
-    return words.length < ans.trim().length ? words + '…' : words;
-  }
-  function pillDims(ans) {
-    const t = pillText(ans);
-    const tW = t.length * CHAR_W;
-    const needsWrap = tW > MAX_TXT_W;
-    const clampedW = Math.min(tW, MAX_TXT_W);
-    return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
-  }
-
-  const shown    = shuffled.slice(0, SHOW_N);
-  const hoverable= shuffled.slice(SHOW_N);
-
-  // Build rows greedily
-  const rows = []; let curRow = [], curW = 0;
-  shown.forEach((ans, i) => {
-    const d = pillDims(ans);
-    const needed = curRow.length ? d.w + GAP_X : d.w;
-    if (curRow.length > 0 && curW + needed > AVAIL_W) {
-      rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
-    } else { curRow.push({ans,...d,idx:i}); curW += needed; }
-  });
-  if (curRow.length) rows.push(curRow);
-
-  const totalH = rows.reduce((s,row,ri) =>
-    s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
-
-  let py = contentStartY + (contentH - totalH) / 2;
-  if (py < contentStartY) py = contentStartY;
-
-  // Keep track of placed rectangles so we can avoid overlaps when placing scattered items
-  const placedRects = [];
-
-  rows.forEach(row => {
-    const rowH = Math.max(...row.map(p=>p.h));
-    const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
-    let px = cx - rowW / 2;
-
-    row.forEach(p => {
-      const g = el('g', {opacity:opacityStr});
-      const py2 = py + (rowH - p.h) / 2;
-      el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
-        fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
-
-      if (p.two) {
-        const lines = wrapText(p.txt, MAX_TXT_W, FS);
-        txt(lines[0]||'', {x:px+p.w/2, y:py2+11,
-          'text-anchor':'middle','dominant-baseline':'middle',
-          fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-        txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,
-          'text-anchor':'middle','dominant-baseline':'middle',
-          fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
-      } else {
-        txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,
-          'text-anchor':'middle','dominant-baseline':'middle',
-          fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-      }
-
-      const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
-      const fa = p.ans;
-      hit.addEventListener('mouseenter', e => showQGTip(e, fa));
-      hit.addEventListener('mousemove',  e => moveQGTip(e));
-      hit.addEventListener('mouseleave', hideQGTip);
-
-      // record placement
-      placedRects.push({x:px, y:py2, w:p.w, h:p.h});
-      px += p.w + GAP_X;
-    });
-    py += rowH + ROW_GAP;
-  });
-
-  // Remaining answers: scatter inside circle (not just on perimeter)
-  if (hoverable.length) {
-    const rand2 = seededRand(seed + 13);
-    const smallR = 9;
-    const placedCircles = [];
-    hoverable.forEach((ans, i) => {
-      // attempt to find a location inside the circle that doesn't overlap pills/circles
-      let attempts = 0, placed = false, candX = cx, candY = cy;
-      while (attempts < 80 && !placed) {
-        attempts++;
-        // sample point inside circle uniformly
-        const ang = rand2() * Math.PI * 2;
-        const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
-        candX = cx + rad * Math.cos(ang);
-        candY = cy + rad * Math.sin(ang);
-        // ensure inside canvas margins
-        if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
-        // avoid overlap with pill rects
-        const overlapRect = placedRects.some(rr => {
-          const rx = Math.max(rr.x, candX - smallR);
-          const ry = Math.max(rr.y, candY - smallR);
-          const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
-          const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
-          return rw > 0 && rh > 0;
-        });
-        if (overlapRect) continue;
-        // avoid overlap with other scattered circles
-        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
-        if (overlapCircle) continue;
-        placed = true;
-        placedCircles.push({x:candX, y:candY});
-      }
-      // fallback: place on ring-like fallback positions if not found
-      if (!placed) {
-        const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
-        const dr = r - 28;
-        candX = cx + dr * Math.cos(angle);
-        candY = cy + dr * Math.sin(angle);
-      }
-
-      const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
-      el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
-      g.addEventListener('mouseenter', e => showQGTip(e, ans));
-      g.addEventListener('mousemove',  e => moveQGTip(e));
-      g.addEventListener('mouseleave', hideQGTip);
-    });
-  }
+const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+const rand = seededRand(seed + 7);
+const shuffled = [...popAnswers];
+for (let i = shuffled.length - 1; i > 0; i--) {
+const j = Math.floor(rand() * (i + 1));
+[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
 }
+
+const pText = '#ffffff';
+const headerY = cy - r + 28;
+txt('Population', {
+x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+txt(${popAnswers.length} answers, {
+x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+txt('click outside to close', {
+x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+
+// Reserve the header area so scattered dots won't be placed on top of it
+const headerRectW = Math.min(r * 1.4, 240);
+const headerRectH = 48;
+const headerRectX = cx - headerRectW / 2;
+const headerRectY = headerY - headerRectH / 2;
+const placedRects = [{ x: headerRectX, y: headerRectY, w: headerRectW, h: headerRectH }];
+
+// Pill layout constants — smaller pills so we can show more
+const PILL_H    = 18;
+const PILL_H2   = 28;
+const PAD_X     = 10;
+const GAP_X     = 6;
+const ROW_GAP   = 6;
+const FS        = 9;
+const CHAR_W    = FS * 0.52;
+const MAX_TXT_W = 120;
+const AVAIL_W   = r * 1.6;
+const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
+
+const contentStartY = headerY + 40;
+const contentEndY   = cy + r - 20;
+const contentH      = contentEndY - contentStartY;
+
+function pillText(ans) {
+const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
+return words.length < ans.trim().length ? words + '…' : words;
+}
+function pillDims(ans) {
+const t = pillText(ans);
+const tW = t.length * CHAR_W;
+const needsWrap = tW > MAX_TXT_W;
+const clampedW = Math.min(tW, MAX_TXT_W);
+return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
+}
+
+const shown    = shuffled.slice(0, SHOW_N);
+const hoverable= shuffled.slice(SHOW_N);
+
+// Build rows greedily
+const rows = []; let curRow = [], curW = 0;
+shown.forEach((ans, i) => {
+const d = pillDims(ans);
+const needed = curRow.length ? d.w + GAP_X : d.w;
+if (curRow.length > 0 && curW + needed > AVAIL_W) {
+rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
+} else { curRow.push({ans,...d,idx:i}); curW += needed; }
+});
+if (curRow.length) rows.push(curRow);
+
+const totalH = rows.reduce((s,row,ri) =>
+s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
+
+let py = contentStartY + (contentH - totalH) / 2;
+if (py < contentStartY) py = contentStartY;
+
+// Place pills and record their rectangles to avoid overlaps with scattered dots
+rows.forEach(row => {
+const rowH = Math.max(...row.map(p=>p.h));
+const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
+let px = cx - rowW / 2;
+
+row.forEach(p => {
+  const g = el('g', {opacity:opacityStr});
+  const py2 = py + (rowH - p.h) / 2;
+  el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
+    fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
+
+  if (p.two) {
+    const lines = wrapText(p.txt, MAX_TXT_W, FS);
+    txt(lines[0]||'', {x:px+p.w/2, y:py2+11,
+      'text-anchor':'middle','dominant-baseline':'middle',
+      fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
+    txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,
+      'text-anchor':'middle','dominant-baseline':'middle',
+      fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
+  } else {
+    txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,
+      'text-anchor':'middle','dominant-baseline':'middle',
+      fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
+  }
+
+  const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
+  const fa = p.ans;
+  hit.addEventListener('mouseenter', e => showQGTip(e, fa));
+  hit.addEventListener('mousemove',  e => moveQGTip(e));
+  hit.addEventListener('mouseleave', hideQGTip);
+
+  // record placement so scattered dots avoid this area
+  placedRects.push({x:px, y:py2, w:p.w, h:p.h});
+  px += p.w + GAP_X;
+});
+py += rowH + ROW_GAP;
+});
+
+// Remaining answers: scatter inside circle (not just on perimeter), avoiding placedRects
+if (hoverable.length) {
+const rand2 = seededRand(seed + 13);
+const smallR = 9;
+const placedCircles = [];
+hoverable.forEach((ans, i) => {
+// attempt to find a location inside the circle that doesn't overlap pills/header/circles
+let attempts = 0, placed = false, candX = cx, candY = cy;
+while (attempts < 80 && !placed) {
+attempts++;
+// sample point inside circle uniformly
+const ang = rand2() * Math.PI * 2;
+const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
+candX = cx + rad * Math.cos(ang);
+candY = cy + rad * Math.sin(ang);
+// ensure inside canvas margins
+if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
+// avoid overlap with pill rects / header rectangle
+const overlapRect = placedRects.some(rr => {
+const rx = Math.max(rr.x, candX - smallR);
+const ry = Math.max(rr.y, candY - smallR);
+const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
+const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
+return rw > 0 && rh > 0;
+});
+if (overlapRect) continue;
+// avoid overlap with other scattered circles
+const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
+if (overlapCircle) continue;
+placed = true;
+placedCircles.push({x:candX, y:candY});
+}
+// fallback: place on ring-like fallback positions if not found
+if (!placed) {
+const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
+const dr = r - 28;
+candX = cx + dr * Math.cos(angle);
+candY = cy + dr * Math.sin(angle);
+}
+
+  const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
+  el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
+  g.addEventListener('mouseenter', e => showQGTip(e, ans));
+  g.addEventListener('mousemove',  e => moveQGTip(e));
+  g.addEventListener('mouseleave', hideQGTip);
+});
+}
+}
+
+// ─── Pill layout inside expanded circle ───────────────────────────────────────
+// function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
+//   if (!popAnswers.length) return;
+
+//   const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+//   const rand = seededRand(seed + 7);
+//   const shuffled = [...popAnswers];
+//   for (let i = shuffled.length - 1; i > 0; i--) {
+//     const j = Math.floor(rand() * (i + 1));
+//     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+//   }
+
+//   const pText = '#ffffff';
+//   const headerY = cy - r + 28;
+//   txt('Population', {
+//     x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
+//     fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
+//   });
+//   txt(`${popAnswers.length} answers`, {
+//     x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
+//     fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
+//   });
+//   txt('click outside to close', {
+//     x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
+//     fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
+//   });
+
+//   // Pill layout constants — smaller pills so we can show more
+//   const PILL_H    = 18;
+//   const PILL_H2   = 28;
+//   const PAD_X     = 10;
+//   const GAP_X     = 6;
+//   const ROW_GAP   = 6;
+//   const FS        = 9;
+//   const CHAR_W    = FS * 0.52;
+//   const MAX_TXT_W = 120;
+//   const AVAIL_W   = r * 1.6;
+//   const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
+
+//   const contentStartY = headerY + 40;
+//   const contentEndY   = cy + r - 20;
+//   const contentH      = contentEndY - contentStartY;
+
+//   function pillText(ans) {
+//     const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
+//     return words.length < ans.trim().length ? words + '…' : words;
+//   }
+//   function pillDims(ans) {
+//     const t = pillText(ans);
+//     const tW = t.length * CHAR_W;
+//     const needsWrap = tW > MAX_TXT_W;
+//     const clampedW = Math.min(tW, MAX_TXT_W);
+//     return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
+//   }
+
+//   const shown    = shuffled.slice(0, SHOW_N);
+//   const hoverable= shuffled.slice(SHOW_N);
+
+//   // Build rows greedily
+//   const rows = []; let curRow = [], curW = 0;
+//   shown.forEach((ans, i) => {
+//     const d = pillDims(ans);
+//     const needed = curRow.length ? d.w + GAP_X : d.w;
+//     if (curRow.length > 0 && curW + needed > AVAIL_W) {
+//       rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
+//     } else { curRow.push({ans,...d,idx:i}); curW += needed; }
+//   });
+//   if (curRow.length) rows.push(curRow);
+
+//   const totalH = rows.reduce((s,row,ri) =>
+//     s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
+
+//   let py = contentStartY + (contentH - totalH) / 2;
+//   if (py < contentStartY) py = contentStartY;
+
+//   // Keep track of placed rectangles so we can avoid overlaps when placing scattered items
+//   const placedRects = [];
+
+//   rows.forEach(row => {
+//     const rowH = Math.max(...row.map(p=>p.h));
+//     const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
+//     let px = cx - rowW / 2;
+
+//     row.forEach(p => {
+//       const g = el('g', {opacity:opacityStr});
+//       const py2 = py + (rowH - p.h) / 2;
+//       el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
+//         fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
+
+//       if (p.two) {
+//         const lines = wrapText(p.txt, MAX_TXT_W, FS);
+//         txt(lines[0]||'', {x:px+p.w/2, y:py2+11,
+//           'text-anchor':'middle','dominant-baseline':'middle',
+//           fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
+//         txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,
+//           'text-anchor':'middle','dominant-baseline':'middle',
+//           fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
+//       } else {
+//         txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,
+//           'text-anchor':'middle','dominant-baseline':'middle',
+//           fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
+//       }
+
+//       const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
+//       const fa = p.ans;
+//       hit.addEventListener('mouseenter', e => showQGTip(e, fa));
+//       hit.addEventListener('mousemove',  e => moveQGTip(e));
+//       hit.addEventListener('mouseleave', hideQGTip);
+
+//       // record placement
+//       placedRects.push({x:px, y:py2, w:p.w, h:p.h});
+//       px += p.w + GAP_X;
+//     });
+//     py += rowH + ROW_GAP;
+//   });
+
+//   // Remaining answers: scatter inside circle (not just on perimeter)
+//   if (hoverable.length) {
+//     const rand2 = seededRand(seed + 13);
+//     const smallR = 9;
+//     const placedCircles = [];
+//     hoverable.forEach((ans, i) => {
+//       // attempt to find a location inside the circle that doesn't overlap pills/circles
+//       let attempts = 0, placed = false, candX = cx, candY = cy;
+//       while (attempts < 80 && !placed) {
+//         attempts++;
+//         // sample point inside circle uniformly
+//         const ang = rand2() * Math.PI * 2;
+//         const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
+//         candX = cx + rad * Math.cos(ang);
+//         candY = cy + rad * Math.sin(ang);
+//         // ensure inside canvas margins
+//         if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
+//         // avoid overlap with pill rects
+//         const overlapRect = placedRects.some(rr => {
+//           const rx = Math.max(rr.x, candX - smallR);
+//           const ry = Math.max(rr.y, candY - smallR);
+//           const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
+//           const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
+//           return rw > 0 && rh > 0;
+//         });
+//         if (overlapRect) continue;
+//         // avoid overlap with other scattered circles
+//         const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
+//         if (overlapCircle) continue;
+//         placed = true;
+//         placedCircles.push({x:candX, y:candY});
+//       }
+//       // fallback: place on ring-like fallback positions if not found
+//       if (!placed) {
+//         const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
+//         const dr = r - 28;
+//         candX = cx + dr * Math.cos(angle);
+//         candY = cy + dr * Math.sin(angle);
+//       }
+
+//       const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
+//       el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
+//       g.addEventListener('mouseenter', e => showQGTip(e, ans));
+//       g.addEventListener('mousemove',  e => moveQGTip(e));
+//       g.addEventListener('mouseleave', hideQGTip);
+//     });
+//   }
+// }
 
 // ─── Info panel (LEFT) ────────────────────────────────────────────────────────
 function drawInfoPanel(combo, featKey, idx, total, isDark, textCol, text2, text3, borderC, el, txt, wrapText) {

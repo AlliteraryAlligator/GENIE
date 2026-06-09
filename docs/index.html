@@ -420,6 +420,9 @@ function toggleDark() {
 // ─── TAB NAV ──────────────────────────────────────────────────────────────────
 const PAGES = ['overview','dataset','leaderboard','qgenie'];
 function showPage(id) {
+  // Hide any sticky tooltips when switching tabs
+  hideQGTip();
+  hideTip();
   PAGES.forEach(p => {
     document.getElementById(p+'-page').classList.toggle('active', p===id);
     document.getElementById('tab-'+p).classList.toggle('active', p===id);
@@ -597,15 +600,20 @@ async function initDistChart(){
 // ════════════════════════════════════════════════════════════════════════
 
 const SVG_W = 900, SVG_H = 520;
-const POP_CX = 370, POP_CY = 260, POP_R = 65;
+// Pop circle centred in the right 2/3 of the canvas (info panel is 0–275)
+// Right zone: x 285–900 = 615px wide, centre at 285 + 615/2 = 592
+const POP_CX = 530, POP_CY = 260, POP_R = 65;
 
-// Arc: rightward fan -70° to +70° (in radians)
-const ARC_DEG_MIN = -70, ARC_DEG_MAX = 70;
+// Arc: rightward fan -75° to +75° (in radians)
+const ARC_DEG_MIN = -75, ARC_DEG_MAX = 75;
 const ARC_MIN = ARC_DEG_MIN * Math.PI / 180;
 const ARC_MAX = ARC_DEG_MAX * Math.PI / 180;
 
-// Tighter rings fanning right
-const RING_RADII = [108, 148, 188, 228, 268];
+// Wider rings so dots spread across available space
+const RING_RADII = [115, 160, 205, 250, 295];
+
+// Expanded circle radius — fills most of the right zone
+const EXP_R = 230;
 
 // Info panel
 const INFO_X = 20, INFO_W = 245, DIVIDER_X = 275;
@@ -762,6 +770,9 @@ function renderQG() {
   const dotStroke = isDark ? '#222224' : '#f7f7f5';
 
   const svg = document.getElementById('qgSvg');
+  // Always hide tooltip on re-render — clearing innerHTML removes listeners
+  // so mouseleave never fires on the old elements
+  hideQGTip();
   svg.innerHTML = '';
 
   function el(tag, attrs, parent) {
@@ -788,12 +799,13 @@ function renderQG() {
   // Background
   el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
 
-  // Divider
-  el('line', {x1:DIVIDER_X,y1:20,x2:DIVIDER_X,y2:SVG_H-20,
-    stroke:borderC,'stroke-width':'0.8','stroke-dasharray':'4 5'});
-
-  // Info panel (LEFT)
-  drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, txt, wrapText);
+  // Divider and info panel — hidden when pop is fully expanded
+  const showInfo = (popAnimState !== 'expanded');
+  if (showInfo) {
+    el('line', {x1:DIVIDER_X,y1:20,x2:DIVIDER_X,y2:SVG_H-20,
+      stroke:borderC,'stroke-width':'0.8','stroke-dasharray':'4 5'});
+    drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, txt, wrapText);
+  }
 
   // Visualisation (RIGHT of divider)
   if (popAnimState === 'expanded') {
@@ -901,8 +913,11 @@ function animatePop(expanding) {
 // ─── Animating transition ─────────────────────────────────────────────────────
 function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText) {
   const invA = 1 - progress;
-  const targetR = 210;
-  const curR = POP_R + (targetR - POP_R) * progress;
+  const ecx = SVG_W / 2, ecy = SVG_H / 2;
+  // Interpolate centre from collapsed pos to full-canvas centre
+  const curCx = POP_CX + (ecx - POP_CX) * progress;
+  const curCy = POP_CY + (ecy - POP_CY) * progress;
+  const curR  = POP_R  + (EXP_R - POP_R) * progress;
 
   if (invA > 0.01) {
     RING_RADII.forEach(r => {
@@ -934,27 +949,28 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
     });
   }
 
-  el('circle', {cx:POP_CX,cy:POP_CY,r:curR.toFixed(1),fill:popCol});
+  el('circle', {cx:curCx.toFixed(1),cy:curCy.toFixed(1),r:curR.toFixed(1),fill:popCol});
   if (progress > 0.15) {
     const pillA = ((progress - 0.15) / 0.85).toFixed(3);
-    drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, POP_CX, POP_CY, curR, pillA);
+    drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, curCx, curCy, curR, pillA);
   }
 }
 
 // ─── Expanded pop view ────────────────────────────────────────────────────────
 function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) {
-  const EXP_R = 210;
-  el('circle', {cx:POP_CX, cy:POP_CY, r:EXP_R, fill:popCol});
-  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, POP_CX, POP_CY, EXP_R, '1');
+  // When expanded, centre circle in the full SVG
+  const ecx = SVG_W / 2, ecy = SVG_H / 2;
+  el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
+  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
 
-  // Transparent overlay for "click outside" — covers the full SVG, circle punched out by pointer-events on the inner circle
+  // Click outside to collapse
   const overlay = el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:'transparent',style:'cursor:default'});
   overlay.addEventListener('click', e => {
     const svgEl = document.getElementById('qgSvg');
     const pt = svgEl.createSVGPoint();
     pt.x = e.clientX; pt.y = e.clientY;
     const sp = pt.matrixTransform(svgEl.getScreenCTM().inverse());
-    const dx = sp.x - POP_CX, dy = sp.y - POP_CY;
+    const dx = sp.x - ecx, dy = sp.y - ecy;
     if (Math.sqrt(dx*dx+dy*dy) > EXP_R) {
       cancelPopAnim();
       popAnimState = 'collapsing'; popAnimProgress = 1;

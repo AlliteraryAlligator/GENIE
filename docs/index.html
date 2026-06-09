@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -594,37 +595,35 @@ async function initDistChart(){
 // Layout (SVG 900×520):
 //   Left panel   x 20–260:   info (feature pill, question, prompt, nav)
 //   Divider      x 275
-//   Pop circle   centred at (370, 260), r=65
-//   Rings        arc rightward -70° to +70° from pop centre
-//   Rings radii  108, 148, 188, 228, 268
-// ════════════════════════════════════════════════════════════════════════
+//   Pop circle   positioned near divider (POP_CX)
+//   Rings        arc rightward -75° to +75° from pop center
+// ───────────────────────────────────────────────────────────────────────────
 
 const SVG_W = 900, SVG_H = 520;
-// Pop circle centred in the right 2/3 of the canvas (info panel is 0–275)
-// Right zone: x 285–900 = 615px wide, centre at 285 + 615/2 = 592
-const POP_CX = 530, POP_CY = 260, POP_R = 65;
+// Info panel constants
+const INFO_X = 20, INFO_W = 245, DIVIDER_X = 275, INFO_MID = INFO_X + INFO_W / 2;
+// Place population circle just to the right of the divider (next to the info panel)
+const POP_CX = DIVIDER_X + 90; // ~365
+const POP_CY = 260;
+const POP_R  = 60; // slightly reduced to avoid clipping
 
 // Arc: rightward fan -75° to +75° (in radians)
 const ARC_DEG_MIN = -75, ARC_DEG_MAX = 75;
 const ARC_MIN = ARC_DEG_MIN * Math.PI / 180;
 const ARC_MAX = ARC_DEG_MAX * Math.PI / 180;
 
-// Wider rings so dots spread across available space
-const RING_RADII = [115, 160, 205, 250, 295];
+// Wider rings so dots spread across available space (bigger than before)
+const RING_RADII = [140, 190, 240, 290, 340];
 
 // Expanded circle radius — fills most of the right zone
 const EXP_R = 230;
 
-// Info panel
-const INFO_X = 20, INFO_W = 245, DIVIDER_X = 275;
-const INFO_MID = INFO_X + INFO_W / 2;
-
-// Population colour: purple
+// Population color: purple
 const POP_COLOR       = '#7F77DD';
 const POP_COLOR_DARK  = '#534AB7';
 
-// Dot appearance: uniform dark, bigger
-const DOT_R     = 9;
+// Dot appearance: slightly smaller in collapsed/animated states
+const DOT_R     = 7;
 const DOT_FILL  = '#1a1a18';
 const DOT_FILL_DARK = '#f0f0ec';
 
@@ -743,7 +742,7 @@ function moveQGTip(evt) {
 }
 function hideQGTip() { qgTip.classList.remove('show'); }
 
-// Feature colours
+// Feature colors
 const FEAT_BG = {agent:'#EEEDFE',perspective:'#E1F5EE',plot:'#E6F1FB',setting:'#FAEEDA',social:'#FAECE7',style:'#FBEAF0'};
 const FEAT_FG = {agent:'#3C3489',perspective:'#085041',plot:'#0C447C',setting:'#633806',social:'#712B13',style:'#7A1B3A'};
 const FEAT_LABEL_MAP = {agent:'Agent',perspective:'Perspective',plot:'Plot',setting:'Setting',social:'Social Atmosphere',style:'Style'};
@@ -807,7 +806,7 @@ function renderQG() {
     drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, txt, wrapText);
   }
 
-  // Visualisation (RIGHT of divider)
+  // Visualization (RIGHT of divider)
   if (popAnimState === 'expanded') {
     drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC);
   } else if (popAnimState === 'expanding' || popAnimState === 'collapsing') {
@@ -843,25 +842,28 @@ function drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke
   const dotRand = seededRand(seed + 1);
 
   // For each item: pick random angle in arc AND random radius within the band
-  // Use multiple attempts to space them out a bit
+  // Use multiple attempts to space them out a bit and clamp to visible area
   const placed = []; // {cx, cy} for spacing check
   qItems.forEach(item => {
     const band = Math.min(4, Math.floor(item.score * 5));
-    const innerR = band === 0 ? POP_R + DOT_R + 4 : RING_RADII[band - 1] + DOT_R + 2;
-    const outerR = RING_RADII[band] - DOT_R - 2;
+    const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band - 1] + DOT_R + 4;
+    const outerR = RING_RADII[band] - DOT_R - 4;
     const rRange = Math.max(1, outerR - innerR);
 
-    let bestCx = 0, bestCy = 0, bestDist = -1;
-    for (let attempt = 0; attempt < 12; attempt++) {
+    let bestCx = POP_CX, bestCy = POP_CY, bestDist = -1;
+    for (let attempt = 0; attempt < 14; attempt++) {
       const angle = ARC_MIN + dotRand() * (ARC_MAX - ARC_MIN);
       const r     = innerR + dotRand() * rRange;
-      const cx    = POP_CX + r * Math.cos(angle);
-      const cy    = POP_CY + r * Math.sin(angle);
+      let cx    = POP_CX + r * Math.cos(angle);
+      let cy    = POP_CY + r * Math.sin(angle);
+      // clamp a little inside canvas (avoid half-cut dots)
+      cx = Math.max(DOT_R + 6, Math.min(SVG_W - DOT_R - 6, cx));
+      cy = Math.max(DOT_R + 6, Math.min(SVG_H - DOT_R - 6, cy));
       const minD  = placed.length
         ? Math.min(...placed.map(p => Math.hypot(p.cx - cx, p.cy - cy)))
         : 999;
       if (minD > bestDist) { bestDist = minD; bestCx = cx; bestCy = cy; }
-      if (bestDist > DOT_R * 2.4) break;
+      if (bestDist > DOT_R * 2.2) break;
     }
     placed.push({cx: bestCx, cy: bestCy});
 
@@ -914,7 +916,7 @@ function animatePop(expanding) {
 function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText) {
   const invA = 1 - progress;
   const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  // Interpolate centre from collapsed pos to full-canvas centre
+  // Interpolate center from collapsed pos to full-canvas center
   const curCx = POP_CX + (ecx - POP_CX) * progress;
   const curCy = POP_CY + (ecy - POP_CY) * progress;
   const curR  = POP_R  + (EXP_R - POP_R) * progress;
@@ -932,17 +934,19 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
     const placed2 = [];
     qItems.forEach(item => {
       const band = Math.min(4, Math.floor(item.score * 5));
-      const innerR = band === 0 ? POP_R + DOT_R + 4 : RING_RADII[band-1] + DOT_R + 2;
-      const outerR = RING_RADII[band] - DOT_R - 2;
+      const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band-1] + DOT_R + 4;
+      const outerR = RING_RADII[band] - DOT_R - 4;
       const rRange = Math.max(1, outerR - innerR);
-      let bx=0,by=0,bd=-1;
+      let bx=POP_CX,by=POP_CY,bd=-1;
       for (let a=0;a<12;a++) {
         const angle=ARC_MIN+dotRand()*(ARC_MAX-ARC_MIN);
         const r=innerR+dotRand()*rRange;
-        const cx=POP_CX+r*Math.cos(angle),cy=POP_CY+r*Math.sin(angle);
+        let cx=POP_CX+r*Math.cos(angle),cy=POP_CY+r*Math.sin(angle);
+        cx = Math.max(DOT_R+6, Math.min(SVG_W-DOT_R-6, cx));
+        cy = Math.max(DOT_R+6, Math.min(SVG_H-DOT_R-6, cy));
         const minD=placed2.length?Math.min(...placed2.map(p=>Math.hypot(p.cx-cx,p.cy-cy))):999;
         if(minD>bd){bd=minD;bx=cx;by=cy;}
-        if(bd>DOT_R*2.4)break;
+        if(bd>DOT_R*2.2)break;
       }
       placed2.push({cx:bx,cy:by});
       el('circle',{cx:bx.toFixed(1),cy:by.toFixed(1),r:DOT_R,fill:dotFill,stroke:dotStroke,'stroke-width':'2',opacity:invA.toFixed(3)});
@@ -958,12 +962,10 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
 
 // ─── Expanded pop view ────────────────────────────────────────────────────────
 function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) {
-  // When expanded, centre circle in the full SVG
+  // When expanded, center circle in the full SVG
   const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
-  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
 
-  // Click outside to collapse
+  // Place overlay FIRST so it's behind the pills; overlay still catches clicks (but won't block hover on pills)
   const overlay = el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:'transparent',style:'cursor:default'});
   overlay.addEventListener('click', e => {
     const svgEl = document.getElementById('qgSvg');
@@ -977,6 +979,9 @@ function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) 
       animatePop(false);
     }
   });
+
+  el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
+  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
 }
 
 // ─── Pill layout inside expanded circle ───────────────────────────────────────
@@ -1006,24 +1011,24 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
   });
 
-  // Pill layout constants — wider pills to prevent text overflow
-  const PILL_H    = 20;
-  const PILL_H2   = 34;
-  const PAD_X     = 12;
-  const GAP_X     = 7;
-  const ROW_GAP   = 8;
-  const FS        = 10;
+  // Pill layout constants — smaller pills so we can show more
+  const PILL_H    = 18;
+  const PILL_H2   = 28;
+  const PAD_X     = 10;
+  const GAP_X     = 6;
+  const ROW_GAP   = 6;
+  const FS        = 9;
   const CHAR_W    = FS * 0.52;
-  const MAX_TXT_W = 145;   // wider than before
-  const AVAIL_W   = r * 1.72;
-  const SHOW_N    = 16;
+  const MAX_TXT_W = 120;
+  const AVAIL_W   = r * 1.6;
+  const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
 
-  const contentStartY = headerY + 44;
-  const contentEndY   = cy + r - 16;
+  const contentStartY = headerY + 40;
+  const contentEndY   = cy + r - 20;
   const contentH      = contentEndY - contentStartY;
 
   function pillText(ans) {
-    const words = ans.trim().split(/\s+/).slice(0, 15).join(' ');
+    const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
     return words.length < ans.trim().length ? words + '…' : words;
   }
   function pillDims(ans) {
@@ -1053,6 +1058,9 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
 
   let py = contentStartY + (contentH - totalH) / 2;
   if (py < contentStartY) py = contentStartY;
+
+  // Keep track of placed rectangles so we can avoid overlaps when placing scattered items
+  const placedRects = [];
 
   rows.forEach(row => {
     const rowH = Math.max(...row.map(p=>p.h));
@@ -1085,19 +1093,55 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
       hit.addEventListener('mousemove',  e => moveQGTip(e));
       hit.addEventListener('mouseleave', hideQGTip);
 
+      // record placement
+      placedRects.push({x:px, y:py2, w:p.w, h:p.h});
       px += p.w + GAP_X;
     });
     py += rowH + ROW_GAP;
   });
 
-  // Remaining answers as small hoverable dots on perimeter
+  // Remaining answers: scatter inside circle (not just on perimeter)
   if (hoverable.length) {
+    const rand2 = seededRand(seed + 13);
+    const smallR = 9;
+    const placedCircles = [];
     hoverable.forEach((ans, i) => {
-      const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
-      const dr = r - 13;
-      const dcx = cx + dr * Math.cos(angle), dcy = cy + dr * Math.sin(angle);
+      // attempt to find a location inside the circle that doesn't overlap pills/circles
+      let attempts = 0, placed = false, candX = cx, candY = cy;
+      while (attempts < 80 && !placed) {
+        attempts++;
+        // sample point inside circle uniformly
+        const ang = rand2() * Math.PI * 2;
+        const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
+        candX = cx + rad * Math.cos(ang);
+        candY = cy + rad * Math.sin(ang);
+        // ensure inside canvas margins
+        if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
+        // avoid overlap with pill rects
+        const overlapRect = placedRects.some(rr => {
+          const rx = Math.max(rr.x, candX - smallR);
+          const ry = Math.max(rr.y, candY - smallR);
+          const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
+          const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
+          return rw > 0 && rh > 0;
+        });
+        if (overlapRect) continue;
+        // avoid overlap with other scattered circles
+        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
+        if (overlapCircle) continue;
+        placed = true;
+        placedCircles.push({x:candX, y:candY});
+      }
+      // fallback: place on ring-like fallback positions if not found
+      if (!placed) {
+        const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
+        const dr = r - 28;
+        candX = cx + dr * Math.cos(angle);
+        candY = cy + dr * Math.sin(angle);
+      }
+
       const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
-      el('circle', {cx:dcx,cy:dcy,r:6,fill:'rgba(255,255,255,0.3)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1'}, g);
+      el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
       g.addEventListener('mouseenter', e => showQGTip(e, ans));
       g.addEventListener('mousemove',  e => moveQGTip(e));
       g.addEventListener('mouseleave', hideQGTip);

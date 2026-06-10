@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -185,35 +184,86 @@ p:last-child { margin-bottom: 0; }
   background: var(--bg2);
   text-align: center;
 }
-.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 1rem; }
+
+/* ── Feature tabs (leaderboard) ── */
+.feat-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+.feat-tab {
+  font-size: 12px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 0.5px solid var(--border2);
+  background: transparent;
+  color: var(--text2);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+}
+.feat-tab:hover { background: var(--bg2); color: var(--text); }
+.feat-tab.active { color: #fff; border-color: transparent; }
+
+/* ── Supplementary filters row ── */
+.filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0; }
 .filter-btn {
   font-size: 12px; padding: 4px 12px;
   border-radius: 20px;
   border: 0.5px solid var(--border2);
   background: transparent; color: var(--text2);
   cursor: pointer; font-family: inherit;
+  transition: background 0.12s, color 0.12s;
 }
 .filter-btn:hover, .filter-btn.on {
   background: var(--bg2); color: var(--text);
   border-color: var(--border2); font-weight: 500;
 }
-.model-list { display: flex; flex-direction: column; gap: 6px; margin-top: 1rem; }
+
+/* ── Leaderboard rows ── */
+.model-list { display: flex; flex-direction: column; gap: 5px; margin-top: 1.25rem; }
 .model-row {
-  display: flex; align-items: center; gap: 10px;
-  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px;
   border-radius: var(--radius);
   border: 0.5px solid var(--border);
   background: var(--bg);
+  transition: border-color 0.12s, background 0.12s;
 }
 .model-row:hover { border-color: var(--border2); background: var(--bg2); }
-.model-name { font-size: 13px; font-weight: 500; width: 200px; flex-shrink: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.stacked-bar { flex: 1; height: 18px; display: flex; border-radius: 4px; overflow: hidden; }
-.bar-seg { height: 100%; cursor: pointer; transition: filter 0.1s; }
-.bar-seg:hover { filter: brightness(1.12); }
+.lb-rank {
+  font-size: 12px;
+  color: var(--text3);
+  width: 22px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.model-name {
+  font-size: 13px;
+  font-weight: 500;
+  width: 190px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
 .fam-badge {
   font-size: 10px; padding: 2px 7px;
   border-radius: 20px; font-weight: 500;
   width: 60px; text-align: center; flex-shrink: 0;
+}
+.type-badge {
+  font-size: 10px; padding: 2px 7px;
+  border-radius: 20px; font-weight: 500;
+  width: 54px; text-align: center; flex-shrink: 0;
+  background: var(--bg3);
+  color: var(--text3);
+  border: 0.5px solid var(--border);
 }
 .fam-Gemma { background: #E1F5EE; color: #085041; }
 .fam-Llama { background: #E6F1FB; color: #0C447C; }
@@ -228,27 +278,30 @@ p:last-child { margin-bottom: 0; }
 [data-theme="dark"] .fam-Qwen  { background: #26215C; color: #AFA9EC; }
 [data-theme="dark"] .fam-GPT   { background: #173404; color: #97C459; }
 [data-theme="dark"] .fam-Claude{ background: #4A1B0C; color: #F0997B; }
-.type-label { font-size: 10px; color: var(--text3); width: 44px; flex-shrink: 0; }
-[data-theme="dark"] .logo img { mix-blend-mode: screen; }
-.tooltip-lb {
-  position: fixed;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: var(--radius);
-  pointer-events: none;
-  white-space: nowrap;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.1s;
+.lb-bar-wrap {
+  flex: 1;
+  height: 18px;
+  background: var(--bg2);
+  border-radius: 4px;
+  overflow: hidden;
 }
-.tooltip-lb.show { opacity: 1; }
+.lb-bar {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.35s ease;
+}
+.lb-score {
+  font-size: 12px;
+  color: var(--text3);
+  width: 40px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+}
 .lb-loading { font-size: 13px; color: var(--text3); padding: 2rem; text-align: center; }
 .lb-error { color: #D85A30; }
 
 /* Q-GENIE */
-#qgenie-page { padding-bottom: 2rem; }
 .qg-canvas-wrap {
   position: relative;
   width: 100%;
@@ -295,6 +348,21 @@ p:last-child { margin-bottom: 0; }
   font-size: 12px;
   color: var(--text3);
 }
+[data-theme="dark"] .logo img { mix-blend-mode: screen; }
+.tooltip-lb {
+  position: fixed;
+  background: var(--text);
+  color: var(--bg);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: var(--radius);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 9999;
+  opacity: 0;
+  transition: opacity 0.1s;
+}
+.tooltip-lb.show { opacity: 1; }
 </style>
 </head>
 <body>
@@ -308,10 +376,10 @@ p:last-child { margin-bottom: 0; }
     <span class="logo-fallback">GENIE</span>
   </a>
   <nav class="top-nav">
-    <a class="nav-tab active" id="tab-overview" href="#" onclick="showPage('overview');return false;">&#8962; Overview</a>
-    <a class="nav-tab" id="tab-dataset" href="#" onclick="showPage('dataset');return false;">&#9112; Dataset</a>
-    <a class="nav-tab" id="tab-leaderboard" href="#" onclick="showPage('leaderboard');return false;">&#9745; Model scores</a>
-    <a class="nav-tab" id="tab-qgenie" href="#" onclick="showPage('qgenie');return false;">&#9678; Q-GENIE</a>
+    <a class="nav-tab active" id="tab-overview"     href="#" onclick="showPage('overview');return false;">&#8962; Overview</a>
+    <a class="nav-tab"        id="tab-dataset"      href="#" onclick="showPage('dataset');return false;">&#9112; Dataset</a>
+    <a class="nav-tab"        id="tab-leaderboard"  href="#" onclick="showPage('leaderboard');return false;">&#9745; Model scores</a>
+    <a class="nav-tab"        id="tab-qgenie"       href="#" onclick="showPage('qgenie');return false;">&#9678; Q-GENIE</a>
   </nav>
   <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
 </header>
@@ -366,20 +434,23 @@ p:last-child { margin-bottom: 0; }
     <!-- LEADERBOARD -->
     <div id="leaderboard-page" class="page">
       <h2 style="margin-top:0">Model novelty scores</h2>
-      <p>Each row shows a stacked bar: one segment per feature. Hover a segment to see the score.</p>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:1rem;align-items:center">
-        <div class="filter-row" id="famFilters" style="margin:0">
-          <button class="filter-btn on" onclick="filterFam('all',this)">All</button>
+      <p>Select a feature to rank models by their GENIE score for that dimension. Use the filters to narrow by model family or type.</p>
+
+      <!-- Feature selector -->
+      <div class="feat-tabs" id="featTabs"></div>
+
+      <!-- Secondary filters -->
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:0.25rem">
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Family</span>
+          <div class="filter-row" id="famFilters"></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px">
+          <span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Type</span>
+          <div class="filter-row" id="typeFilters"></div>
         </div>
       </div>
-      <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:12px;font-size:12px;color:var(--text2)">
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#7F77DD;display:inline-block"></span>Agent</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#1D9E75;display:inline-block"></span>Perspective</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#378ADD;display:inline-block"></span>Plot</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#EF9F27;display:inline-block"></span>Setting</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D85A30;display:inline-block"></span>Social Atmosphere</span>
-        <span style="display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;border-radius:2px;background:#D4537E;display:inline-block"></span>Style</span>
-      </div>
+
       <div class="model-list" id="modelList">
         <div class="lb-loading">Switch to this tab to load scores&hellip;</div>
       </div>
@@ -421,7 +492,6 @@ function toggleDark() {
 // ─── TAB NAV ──────────────────────────────────────────────────────────────────
 const PAGES = ['overview','dataset','leaderboard','qgenie'];
 function showPage(id) {
-  // Hide any sticky tooltips when switching tabs
   hideQGTip();
   hideTip();
   PAGES.forEach(p => {
@@ -434,27 +504,41 @@ function showPage(id) {
 }
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
-const FEAT_COLORS = {agent:'#7F77DD',perspective:'#1D9E75',plot:'#378ADD',setting:'#EF9F27',social:'#D85A30',style:'#D4537E'};
+const FEATURES = [
+  { key: 'agent',       label: 'Agent',            color: '#7F77DD' },
+  { key: 'perspective', label: 'Perspective',       color: '#1D9E75' },
+  { key: 'plot',        label: 'Plot',              color: '#378ADD' },
+  { key: 'setting',     label: 'Setting',           color: '#EF9F27' },
+  { key: 'social',      label: 'Social atmosphere', color: '#D85A30' },
+  { key: 'style',       label: 'Style',             color: '#D4537E' },
+];
+
+const FEAT_COLORS = { agent:'#7F77DD', perspective:'#1D9E75', plot:'#378ADD', setting:'#EF9F27', social:'#D85A30', style:'#D4537E' };
 const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
 const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Social Atmosphere','Style'];
+
 const FEAT_KEY_MAP = {
   'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
   'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
   'social_atm':'social','social':'social','style':'style'
 };
 function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
+
 function inferFamily(n) {
   n=(n||'').toLowerCase();
-  if(n.includes('gemma'))return'Gemma'; if(n.includes('llama'))return'Llama';
-  if(n.includes('olmo'))return'OLMo';   if(n.includes('qwen'))return'Qwen';
-  if(n.includes('gpt'))return'GPT';     if(n.includes('claude'))return'Claude';
-  return'Other';
+  if(n.includes('gemma'))  return 'Gemma';
+  if(n.includes('llama'))  return 'Llama';
+  if(n.includes('olmo'))   return 'OLMo';
+  if(n.includes('qwen'))   return 'Qwen';
+  if(n.includes('gpt'))    return 'GPT';
+  if(n.includes('claude')) return 'Claude';
+  return 'Other';
 }
 function inferType(n) {
   n=(n||'').toLowerCase();
   if(n.includes('instruct')||n.includes('-it')||n.includes('chat')||
-     n.includes('sonnet')||n.includes('opus')||n.includes('haiku'))return'instruct';
-  return'base';
+     n.includes('sonnet')||n.includes('opus')||n.includes('haiku')) return 'instruct';
+  return 'base';
 }
 
 async function fetchLocalJSON(path) {
@@ -470,161 +554,251 @@ function normalizeRows(raw) {
 }
 
 // ─── LEADERBOARD ──────────────────────────────────────────────────────────────
-let modelData=[], famFilter='all', typeFilter='all';
+let modelData   = [];
+let activeFeat  = 'agent';
+let famFilter   = 'all';
+let typeFilter  = 'all';
 
 async function initLeaderboard() {
-  window._lbDone=true;
-  const listEl=document.getElementById('modelList');
+  window._lbDone = true;
+
+  // Build feature tabs
+  const featTabsEl = document.getElementById('featTabs');
+  FEATURES.forEach(f => {
+    const btn = document.createElement('button');
+    btn.className = 'feat-tab' + (f.key === activeFeat ? ' active' : '');
+    btn.textContent = f.label;
+    btn.dataset.key = f.key;
+    if (f.key === activeFeat) btn.style.background = f.color;
+    btn.addEventListener('click', () => setActiveFeat(f.key));
+    featTabsEl.appendChild(btn);
+  });
+
+  // Build type filters (static — base / instruct / all)
+  const typeFiltersEl = document.getElementById('typeFilters');
+  [['all','All'],['instruct','Instruct'],['base','Base']].forEach(([val, label]) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      typeFilter = val;
+      document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      renderModels();
+    });
+    typeFiltersEl.appendChild(btn);
+  });
+
+  // Load data
+  const listEl = document.getElementById('modelList');
   try {
-    const res=await fetch('model_genie.json');
-    if(!res.ok)throw new Error('HTTP '+res.status);
-    const raw=await res.json();
+    const res = await fetch('model_genie.json');
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const raw = await res.json();
     let rows;
-    if(Array.isArray(raw)){rows=raw;}
-    else{const keys=Object.keys(raw);const indices=Object.keys(raw[keys[0]]);rows=indices.map(i=>Object.fromEntries(keys.map(k=>[k,raw[k][i]])));}
-    const byModel={};
-    rows.forEach(row=>{
-      const model=row['Model_1']||row['model']||'';
-      const feat=normFeature(row['Feature']||row['feature']||'');
-      const score=parseFloat(row['GENIE']??row['genie']??NaN);
-      if(!model||!feat||isNaN(score))return;
-      if(!byModel[model])byModel[model]={name:model};
-      byModel[model][feat]=score;
+    if (Array.isArray(raw)) {
+      rows = raw;
+    } else {
+      const keys = Object.keys(raw);
+      const indices = Object.keys(raw[keys[0]]);
+      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
+    }
+    const byModel = {};
+    rows.forEach(row => {
+      const model = row['Model_1'] || row['model'] || '';
+      const feat  = normFeature(row['Feature'] || row['feature'] || '');
+      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+      if (!model || !feat || isNaN(score)) return;
+      if (!byModel[model]) byModel[model] = { name: model };
+      byModel[model][feat] = score;
     });
-    modelData=Object.values(byModel).map(m=>({
-      name:m.name,family:inferFamily(m.name),type:inferType(m.name),
-      agent:m.agent||0,perspective:m.perspective||0,plot:m.plot||0,
-      setting:m.setting||0,social:m.social||0,style:m.style||0,
+    modelData = Object.values(byModel).map(m => ({
+      name:        m.name,
+      family:      inferFamily(m.name),
+      type:        inferType(m.name),
+      agent:       m.agent       || 0,
+      perspective: m.perspective || 0,
+      plot:        m.plot        || 0,
+      setting:     m.setting     || 0,
+      social:      m.social      || 0,
+      style:       m.style       || 0,
     }));
-    modelData.sort((a,b)=>{
-      const ta=FEAT_NAMES.reduce((s,f)=>s+a[f],0);
-      const tb=FEAT_NAMES.reduce((s,f)=>s+b[f],0);
-      return tb-ta;
-    });
-    buildFamFilters(); renderModels();
   } catch(err) {
-    listEl.innerHTML=`<div class="lb-loading lb-error">Could not load model_genie.json: ${err.message}<br><span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span></div>`;
+    listEl.innerHTML = `<div class="lb-loading lb-error">Could not load model_genie.json: ${err.message}<br>
+      <span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span></div>`;
+    return;
   }
+
+  buildFamFilters();
+  renderModels();
 }
 
-function buildFamFilters(){
-  const families=[...new Set(modelData.map(m=>m.family))].sort();
-  const el=document.getElementById('famFilters');
-  el.innerHTML=`<button class="filter-btn on" onclick="filterFam('all',this)">All</button>`+
-    families.map(f=>`<button class="filter-btn" onclick="filterFam('${f}',this)">${f}</button>`).join('');
+function setActiveFeat(key) {
+  activeFeat = key;
+  document.querySelectorAll('#featTabs .feat-tab').forEach(btn => {
+    const isActive = btn.dataset.key === key;
+    btn.classList.toggle('active', isActive);
+    btn.style.background = isActive ? FEATURES.find(f => f.key === key).color : '';
+  });
+  renderModels();
 }
-function filterFam(f,btn){famFilter=f;document.querySelectorAll('#famFilters .filter-btn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderModels();}
 
-const tipEl=document.getElementById('tooltipLb');
-function showTip(evt,text){tipEl.textContent=text;tipEl.classList.add('show');moveTip(evt);}
-function moveTip(evt){tipEl.style.left=(evt.clientX+14)+'px';tipEl.style.top=(evt.clientY-32)+'px';}
-function hideTip(){tipEl.classList.remove('show');}
+function buildFamFilters() {
+  const families = [...new Set(modelData.map(m => m.family))].sort();
+  const el = document.getElementById('famFilters');
+  el.innerHTML = '';
+  [['all','All'], ...families.map(f => [f, f])].forEach(([val, label]) => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      famFilter = val;
+      document.querySelectorAll('#famFilters .filter-btn').forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      renderModels();
+    });
+    el.appendChild(btn);
+  });
+}
 
-function renderModels(){
-  const list=document.getElementById('modelList');
-  if(!modelData.length){list.innerHTML='<div class="lb-loading">No data.</div>';return;}
-  const filtered=modelData.filter(m=>(famFilter==='all'||m.family===famFilter)&&(typeFilter==='all'||m.type===typeFilter));
-  if(!filtered.length){list.innerHTML='<div class="lb-loading">No models match filters.</div>';return;}
-  const maxTotal=Math.max(...filtered.map(m=>FEAT_NAMES.reduce((s,f)=>s+m[f],0)));
-  list.innerHTML=filtered.map(m=>{
-    const total=FEAT_NAMES.reduce((s,f)=>s+m[f],0);
-    const widthPct=maxTotal>0?Math.round((total/maxTotal)*100):0;
-    const segs=FEAT_NAMES.map((f,i)=>{
-      const pct=total>0?((m[f]/total)*100).toFixed(2):0;
-      const lbl=`${FEAT_LABELS[i]}: ${m[f].toFixed(3)}`;
-      return`<div class="bar-seg" style="width:${pct}%;background:${FEAT_COLORS[f]}" onmouseenter="showTip(event,'${lbl}')" onmousemove="moveTip(event)" onmouseleave="hideTip()"></div>`;
-    }).join('');
-    return`<div class="model-row"><div class="model-name" title="${m.name}">${m.name}</div><span class="fam-badge fam-${m.family}">${m.family}</span><span class="type-label">${m.type}</span><div style="flex:1"><div class="stacked-bar" style="width:${widthPct}%">${segs}</div></div></div>`;
+const tipEl = document.getElementById('tooltipLb');
+function showTip(evt, text) { tipEl.textContent = text; tipEl.classList.add('show'); moveTip(evt); }
+function moveTip(evt) { tipEl.style.left = (evt.clientX + 14) + 'px'; tipEl.style.top = (evt.clientY - 32) + 'px'; }
+function hideTip() { tipEl.classList.remove('show'); }
+
+function renderModels() {
+  const list = document.getElementById('modelList');
+  if (!modelData.length) { list.innerHTML = '<div class="lb-loading">No data.</div>'; return; }
+
+  const feat = FEATURES.find(f => f.key === activeFeat);
+
+  // Filter
+  let filtered = modelData.filter(m =>
+    (famFilter  === 'all' || m.family === famFilter) &&
+    (typeFilter === 'all' || m.type   === typeFilter)
+  );
+
+  // Sort descending by the active feature score
+  filtered = filtered.slice().sort((a, b) => b[activeFeat] - a[activeFeat]);
+
+  if (!filtered.length) {
+    list.innerHTML = '<div class="lb-loading">No models match the current filters.</div>';
+    return;
+  }
+
+  const maxScore = filtered[0][activeFeat] || 1;
+
+  list.innerHTML = filtered.map((m, i) => {
+    const score = m[activeFeat];
+    const barPct = ((score / maxScore) * 100).toFixed(1);
+    return `<div class="model-row">
+      <span class="lb-rank">${i + 1}</span>
+      <span class="model-name" title="${m.name}">${m.name}</span>
+      <span class="fam-badge fam-${m.family}">${m.family}</span>
+      <span class="type-badge">${m.type}</span>
+      <div class="lb-bar-wrap">
+        <div class="lb-bar" style="width:${barPct}%;background:${feat.color}"></div>
+      </div>
+      <span class="lb-score">${score.toFixed(3)}</span>
+    </div>`;
   }).join('');
 }
 
 // ─── DISTRIBUTION CHART ───────────────────────────────────────────────────────
-function gaussianKDE(values,bw){
-  const pts=[];
-  for(let x=0;x<=1;x+=0.005){
-    let sum=0;
-    values.forEach(v=>{const z=(x-v)/bw;sum+=Math.exp(-0.5*z*z);});
-    pts.push({x:parseFloat(x.toFixed(3)),y:sum/(values.length*bw*Math.sqrt(2*Math.PI))});
+function gaussianKDE(values, bw) {
+  const pts = [];
+  for (let x = 0; x <= 1; x += 0.005) {
+    let sum = 0;
+    values.forEach(v => { const z = (x - v) / bw; sum += Math.exp(-0.5 * z * z); });
+    pts.push({ x: parseFloat(x.toFixed(3)), y: sum / (values.length * bw * Math.sqrt(2 * Math.PI)) });
   }
   return pts;
 }
 let distChart;
-function buildDistLegend(){
-  document.getElementById('distLegend').innerHTML=FEAT_NAMES.map((f,i)=>
-    `<span style="display:flex;align-items:center;gap:5px"><span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>${FEAT_LABELS[i]}</span>`
+function buildDistLegend() {
+  document.getElementById('distLegend').innerHTML = FEAT_NAMES.map((f, i) =>
+    `<span style="display:flex;align-items:center;gap:5px">
+      <span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>
+      ${FEAT_LABELS[i]}
+    </span>`
   ).join('');
 }
-async function initDistChart(){
-  window._distDone=true; buildDistLegend();
+async function initDistChart() {
+  window._distDone = true;
+  buildDistLegend();
   let src = null;
   try {
-    const raw = await fetchLocalJSON('genie.json');
+    const raw  = await fetchLocalJSON('genie.json');
     const rows = normalizeRows(raw);
-    const grouped={};FEAT_NAMES.forEach(f=>grouped[f]=[]);
-    rows.forEach(row=>{
-      const feat=normFeature(row['Feature']||row['feature']||'');
-      const score=parseFloat(row['GENIE']??row['genie']??NaN);
-      if(feat&&!isNaN(score))grouped[feat].push(score);
+    const grouped = {}; FEAT_NAMES.forEach(f => grouped[f] = []);
+    rows.forEach(row => {
+      const feat  = normFeature(row['Feature'] || row['feature'] || '');
+      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+      if (feat && !isNaN(score)) grouped[feat].push(score);
     });
-    const total=FEAT_NAMES.reduce((s,f)=>s+grouped[f].length,0);
-    if(total===0)throw new Error('No valid rows in genie.json');
-    src=grouped;
-    document.getElementById('distStatus').textContent=`Loaded ${rows.length} rows`;
-  } catch(err){
-    document.getElementById('distStatus').textContent=`Could not load genie.json (${err.message}) — showing simulated data`;
-    function genSample(mean,std,n=80){return Array.from({length:n},()=>{let u=0,v=0;while(!u)u=Math.random();while(!v)v=Math.random();return Math.max(0.05,Math.min(0.99,mean+std*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)));});}
-    src={agent:genSample(0.63,0.12),perspective:genSample(0.48,0.15),plot:genSample(0.61,0.11),setting:genSample(0.57,0.13),social:genSample(0.59,0.12),style:genSample(0.52,0.14)};
+    const total = FEAT_NAMES.reduce((s, f) => s + grouped[f].length, 0);
+    if (total === 0) throw new Error('No valid rows in genie.json');
+    src = grouped;
+    document.getElementById('distStatus').textContent = `Loaded ${rows.length} rows`;
+  } catch(err) {
+    document.getElementById('distStatus').textContent =
+      `Could not load genie.json (${err.message}) — showing simulated data`;
+    function genSample(mean, std, n=80) {
+      return Array.from({length:n}, () => {
+        let u=0, v=0;
+        while(!u) u=Math.random(); while(!v) v=Math.random();
+        return Math.max(0.05, Math.min(0.99, mean + std * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v)));
+      });
+    }
+    src = {
+      agent:       genSample(0.63,0.12), perspective: genSample(0.48,0.15),
+      plot:        genSample(0.61,0.11), setting:     genSample(0.57,0.13),
+      social:      genSample(0.59,0.12), style:       genSample(0.52,0.14),
+    };
   }
-  const datasets=FEAT_NAMES.map((f,i)=>({
-    label:FEAT_LABELS[i],data:gaussianKDE(src[f].length>0?src[f]:[0.5],0.07),
-    borderColor:FEAT_COLORS[f],backgroundColor:FEAT_COLORS[f]+'22',
-    borderWidth:2,pointRadius:0,fill:true,tension:0.4,
-    parsing:{xAxisKey:'x',yAxisKey:'y'},
+  const datasets = FEAT_NAMES.map((f, i) => ({
+    label:           FEAT_LABELS[i],
+    data:            gaussianKDE(src[f].length > 0 ? src[f] : [0.5], 0.07),
+    borderColor:     FEAT_COLORS[f],
+    backgroundColor: FEAT_COLORS[f] + '22',
+    borderWidth:     2, pointRadius: 0, fill: true, tension: 0.4,
+    parsing:         { xAxisKey: 'x', yAxisKey: 'y' },
   }));
-  if(distChart)distChart.destroy();
-  distChart=new Chart(document.getElementById('distChart'),{
-    type:'line',data:{datasets},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
-      scales:{x:{type:'linear',min:0,max:1,title:{display:true,text:'GENIE score',font:{size:12}},ticks:{font:{size:11}}},
-               y:{title:{display:true,text:'Density',font:{size:12}},ticks:{font:{size:11}},grid:{color:'rgba(128,128,128,0.1)'}}}}
+  if (distChart) distChart.destroy();
+  distChart = new Chart(document.getElementById('distChart'), {
+    type: 'line', data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { type: 'linear', min: 0, max: 1,
+          title: { display: true, text: 'GENIE score', font: { size: 12 } },
+          ticks: { font: { size: 11 } } },
+        y: { title: { display: true, text: 'Density', font: { size: 12 } },
+          ticks: { font: { size: 11 } }, grid: { color: 'rgba(128,128,128,0.1)' } }
+      }
+    }
   });
 }
 
 // ════════════════════════════════════════════════════════════════════════
 // Q-GENIE VISUALIZER
-// Layout (SVG 900×520):
-//   Left panel   x 20–260:   info (feature pill, question, prompt, nav)
-//   Divider      x 275
-//   Pop circle   positioned near divider (POP_CX)
-//   Rings        arc rightward -75° to +75° from pop center
-// ───────────────────────────────────────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════════════
 
 const SVG_W = 760, SVG_H = 520;
-// Info panel constants
 const INFO_X = 20, INFO_W = 245, DIVIDER_X = 275, INFO_MID = INFO_X + INFO_W / 2;
-// Place population circle just to the right of the divider (next to the info panel)
-const POP_CX = DIVIDER_X + 120; // ~365
+const POP_CX = DIVIDER_X + 120;
 const POP_CY = 260;
-const POP_R  = 80; // slightly reduced to avoid clipping
-
-// Arc: rightward fan -75° to +75° (in radians)
+const POP_R  = 80;
 const ARC_DEG_MIN = -75, ARC_DEG_MAX = 75;
 const ARC_MIN = ARC_DEG_MIN * Math.PI / 180;
 const ARC_MAX = ARC_DEG_MAX * Math.PI / 180;
-
-// Wider rings so dots spread across available space (bigger than before)
 const RING_RADII = [140, 190, 240, 290, 340];
-
-// Expanded circle radius — fills most of the right zone
 const EXP_R = 230;
-
-// Population color: purple
-const POP_COLOR       = '#7F77DD';
-const POP_COLOR_DARK  = '#534AB7';
-
-// Dot appearance: slightly smaller in collapsed/animated states
-const DOT_R     = 7;
-const DOT_FILL  = '#1a1a18';
+const POP_COLOR      = '#7F77DD';
+const POP_COLOR_DARK = '#534AB7';
+const DOT_R      = 7;
+const DOT_FILL      = '#1a1a18';
 const DOT_FILL_DARK = '#f0f0ec';
 
 window._qgData = null;
@@ -688,8 +862,8 @@ function processQGData(popRows, qRows) {
   const seen = new Set(), combos = [];
   qRows.forEach(r => {
     const p=r.Prompt||r.prompt||'', q=r.Question||r.question||'', f=r.Feature||r.feature||'';
-    const k=mkKey(p,q,f);
-    if (!seen.has(k)) { seen.add(k); combos.push({prompt:p,question:q,feature:f,key:k}); }
+    const k = mkKey(p,q,f);
+    if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
   });
   window._qgData = { combos, popMap, qMap };
   qgIdx = 0; popAnimState = null; popAnimProgress = 0;
@@ -716,7 +890,6 @@ function qgNav(dir) {
   renderQG();
 }
 
-// Deterministic PRNG
 function seededRand(seed) {
   return function() {
     seed |= 0; seed = seed + 0x6D2B79F5 | 0;
@@ -726,54 +899,40 @@ function seededRand(seed) {
   };
 }
 
-// Tooltip
 const qgTip = document.getElementById('qgTooltip');
-function showQGTip(evt, text) {
-  qgTip.textContent = text;
-  qgTip.classList.add('show');
-  moveQGTip(evt);
-}
+function showQGTip(evt, text) { qgTip.textContent = text; qgTip.classList.add('show'); moveQGTip(evt); }
 function moveQGTip(evt) {
   let x = evt.clientX + 14, y = evt.clientY - 38;
   if (x + 330 > window.innerWidth) x = evt.clientX - 340;
   if (y < 10) y = evt.clientY + 20;
-  qgTip.style.left = x + 'px';
-  qgTip.style.top  = y + 'px';
+  qgTip.style.left = x + 'px'; qgTip.style.top = y + 'px';
 }
 function hideQGTip() { qgTip.classList.remove('show'); }
 
-// Feature colors
 const FEAT_BG = {agent:'#EEEDFE',perspective:'#E1F5EE',plot:'#E6F1FB',setting:'#FAEEDA',social:'#FAECE7',style:'#FBEAF0'};
 const FEAT_FG = {agent:'#3C3489',perspective:'#085041',plot:'#0C447C',setting:'#633806',social:'#712B13',style:'#7A1B3A'};
 const FEAT_LABEL_MAP = {agent:'Agent',perspective:'Perspective',plot:'Plot',setting:'Setting',social:'Social Atmosphere',style:'Style'};
 
-// ─── Main render ──────────────────────────────────────────────────────────────
 function renderQG() {
   const data = window._qgData;
   if (!data || !data.combos.length) return;
-
   const combo      = data.combos[qgIdx];
   const n          = data.combos.length;
   const popAnswers = data.popMap[combo.key] || [];
   const qItems     = data.qMap[combo.key]   || [];
   const featKey    = normFeature(combo.feature) || combo.feature.toLowerCase();
-
-  const isDark  = document.documentElement.getAttribute('data-theme') === 'dark';
-  const bgColor = isDark ? '#222224' : '#f7f7f5';
-  const textCol = isDark ? '#f0f0ec' : '#1a1a18';
-  const text2   = isDark ? '#a0a09a' : '#5a5a55';
-  const text3   = isDark ? '#686864' : '#8a8a82';
-  const borderC = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
-  const popCol  = isDark ? POP_COLOR_DARK : POP_COLOR;
-  const dotFill = isDark ? DOT_FILL_DARK : DOT_FILL;
-  const dotStroke = isDark ? '#222224' : '#f7f7f5';
-
+  const isDark     = document.documentElement.getAttribute('data-theme') === 'dark';
+  const bgColor    = isDark ? '#222224' : '#f7f7f5';
+  const textCol    = isDark ? '#f0f0ec' : '#1a1a18';
+  const text2      = isDark ? '#a0a09a' : '#5a5a55';
+  const text3      = isDark ? '#686864' : '#8a8a82';
+  const borderC    = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+  const popCol     = isDark ? POP_COLOR_DARK : POP_COLOR;
+  const dotFill    = isDark ? DOT_FILL_DARK : DOT_FILL;
+  const dotStroke  = isDark ? '#222224' : '#f7f7f5';
   const svg = document.getElementById('qgSvg');
-  // Always hide tooltip on re-render — clearing innerHTML removes listeners
-  // so mouseleave never fires on the old elements
   hideQGTip();
   svg.innerHTML = '';
-
   function el(tag, attrs, parent) {
     const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
     if (attrs) Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v));
@@ -794,19 +953,13 @@ function renderQG() {
     if (cur) lines.push(cur);
     return lines;
   }
-
-  // Background
   el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
-
-  // Divider and info panel — hidden when pop is fully expanded
   const showInfo = (popAnimState !== 'expanded');
   if (showInfo) {
     el('line', {x1:DIVIDER_X,y1:20,x2:DIVIDER_X,y2:SVG_H-20,
       stroke:borderC,'stroke-width':'0.8','stroke-dasharray':'4 5'});
     drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, txt, wrapText);
   }
-
-  // Visualization (RIGHT of divider)
   if (popAnimState === 'expanded') {
     drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC);
   } else if (popAnimState === 'expanding' || popAnimState === 'collapsing') {
@@ -816,7 +969,6 @@ function renderQG() {
   }
 }
 
-// ─── Arc helper: polyline points for a dashed arc ─────────────────────────────
 function arcPoints(cx, cy, r, a0, a1, steps) {
   const pts = [];
   for (let i = 0; i <= steps; i++) {
@@ -826,58 +978,44 @@ function arcPoints(cx, cy, r, a0, a1, steps) {
   return pts.join(' ');
 }
 
-// ─── Collapsed view ───────────────────────────────────────────────────────────
 function drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke, borderC, textCol, el, txt) {
   const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-
-  // Draw arcs (dashed, right-facing fan)
   RING_RADII.forEach(r => {
     el('polyline', {
       points: arcPoints(POP_CX, POP_CY, r, ARC_MIN, ARC_MAX, 60),
       fill: 'none', stroke: borderC, 'stroke-width': '1', 'stroke-dasharray': '3 5'
     });
   });
-
-  // Target dots — staggered within each band, within the arc angle range
   const dotRand = seededRand(seed + 1);
-
-  // For each item: pick random angle in arc AND random radius within the band
-  // Use multiple attempts to space them out a bit and clamp to visible area
-  const placed = []; // {cx, cy} for spacing check
+  const placed = [];
   qItems.forEach(item => {
-    const band = Math.min(4, Math.floor(item.score * 5));
+    const band   = Math.min(4, Math.floor(item.score * 5));
     const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band - 1] + DOT_R + 4;
     const outerR = RING_RADII[band] - DOT_R - 4;
     const rRange = Math.max(1, outerR - innerR);
-
     let bestCx = POP_CX, bestCy = POP_CY, bestDist = -1;
     for (let attempt = 0; attempt < 14; attempt++) {
       const angle = ARC_MIN + dotRand() * (ARC_MAX - ARC_MIN);
       const r     = innerR + dotRand() * rRange;
-      let cx    = POP_CX + r * Math.cos(angle);
-      let cy    = POP_CY + r * Math.sin(angle);
-      // clamp a little inside canvas (avoid half-cut dots)
+      let cx = POP_CX + r * Math.cos(angle);
+      let cy = POP_CY + r * Math.sin(angle);
       cx = Math.max(DOT_R + 6, Math.min(SVG_W - DOT_R - 6, cx));
       cy = Math.max(DOT_R + 6, Math.min(SVG_H - DOT_R - 6, cy));
-      const minD  = placed.length
+      const minD = placed.length
         ? Math.min(...placed.map(p => Math.hypot(p.cx - cx, p.cy - cy)))
         : 999;
       if (minD > bestDist) { bestDist = minD; bestCx = cx; bestCy = cy; }
       if (bestDist > DOT_R * 2.2) break;
     }
     placed.push({cx: bestCx, cy: bestCy});
-
     const dot = el('circle', {
       cx: bestCx.toFixed(1), cy: bestCy.toFixed(1),
-      r: DOT_R, fill: dotFill, stroke: dotStroke, 'stroke-width': '2',
-      style: 'cursor:pointer'
+      r: DOT_R, fill: dotFill, stroke: dotStroke, 'stroke-width': '2', style: 'cursor:pointer'
     });
     dot.addEventListener('mouseenter', e => showQGTip(e, item.answer));
     dot.addEventListener('mousemove',  e => moveQGTip(e));
     dot.addEventListener('mouseleave', hideQGTip);
   });
-
-  // Population circle (drawn on top so dots behind it)
   const popG = el('g', {style:'cursor:pointer'});
   el('circle', {cx:POP_CX, cy:POP_CY, r:POP_R, fill:popCol}, popG);
   txt('Population', {
@@ -899,7 +1037,6 @@ function drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke
   });
 }
 
-// ─── Animation ────────────────────────────────────────────────────────────────
 function animatePop(expanding) {
   const duration = 500, start = performance.now();
   function tick(now) {
@@ -912,15 +1049,12 @@ function animatePop(expanding) {
   popAnimRAF = requestAnimationFrame(tick);
 }
 
-// ─── Animating transition ─────────────────────────────────────────────────────
 function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText) {
   const invA = 1 - progress;
   const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  // Interpolate center from collapsed pos to full-canvas center
   const curCx = POP_CX + (ecx - POP_CX) * progress;
   const curCy = POP_CY + (ecy - POP_CY) * progress;
   const curR  = POP_R  + (EXP_R - POP_R) * progress;
-
   if (invA > 0.01) {
     RING_RADII.forEach(r => {
       el('polyline', {
@@ -933,17 +1067,17 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
     const dotRand = seededRand(seed + 1);
     const placed2 = [];
     qItems.forEach(item => {
-      const band = Math.min(4, Math.floor(item.score * 5));
+      const band   = Math.min(4, Math.floor(item.score * 5));
       const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band-1] + DOT_R + 4;
       const outerR = RING_RADII[band] - DOT_R - 4;
       const rRange = Math.max(1, outerR - innerR);
       let bx=POP_CX,by=POP_CY,bd=-1;
-      for (let a=0;a<12;a++) {
-        const angle=ARC_MIN+dotRand()*(ARC_MAX-ARC_MIN);
-        const r=innerR+dotRand()*rRange;
-        let cx=POP_CX+r*Math.cos(angle),cy=POP_CY+r*Math.sin(angle);
-        cx = Math.max(DOT_R+6, Math.min(SVG_W-DOT_R-6, cx));
-        cy = Math.max(DOT_R+6, Math.min(SVG_H-DOT_R-6, cy));
+      for (let a=0; a<12; a++) {
+        const angle = ARC_MIN+dotRand()*(ARC_MAX-ARC_MIN);
+        const r     = innerR+dotRand()*rRange;
+        let cx=POP_CX+r*Math.cos(angle), cy=POP_CY+r*Math.sin(angle);
+        cx=Math.max(DOT_R+6, Math.min(SVG_W-DOT_R-6, cx));
+        cy=Math.max(DOT_R+6, Math.min(SVG_H-DOT_R-6, cy));
         const minD=placed2.length?Math.min(...placed2.map(p=>Math.hypot(p.cx-cx,p.cy-cy))):999;
         if(minD>bd){bd=minD;bx=cx;by=cy;}
         if(bd>DOT_R*2.2)break;
@@ -952,7 +1086,6 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
       el('circle',{cx:bx.toFixed(1),cy:by.toFixed(1),r:DOT_R,fill:dotFill,stroke:dotStroke,'stroke-width':'2',opacity:invA.toFixed(3)});
     });
   }
-
   el('circle', {cx:curCx.toFixed(1),cy:curCy.toFixed(1),r:curR.toFixed(1),fill:popCol});
   if (progress > 0.15) {
     const pillA = ((progress - 0.15) / 0.85).toFixed(3);
@@ -960,12 +1093,8 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
   }
 }
 
-// ─── Expanded pop view ────────────────────────────────────────────────────────
 function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) {
-  // When expanded, center circle in the full SVG
   const ecx = SVG_W / 2, ecy = SVG_H / 2;
-
-  // Place overlay FIRST so it's behind the pills; overlay still catches clicks (but won't block hover on pills)
   const overlay = el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:'transparent',style:'cursor:default'});
   overlay.addEventListener('click', e => {
     const svgEl = document.getElementById('qgSvg');
@@ -979,185 +1108,12 @@ function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) 
       animatePop(false);
     }
   });
-
   el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
   drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
 }
 
-// New func
-// function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
-// if (!popAnswers.length) return;
-
-// const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-// const rand = seededRand(seed + 7);
-// const shuffled = [...popAnswers];
-// for (let i = shuffled.length - 1; i > 0; i--) {
-// const j = Math.floor(rand() * (i + 1));
-// [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-// }
-
-// const pText = '#ffffff';
-// const headerY = cy - r + 28;
-// txt('Population', {
-// x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
-// fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
-// });
-// txt(${popAnswers.length} answers, {
-// x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
-// fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
-// });
-// txt('click outside to close', {
-// x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
-// fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
-// });
-
-// // Reserve the header area so scattered dots won't be placed on top of it
-// const headerRectW = Math.min(r * 1.4, 240);
-// const headerRectH = 48;
-// const headerRectX = cx - headerRectW / 2;
-// const headerRectY = headerY - headerRectH / 2;
-// const placedRects = [{ x: headerRectX, y: headerRectY, w: headerRectW, h: headerRectH }];
-
-// // Pill layout constants — smaller pills so we can show more
-// const PILL_H    = 18;
-// const PILL_H2   = 28;
-// const PAD_X     = 10;
-// const GAP_X     = 6;
-// const ROW_GAP   = 6;
-// const FS        = 9;
-// const CHAR_W    = FS * 0.52;
-// const MAX_TXT_W = 120;
-// const AVAIL_W   = r * 1.6;
-// const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
-
-// const contentStartY = headerY + 40;
-// const contentEndY   = cy + r - 20;
-// const contentH      = contentEndY - contentStartY;
-
-// function pillText(ans) {
-// const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
-// return words.length < ans.trim().length ? words + '…' : words;
-// }
-// function pillDims(ans) {
-// const t = pillText(ans);
-// const tW = t.length * CHAR_W;
-// const needsWrap = tW > MAX_TXT_W;
-// const clampedW = Math.min(tW, MAX_TXT_W);
-// return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
-// }
-
-// const shown    = shuffled.slice(0, SHOW_N);
-// const hoverable= shuffled.slice(SHOW_N);
-
-// // Build rows greedily
-// const rows = []; let curRow = [], curW = 0;
-// shown.forEach((ans, i) => {
-// const d = pillDims(ans);
-// const needed = curRow.length ? d.w + GAP_X : d.w;
-// if (curRow.length > 0 && curW + needed > AVAIL_W) {
-// rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
-// } else { curRow.push({ans,...d,idx:i}); curW += needed; }
-// });
-// if (curRow.length) rows.push(curRow);
-
-// const totalH = rows.reduce((s,row,ri) =>
-// s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
-
-// let py = contentStartY + (contentH - totalH) / 2;
-// if (py < contentStartY) py = contentStartY;
-
-// // Place pills and record their rectangles to avoid overlaps with scattered dots
-// rows.forEach(row => {
-// const rowH = Math.max(...row.map(p=>p.h));
-// const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
-// let px = cx - rowW / 2;
-
-// row.forEach(p => {
-//   const g = el('g', {opacity:opacityStr});
-//   const py2 = py + (rowH - p.h) / 2;
-//   el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
-//     fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
-
-//   if (p.two) {
-//     const lines = wrapText(p.txt, MAX_TXT_W, FS);
-//     txt(lines[0]||'', {x:px+p.w/2, y:py2+11,
-//       'text-anchor':'middle','dominant-baseline':'middle',
-//       fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-//     txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,
-//       'text-anchor':'middle','dominant-baseline':'middle',
-//       fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
-//   } else {
-//     txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,
-//       'text-anchor':'middle','dominant-baseline':'middle',
-//       fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-//   }
-
-//   const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
-//   const fa = p.ans;
-//   hit.addEventListener('mouseenter', e => showQGTip(e, fa));
-//   hit.addEventListener('mousemove',  e => moveQGTip(e));
-//   hit.addEventListener('mouseleave', hideQGTip);
-
-//   // record placement so scattered dots avoid this area
-//   placedRects.push({x:px, y:py2, w:p.w, h:p.h});
-//   px += p.w + GAP_X;
-// });
-// py += rowH + ROW_GAP;
-// });
-
-// // Remaining answers: scatter inside circle (not just on perimeter), avoiding placedRects
-// if (hoverable.length) {
-// const rand2 = seededRand(seed + 13);
-// const smallR = 9;
-// const placedCircles = [];
-// hoverable.forEach((ans, i) => {
-// // attempt to find a location inside the circle that doesn't overlap pills/header/circles
-// let attempts = 0, placed = false, candX = cx, candY = cy;
-// while (attempts < 80 && !placed) {
-// attempts++;
-// // sample point inside circle uniformly
-// const ang = rand2() * Math.PI * 2;
-// const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
-// candX = cx + rad * Math.cos(ang);
-// candY = cy + rad * Math.sin(ang);
-// // ensure inside canvas margins
-// if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
-// // avoid overlap with pill rects / header rectangle
-// const overlapRect = placedRects.some(rr => {
-// const rx = Math.max(rr.x, candX - smallR);
-// const ry = Math.max(rr.y, candY - smallR);
-// const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
-// const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
-// return rw > 0 && rh > 0;
-// });
-// if (overlapRect) continue;
-// // avoid overlap with other scattered circles
-// const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
-// if (overlapCircle) continue;
-// placed = true;
-// placedCircles.push({x:candX, y:candY});
-// }
-// // fallback: place on ring-like fallback positions if not found
-// if (!placed) {
-// const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
-// const dr = r - 28;
-// candX = cx + dr * Math.cos(angle);
-// candY = cy + dr * Math.sin(angle);
-// }
-
-//   const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
-//   el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
-//   g.addEventListener('mouseenter', e => showQGTip(e, ans));
-//   g.addEventListener('mousemove',  e => moveQGTip(e));
-//   g.addEventListener('mouseleave', hideQGTip);
-// });
-// }
-// }
-
-// ─── Pill layout inside expanded circle ───────────────────────────────────────
 function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
   if (!popAnswers.length) return;
-
   const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
   const rand = seededRand(seed + 7);
   const shuffled = [...popAnswers];
@@ -1165,7 +1121,6 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     const j = Math.floor(rand() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-
   const pText = '#ffffff';
   const headerY = cy - r + 28;
   txt('Population', {
@@ -1180,39 +1135,20 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
     fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
   });
-
-  // Pill layout constants — smaller pills so we can show more
-  const PILL_H    = 18;
-  const PILL_H2   = 28;
-  const PAD_X     = 10;
-  const GAP_X     = 6;
-  const ROW_GAP   = 6;
-  const FS        = 9;
-  const CHAR_W    = FS * 0.52;
-  const MAX_TXT_W = 120;
-  const AVAIL_W   = r * 1.6;
-  const SHOW_N    = Math.min(28, shuffled.length); // show up to 28 pills
-
-  const contentStartY = headerY + 40;
-  const contentEndY   = cy + r - 20;
-  const contentH      = contentEndY - contentStartY;
-
+  const PILL_H  = 18, PILL_H2 = 28, PAD_X = 10, GAP_X = 6, ROW_GAP = 6;
+  const FS = 9, CHAR_W = FS * 0.52, MAX_TXT_W = 120, AVAIL_W = r * 1.6;
+  const SHOW_N = Math.min(28, shuffled.length);
+  const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
   function pillText(ans) {
     const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
     return words.length < ans.trim().length ? words + '…' : words;
   }
   function pillDims(ans) {
-    const t = pillText(ans);
-    const tW = t.length * CHAR_W;
-    const needsWrap = tW > MAX_TXT_W;
-    const clampedW = Math.min(tW, MAX_TXT_W);
+    const t = pillText(ans), tW = t.length * CHAR_W;
+    const needsWrap = tW > MAX_TXT_W, clampedW = Math.min(tW, MAX_TXT_W);
     return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
   }
-
-  const shown    = shuffled.slice(0, SHOW_N);
-  const hoverable= shuffled.slice(SHOW_N);
-
-  // Build rows greedily
+  const shown = shuffled.slice(0, SHOW_N), hoverable = shuffled.slice(SHOW_N);
   const rows = []; let curRow = [], curW = 0;
   shown.forEach((ans, i) => {
     const d = pillDims(ans);
@@ -1222,94 +1158,69 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     } else { curRow.push({ans,...d,idx:i}); curW += needed; }
   });
   if (curRow.length) rows.push(curRow);
-
   const totalH = rows.reduce((s,row,ri) =>
     s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
-
   let py = contentStartY + (contentH - totalH) / 2;
   if (py < contentStartY) py = contentStartY;
-
-  // Keep track of placed rectangles so we can avoid overlaps when placing scattered items
   const placedRects = [];
-
   rows.forEach(row => {
     const rowH = Math.max(...row.map(p=>p.h));
     const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
     let px = cx - rowW / 2;
-
     row.forEach(p => {
       const g = el('g', {opacity:opacityStr});
       const py2 = py + (rowH - p.h) / 2;
       el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
         fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
-
       if (p.two) {
         const lines = wrapText(p.txt, MAX_TXT_W, FS);
-        txt(lines[0]||'', {x:px+p.w/2, y:py2+11,
-          'text-anchor':'middle','dominant-baseline':'middle',
+        txt(lines[0]||'', {x:px+p.w/2, y:py2+11,'text-anchor':'middle','dominant-baseline':'middle',
           fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-        txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,
-          'text-anchor':'middle','dominant-baseline':'middle',
+        txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,'text-anchor':'middle','dominant-baseline':'middle',
           fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
       } else {
-        txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,
-          'text-anchor':'middle','dominant-baseline':'middle',
+        txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,'text-anchor':'middle','dominant-baseline':'middle',
           fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
       }
-
       const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
       const fa = p.ans;
       hit.addEventListener('mouseenter', e => showQGTip(e, fa));
       hit.addEventListener('mousemove',  e => moveQGTip(e));
       hit.addEventListener('mouseleave', hideQGTip);
-
-      // record placement
       placedRects.push({x:px, y:py2, w:p.w, h:p.h});
       px += p.w + GAP_X;
     });
     py += rowH + ROW_GAP;
   });
-
-  // Remaining answers: scatter inside circle (not just on perimeter)
   if (hoverable.length) {
     const rand2 = seededRand(seed + 13);
     const smallR = 9;
     const placedCircles = [];
     hoverable.forEach((ans, i) => {
-      // attempt to find a location inside the circle that doesn't overlap pills/circles
       let attempts = 0, placed = false, candX = cx, candY = cy;
       while (attempts < 80 && !placed) {
         attempts++;
-        // sample point inside circle uniformly
         const ang = rand2() * Math.PI * 2;
-        const rad = Math.sqrt(rand2()) * (r - 28); // keep inside margin
+        const rad = Math.sqrt(rand2()) * (r - 28);
         candX = cx + rad * Math.cos(ang);
         candY = cy + rad * Math.sin(ang);
-        // ensure inside canvas margins
-        if (candX < smallR+6 || candX > SVG_W - smallR - 6 || candY < smallR+6 || candY > SVG_H - smallR - 6) continue;
-        // avoid overlap with pill rects
+        if (candX < smallR+6 || candX > SVG_W-smallR-6 || candY < smallR+6 || candY > SVG_H-smallR-6) continue;
         const overlapRect = placedRects.some(rr => {
-          const rx = Math.max(rr.x, candX - smallR);
-          const ry = Math.max(rr.y, candY - smallR);
-          const rw = Math.min(rr.x + rr.w, candX + smallR) - rx;
-          const rh = Math.min(rr.y + rr.h, candY + smallR) - ry;
-          return rw > 0 && rh > 0;
+          const rx=Math.max(rr.x,candX-smallR), ry=Math.max(rr.y,candY-smallR);
+          const rw=Math.min(rr.x+rr.w,candX+smallR)-rx, rh=Math.min(rr.y+rr.h,candY+smallR)-ry;
+          return rw>0 && rh>0;
         });
         if (overlapRect) continue;
-        // avoid overlap with other scattered circles
-        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
+        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x-candX, pc.y-candY) < smallR*2.2);
         if (overlapCircle) continue;
         placed = true;
         placedCircles.push({x:candX, y:candY});
       }
-      // fallback: place on ring-like fallback positions if not found
       if (!placed) {
         const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
-        const dr = r - 28;
-        candX = cx + dr * Math.cos(angle);
-        candY = cy + dr * Math.sin(angle);
+        candX = cx + (r-28) * Math.cos(angle);
+        candY = cy + (r-28) * Math.sin(angle);
       }
-
       const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
       el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
       g.addEventListener('mouseenter', e => showQGTip(e, ans));
@@ -1319,58 +1230,43 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
   }
 }
 
-// ─── Info panel (LEFT) ────────────────────────────────────────────────────────
 function drawInfoPanel(combo, featKey, idx, total, isDark, textCol, text2, text3, borderC, el, txt, wrapText) {
   const x = INFO_X, midX = INFO_MID;
-
-  // Feature pill
   const featLabel = FEAT_LABEL_MAP[featKey] || combo.feature;
   const featBg = FEAT_BG[featKey] || '#eee';
   const featFg = FEAT_FG[featKey] || '#333';
-  const pillW  = Math.min(INFO_W, featLabel.length * 8.5 + 28);
+  const pillW = Math.min(INFO_W, featLabel.length * 8.5 + 28);
   el('rect', {x:midX-pillW/2, y:30, width:pillW, height:26, rx:13, fill:featBg});
-  txt(featLabel, {x:midX, y:43, 'text-anchor':'middle','dominant-baseline':'middle',
+  txt(featLabel, {x:midX, y:43,'text-anchor':'middle','dominant-baseline':'middle',
     fill:featFg,'font-size':'12','font-weight':'600','font-family':'Inter,sans-serif'});
-
-  // Question
-  txt('QUESTION', {x, y:84, 'text-anchor':'start','dominant-baseline':'middle',
+  txt('QUESTION', {x, y:84,'text-anchor':'start','dominant-baseline':'middle',
     fill:text3,'font-size':'9','font-weight':'500','font-family':'Inter,sans-serif','letter-spacing':'0.08em'});
   const qLines = wrapText(combo.question, INFO_W - 4, 13.5);
   qLines.slice(0, 5).forEach((ln, i) =>
-    txt(ln, {x, y:100+i*19, 'text-anchor':'start','dominant-baseline':'middle',
+    txt(ln, {x, y:100+i*19,'text-anchor':'start','dominant-baseline':'middle',
       fill:textCol,'font-size':'13.5','font-weight':'500','font-family':'Inter,sans-serif'})
   );
-
   const afterQ = 100 + Math.min(qLines.length, 5) * 19 + 16;
   el('line', {x1:x,y1:afterQ,x2:x+INFO_W,y2:afterQ,stroke:borderC,'stroke-width':'0.5'});
-
-  // Prompt
-  txt('PROMPT', {x, y:afterQ+16, 'text-anchor':'start','dominant-baseline':'middle',
+  txt('PROMPT', {x, y:afterQ+16,'text-anchor':'start','dominant-baseline':'middle',
     fill:text3,'font-size':'9','font-weight':'500','font-family':'Inter,sans-serif','letter-spacing':'0.08em'});
   const pLines = wrapText(combo.prompt, INFO_W - 4, 12);
   pLines.slice(0, 7).forEach((ln, i) =>
-    txt(ln, {x, y:afterQ+32+i*16, 'text-anchor':'start','dominant-baseline':'middle',
+    txt(ln, {x, y:afterQ+32+i*16,'text-anchor':'start','dominant-baseline':'middle',
       fill:text2,'font-size':'12','font-family':'Inter,sans-serif'})
   );
-
-  // Nav arrows at bottom
   const navY = SVG_H - 36;
-
   const prevG = el('g', {style:`cursor:${idx>0?'pointer':'default'}`, opacity:idx>0?'1':'0.3'});
-  el('rect', {x, y:navY-14, width:28, height:28, rx:6,
-    fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, prevG);
-  txt('←', {x:x+14, y:navY, 'text-anchor':'middle','dominant-baseline':'middle',
+  el('rect', {x, y:navY-14, width:28, height:28, rx:6, fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, prevG);
+  txt('←', {x:x+14, y:navY,'text-anchor':'middle','dominant-baseline':'middle',
     fill:textCol,'font-size':'15','font-family':'Inter,sans-serif'}, prevG);
   if (idx > 0) prevG.addEventListener('click', () => qgNav(-1));
-
-  txt(`${idx+1} / ${total}`, {x:x+38, y:navY, 'text-anchor':'start','dominant-baseline':'middle',
+  txt(`${idx+1} / ${total}`, {x:x+38, y:navY,'text-anchor':'start','dominant-baseline':'middle',
     fill:text3,'font-size':'12','font-family':'Inter,sans-serif'});
-
   const nextX = x + INFO_W - 28;
   const nextG = el('g', {style:`cursor:${idx<total-1?'pointer':'default'}`, opacity:idx<total-1?'1':'0.3'});
-  el('rect', {x:nextX, y:navY-14, width:28, height:28, rx:6,
-    fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, nextG);
-  txt('→', {x:nextX+14, y:navY, 'text-anchor':'middle','dominant-baseline':'middle',
+  el('rect', {x:nextX, y:navY-14, width:28, height:28, rx:6, fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, nextG);
+  txt('→', {x:nextX+14, y:navY,'text-anchor':'middle','dominant-baseline':'middle',
     fill:textCol,'font-size':'15','font-family':'Inter,sans-serif'}, nextG);
   if (idx < total-1) nextG.addEventListener('click', () => qgNav(1));
 }

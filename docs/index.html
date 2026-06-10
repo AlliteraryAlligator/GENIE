@@ -8,126 +8,126 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #ffffff;
-  --bg2: #f7f7f5;
-  --bg3: #f0efe9;
-  --text: #1a1a18;
-  --text2: #5a5a55;
-  --text3: #8a8a82;
-  --border: rgba(0,0,0,0.1);
-  --border2: rgba(0,0,0,0.18);
-  --radius: 8px;
-  --radius-lg: 12px;
-  --c-agent: #7F77DD;
-  --c-perspective: #1D9E75;
-  --c-plot: #378ADD;
-  --c-setting: #EF9F27;
-  --c-social: #D85A30;
-  --c-style: #D4537E;
-  --c-agent-l: #EEEDFE;
-  --c-perspective-l: #E1F5EE;
-  --c-plot-l: #E6F1FB;
-  --c-setting-l: #FAEEDA;
-  --c-social-l: #FAECE7;
-  --c-style-l: #FBEAF0;
+--bg: #ffffff;
+--bg2: #f7f7f5;
+--bg3: #f0efe9;
+--text: #1a1a18;
+--text2: #5a5a55;
+--text3: #8a8a82;
+--border: rgba(0,0,0,0.1);
+--border2: rgba(0,0,0,0.18);
+--radius: 8px;
+--radius-lg: 12px;
+--c-agent: #7F77DD;
+--c-perspective: #1D9E75;
+--c-plot: #378ADD;
+--c-setting: #EF9F27;
+--c-social: #D85A30;
+--c-style: #D4537E;
+--c-agent-l: #EEEDFE;
+--c-perspective-l: #E1F5EE;
+--c-plot-l: #E6F1FB;
+--c-setting-l: #FAEEDA;
+--c-social-l: #FAECE7;
+--c-style-l: #FBEAF0;
 }
 [data-theme="dark"] {
-  --bg: #18181a;
-  --bg2: #222224;
-  --bg3: #2a2a2c;
-  --text: #f0f0ec;
-  --text2: #a0a09a;
-  --text3: #686864;
-  --border: rgba(255,255,255,0.1);
-  --border2: rgba(255,255,255,0.18);
-  --c-agent-l: #26215C;
-  --c-perspective-l: #04342C;
-  --c-plot-l: #042C53;
-  --c-setting-l: #412402;
-  --c-social-l: #4A1B0C;
-  --c-style-l: #4B1528;
+--bg: #18181a;
+--bg2: #222224;
+--bg3: #2a2a2c;
+--text: #f0f0ec;
+--text2: #a0a09a;
+--text3: #686864;
+--border: rgba(255,255,255,0.1);
+--border2: rgba(255,255,255,0.18);
+--c-agent-l: #26215C;
+--c-perspective-l: #04342C;
+--c-plot-l: #042C53;
+--c-setting-l: #412402;
+--c-social-l: #4A1B0C;
+--c-style-l: #4B1528;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--text);
-  background: var(--bg);
-  min-height: 100vh;
+font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+font-size: 15px;
+line-height: 1.6;
+color: var(--text);
+background: var(--bg);
+min-height: 100vh;
 }
 .site-header {
-  border-bottom: 0.5px solid var(--border);
-  padding: 0 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 52px;
-  position: sticky;
-  top: 0;
-  background: var(--bg);
-  z-index: 100;
+border-bottom: 0.5px solid var(--border);
+padding: 0 2rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+height: 52px;
+position: sticky;
+top: 0;
+background: var(--bg);
+z-index: 100;
 }
 .site-header .logo {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  height: 36px;
+display: flex;
+align-items: center;
+text-decoration: none;
+height: 36px;
 }
 .site-header .logo img {
-  height: 32px;
-  width: auto;
-  object-fit: contain;
+height: 32px;
+width: auto;
+object-fit: contain;
 }
 .logo-fallback {
-  display: none;
-  font-size: 16px;
-  font-weight: 600;
-  letter-spacing: -0.3px;
-  color: var(--text);
+display: none;
+font-size: 16px;
+font-weight: 600;
+letter-spacing: -0.3px;
+color: var(--text);
 }
 .header-right { display: flex; align-items: center; gap: 8px; }
 .top-nav {
-  display: flex;
-  align-items: center;
-  gap: 2px;
+display: flex;
+align-items: center;
+gap: 2px;
 }
 .nav-tab {
-  font-size: 13px;
-  color: var(--text2);
-  padding: 6px 14px;
-  border-radius: var(--radius);
-  cursor: pointer;
-  border: none;
-  background: transparent;
-  text-align: center;
-  font-family: inherit;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: background 0.12s, color 0.12s;
+font-size: 13px;
+color: var(--text2);
+padding: 6px 14px;
+border-radius: var(--radius);
+cursor: pointer;
+border: none;
+background: transparent;
+text-align: center;
+font-family: inherit;
+text-decoration: none;
+display: inline-flex;
+align-items: center;
+gap: 6px;
+transition: background 0.12s, color 0.12s;
 }
 .nav-tab:hover { background: var(--bg2); color: var(--text); }
 .nav-tab.active { background: var(--bg2); color: var(--text); font-weight: 500; }
 .dark-toggle {
-  width: 36px; height: 36px;
-  border: 0.5px solid var(--border2);
-  border-radius: var(--radius);
-  background: transparent;
-  cursor: pointer;
-  color: var(--text2);
-  font-size: 16px;
-  display: flex; align-items: center; justify-content: center;
-  margin-left: 8px;
+width: 36px; height: 36px;
+border: 0.5px solid var(--border2);
+border-radius: var(--radius);
+background: transparent;
+cursor: pointer;
+color: var(--text2);
+font-size: 16px;
+display: flex; align-items: center; justify-content: center;
+margin-left: 8px;
 }
 .dark-toggle:hover { background: var(--bg2); }
 .layout { display: flex; min-height: calc(100vh - 52px); justify-content: center; }
 .main {
-  flex: 1;
-  padding: 2.5rem 3rem;
-  max-width: 900px;
-  width: 100%;
+flex: 1;
+padding: 2.5rem 3rem;
+max-width: 900px;
+width: 100%;
 }
 .page { display: none; }
 .page.active { display: block; }
@@ -140,27 +140,27 @@ h3 { font-size: 15px; font-weight: 500; margin-bottom: 0.5rem; }
 p { color: var(--text2); margin-bottom: 1rem; }
 p:last-child { margin-bottom: 0; }
 .abstract-text {
-  margin: 1.1rem 0 1.5rem;
-  font-size: 15px;
-  line-height: 1.9;
-  color: var(--text);
-  max-width: 680px;
-  border-left: 2.5px solid var(--border2);
-  padding-left: 1.25rem;
+margin: 1.1rem 0 1.5rem;
+font-size: 15px;
+line-height: 1.9;
+color: var(--text);
+max-width: 680px;
+border-left: 2.5px solid var(--border2);
+padding-left: 1.25rem;
 }
 .abstract-text strong { color: var(--text); }
 .link-row { display: flex; gap: 8px; flex-wrap: wrap; margin: 1.25rem 0; }
 .link-btn {
-  font-size: 13px; padding: 7px 14px;
-  border-radius: var(--radius);
-  border: 0.5px solid var(--border2);
-  background: transparent;
-  color: var(--text);
-  cursor: pointer;
-  display: inline-flex; align-items: center; gap: 6px;
-  text-decoration: none;
-  font-family: inherit;
-  transition: background 0.12s;
+font-size: 13px; padding: 7px 14px;
+border-radius: var(--radius);
+border: 0.5px solid var(--border2);
+background: transparent;
+color: var(--text);
+cursor: pointer;
+display: inline-flex; align-items: center; gap: 6px;
+text-decoration: none;
+font-family: inherit;
+transition: background 0.12s;
 }
 .link-btn:hover { background: var(--bg2); }
 .link-btn.primary { background: #185FA5; color: #fff; border-color: #185FA5; }
@@ -171,38 +171,38 @@ p:last-child { margin-bottom: 0; }
 .stat-card .lbl { font-size: 12px; color: var(--text3); }
 .divider { height: 0.5px; background: var(--border); margin: 2rem 0; }
 .pipeline-figure {
-  margin: 1.5rem 0;
-  border-radius: var(--radius-lg);
-  overflow: hidden;
-  border: 0.5px solid var(--border);
+margin: 1.5rem 0;
+border-radius: var(--radius-lg);
+overflow: hidden;
+border: 0.5px solid var(--border);
 }
 .pipeline-figure img { width: 100%; display: block; }
 .pipeline-figure figcaption {
-  font-size: 12px;
-  color: var(--text3);
-  padding: 0.6rem 1rem;
-  background: var(--bg2);
-  text-align: center;
+font-size: 12px;
+color: var(--text3);
+padding: 0.6rem 1rem;
+background: var(--bg2);
+text-align: center;
 }
 
 /* ── Feature tabs (leaderboard) ── */
 .feat-tabs {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
+display: flex;
+gap: 6px;
+flex-wrap: wrap;
+margin-bottom: 1rem;
 }
 .feat-tab {
-  font-size: 12px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 0.5px solid var(--border2);
-  background: transparent;
-  color: var(--text2);
-  cursor: pointer;
-  font-family: inherit;
-  font-weight: 500;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+font-size: 12px;
+padding: 5px 14px;
+border-radius: 20px;
+border: 0.5px solid var(--border2);
+background: transparent;
+color: var(--text2);
+cursor: pointer;
+font-family: inherit;
+font-weight: 500;
+transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
 .feat-tab:hover { background: var(--bg2); color: var(--text); }
 .feat-tab.active { color: #fff; border-color: transparent; }
@@ -210,193 +210,214 @@ p:last-child { margin-bottom: 0; }
 /* ── Supplementary filters row ── */
 .filter-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 0; }
 .filter-btn {
-  font-size: 12px; padding: 4px 12px;
-  border-radius: 20px;
-  border: 0.5px solid var(--border2);
-  background: transparent; color: var(--text2);
-  cursor: pointer; font-family: inherit;
-  transition: background 0.12s, color 0.12s;
+font-size: 12px; padding: 4px 12px;
+border-radius: 20px;
+border: 0.5px solid var(--border2);
+background: transparent; color: var(--text2);
+cursor: pointer; font-family: inherit;
+transition: background 0.12s, color 0.12s;
 }
 .filter-btn:hover, .filter-btn.on {
-  background: var(--bg2); color: var(--text);
-  border-color: var(--border2); font-weight: 500;
+background: var(--bg2); color: var(--text);
+border-color: var(--border2); font-weight: 500;
 }
 
 /* ── Leaderboard rows ── */
 .model-list { display: flex; flex-direction: column; gap: 5px; margin-top: 1.25rem; }
 .model-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 7px 10px;
-  border-radius: var(--radius);
-  border: 0.5px solid var(--border);
-  background: var(--bg);
-  transition: border-color 0.12s, background 0.12s;
+display: flex;
+align-items: center;
+gap: 10px;
+padding: 7px 10px;
+border-radius: var(--radius);
+border: 0.5px solid var(--border);
+background: var(--bg);
+transition: border-color 0.12s, background 0.12s;
 }
 .model-row:hover { border-color: var(--border2); background: var(--bg2); }
 .lb-rank {
-  font-size: 12px;
-  color: var(--text3);
-  width: 22px;
-  text-align: right;
-  flex-shrink: 0;
+font-size: 12px;
+color: var(--text3);
+width: 22px;
+text-align: right;
+flex-shrink: 0;
 }
 .model-name {
-  font-size: 13px;
-  font-weight: 500;
-  width: 190px;
-  flex-shrink: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--text);
+font-size: 13px;
+font-weight: 500;
+width: 190px;
+flex-shrink: 0;
+overflow: hidden;
+text-overflow: ellipsis;
+white-space: nowrap;
+color: var(--text);
 }
 .fam-badge {
-  font-size: 10px; padding: 2px 7px;
-  border-radius: 20px; font-weight: 500;
-  width: 60px; text-align: center; flex-shrink: 0;
+font-size: 10px; padding: 2px 7px;
+border-radius: 20px; font-weight: 500;
+width: 60px; text-align: center; flex-shrink: 0;
 }
 .type-badge {
-  font-size: 10px; padding: 2px 7px;
-  border-radius: 20px; font-weight: 500;
-  width: 54px; text-align: center; flex-shrink: 0;
-  background: var(--bg3);
-  color: var(--text3);
-  border: 0.5px solid var(--border);
+font-size: 10px; padding: 2px 7px;
+border-radius: 20px; font-weight: 500;
+width: 54px; text-align: center; flex-shrink: 0;
+background: var(--bg3);
+color: var(--text3);
+border: 0.5px solid var(--border);
 }
 .fam-Gemma { background: #E1F5EE; color: #085041; }
 .fam-Llama { background: #E6F1FB; color: #0C447C; }
-.fam-OLMo  { background: #FAEEDA; color: #633806; }
-.fam-Qwen  { background: #EEEDFE; color: #3C3489; }
-.fam-GPT   { background: #EAF3DE; color: #27500A; }
+.fam-OLMo { background: #FAEEDA; color: #633806; }
+.fam-Qwen { background: #EEEDFE; color: #3C3489; }
+.fam-GPT { background: #EAF3DE; color: #27500A; }
 .fam-Claude{ background: #FAECE7; color: #712B13; }
 .fam-Other { background: var(--bg3); color: var(--text2); }
 [data-theme="dark"] .fam-Gemma { background: #04342C; color: #5DCAA5; }
 [data-theme="dark"] .fam-Llama { background: #042C53; color: #85B7EB; }
-[data-theme="dark"] .fam-OLMo  { background: #412402; color: #EF9F27; }
-[data-theme="dark"] .fam-Qwen  { background: #26215C; color: #AFA9EC; }
-[data-theme="dark"] .fam-GPT   { background: #173404; color: #97C459; }
+[data-theme="dark"] .fam-OLMo { background: #412402; color: #EF9F27; }
+[data-theme="dark"] .fam-Qwen { background: #26215C; color: #AFA9EC; }
+[data-theme="dark"] .fam-GPT { background: #173404; color: #97C459; }
 [data-theme="dark"] .fam-Claude{ background: #4A1B0C; color: #F0997B; }
 .lb-bar-wrap {
-  flex: 1;
-  height: 18px;
-  background: var(--bg2);
-  border-radius: 4px;
-  overflow: hidden;
+flex: 1;
+height: 18px;
+background: var(--bg2);
+border-radius: 4px;
+overflow: hidden;
 }
 .lb-bar {
-  height: 100%;
-  border-radius: 4px;
-  transition: width 0.35s ease;
+height: 100%;
+border-radius: 4px;
+transition: width 0.35s ease;
 }
 .lb-score {
-  font-size: 12px;
-  color: var(--text3);
-  width: 40px;
-  text-align: right;
-  flex-shrink: 0;
-  font-variant-numeric: tabular-nums;
+font-size: 12px;
+color: var(--text3);
+width: 40px;
+text-align: right;
+flex-shrink: 0;
+font-variant-numeric: tabular-nums;
 }
 .lb-loading { font-size: 13px; color: var(--text3); padding: 2rem; text-align: center; }
 .lb-error { color: #D85A30; }
 
-/* Q-GENIE */
+/* Q-GENIE (layout + styling for left panel) */
 .qg-canvas-wrap {
-  position: relative;
-  width: 100%;
-  background: var(--bg2);
-  border: 0.5px solid var(--border);
-  border-radius: var(--radius-lg);
-  overflow: hidden;
+position: relative;
+width: 100%;
+background: var(--bg2);
+border: 0.5px solid var(--border);
+border-radius: var(--radius-lg);
+overflow: hidden;
 }
 .qg-canvas-wrap svg { display: block; width: 100%; }
 .qg-tooltip {
-  position: fixed;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 12px;
-  line-height: 1.5;
-  padding: 8px 12px;
-  border-radius: var(--radius);
-  pointer-events: none;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.12s;
-  max-width: 320px;
-  white-space: pre-wrap;
-  word-break: break-word;
+position: fixed;
+background: var(--text);
+color: var(--bg);
+font-size: 12px;
+line-height: 1.5;
+padding: 8px 12px;
+border-radius: var(--radius);
+pointer-events: none;
+z-index: 9999;
+opacity: 0;
+transition: opacity 0.12s;
+max-width: 320px;
+white-space: pre-wrap;
+word-break: break-word;
 }
 .qg-tooltip.show { opacity: 1; }
 .qg-empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-  font-size: 13px;
-  color: var(--text3);
+text-align: center;
+padding: 4rem 2rem;
+font-size: 13px;
+color: var(--text3);
 }
 .qg-empty-state strong {
-  display: block;
-  font-size: 15px;
-  color: var(--text2);
-  margin-bottom: 0.5rem;
+display: block;
+font-size: 15px;
+color: var(--text2);
+margin-bottom: 0.5rem;
 }
 .qg-ring-labels {
-  display: flex;
-  gap: 18px;
-  flex-wrap: wrap;
-  margin-top: 10px;
-  font-size: 12px;
-  color: var(--text3);
+display: flex;
+gap: 18px;
+flex-wrap: wrap;
+margin-top: 10px;
+font-size: 12px;
+color: var(--text3);
 }
 
-/* ── Q-GENIE prompt selector ── */
-.qg-controls {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  flex-wrap: wrap;
+/* New: UI grid for left prompt panel + visualizer area */
+.qg-ui-grid {
+display: flex;
+gap: 12px;
+align-items: stretch;
 }
-.qg-prompt-select {
-  flex: 1;
-  min-width: 200px;
-  font-size: 13px;
-  font-family: inherit;
-  color: var(--text);
-  background: var(--bg);
-  border: 0.5px solid var(--border2);
-  border-radius: var(--radius);
-  padding: 7px 10px;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a82' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  padding-right: 28px;
+.qg-left {
+width: 260px;
+padding: 12px;
+border-radius: 10px;
+background: var(--bg2);
+border: 0.5px solid var(--border);
+display: flex;
+flex-direction: column;
+gap: 10px;
+font-size: 13px;
 }
-.qg-prompt-select:hover { border-color: var(--border2); background-color: var(--bg2); }
-.qg-prompt-select:focus { outline: none; border-color: #7F77DD; }
-.qg-count-badge {
-  font-size: 12px;
-  color: var(--text3);
-  white-space: nowrap;
-  flex-shrink: 0;
+.qg-left .label { font-size: 11px; color: var(--text3); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+.qg-prompt-button {
+background: transparent;
+border: 0.5px solid var(--border2);
+padding: 8px 10px;
+border-radius: 8px;
+cursor: pointer;
+text-align: left;
+white-space: normal;
+line-height: 1.25;
+color: var(--text);
 }
+.qg-prompt-dropdown {
+border: 0.5px solid var(--border2);
+background: var(--bg);
+max-height: 220px;
+overflow: auto;
+border-radius: 8px;
+}
+.qg-prompt-item {
+padding: 8px 10px;
+cursor: pointer;
+border-bottom: 0.5px dashed var(--border);
+white-space: normal;
+color: var(--text2);
+}
+.qg-prompt-item:hover { background: var(--bg2); color: var(--text); }
+.qg-question-list { display:flex;flex-direction:column;gap:6px;max-height:260px;overflow:auto;padding-right:6px }
+.qg-question-row {
+padding: 8px 10px; border-radius: 8px; background: transparent; border: 0.5px solid transparent; cursor: pointer;
+display:flex; gap:8px; align-items:flex-start; text-align:left; white-space:normal;
+}
+.qg-question-row:hover { background: var(--bg); border-color: var(--border); }
+.qg-feature-tag { font-size:11px; padding: 4px 8px; border-radius: 999px; background: var(--bg3); color: var(--text3); align-self:center; flex-shrink:0; }
+.qg-ctrls { display:flex; gap:8px; align-items:center; margin-top:6px; }
+.qg-btn { padding:6px 10px; border-radius:8px; background:transparent;border:0.5px solid var(--border2); cursor:pointer; font-size:13px; color:var(--text2); }
+.qg-btn:hover { background:var(--bg2); color:var(--text); }
+[data-theme="dark"] .qg-prompt-item { border-bottom-color: rgba(255,255,255,0.04); }
 
-[data-theme="dark"] .logo img { mix-blend-mode: screen; }
+/* tooltip small label */
 .tooltip-lb {
-  position: fixed;
-  background: var(--text);
-  color: var(--bg);
-  font-size: 12px;
-  padding: 6px 10px;
-  border-radius: var(--radius);
-  pointer-events: none;
-  white-space: nowrap;
-  z-index: 9999;
-  opacity: 0;
-  transition: opacity 0.1s;
+position: fixed;
+background: var(--text);
+color: var(--bg);
+font-size: 12px;
+padding: 6px 10px;
+border-radius: var(--radius);
+pointer-events: none;
+white-space: nowrap;
+z-index: 9999;
+opacity: 0;
+transition: opacity 0.1s;
 }
 .tooltip-lb.show { opacity: 1; }
 </style>
@@ -407,300 +428,320 @@ p:last-child { margin-bottom: 0; }
 <div id="qgTooltip" class="qg-tooltip"></div>
 
 <header class="site-header">
-  <a href="#" class="logo" onclick="showPage('overview');return false;">
-    <img src="genie.png" alt="GENIE" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
-    <span class="logo-fallback">GENIE</span>
-  </a>
-  <nav class="top-nav">
-    <a class="nav-tab active" id="tab-overview"     href="#" onclick="showPage('overview');return false;">&#8962; Overview</a>
-    <a class="nav-tab"        id="tab-dataset"      href="#" onclick="showPage('dataset');return false;">&#9112; Dataset</a>
-    <a class="nav-tab"        id="tab-leaderboard"  href="#" onclick="showPage('leaderboard');return false;">&#9745; Model scores</a>
-    <a class="nav-tab"        id="tab-qgenie"       href="#" onclick="showPage('qgenie');return false;">&#9678; Q-GENIE</a>
-  </nav>
-  <button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
+<a href="#" class="logo" onclick="showPage('overview');return false;">
+<img src="genie.png" alt="GENIE" onerror="this.style.display='none';document.querySelector('.logo-fallback').style.display='block'">
+<span class="logo-fallback">GENIE</span>
+</a>
+<nav class="top-nav">
+<a class="nav-tab active" id="tab-overview" href="#" onclick="showPage('overview');return false;">&#8962; Overview</a>
+<a class="nav-tab" id="tab-dataset" href="#" onclick="showPage('dataset');return false;">&#9112; Dataset</a>
+<a class="nav-tab" id="tab-leaderboard" href="#" onclick="showPage('leaderboard');return false;">&#9745; Model scores</a>
+<!-- removed qgenie tab (moved to overview) -->
+</nav>
+<button class="dark-toggle" onclick="toggleDark()" aria-label="Toggle dark mode" id="darkBtn">&#9790;</button>
 </header>
 
 <div class="layout">
-  <main class="main">
+<main class="main">
 
-    <!-- OVERVIEW -->
-    <div id="overview-page" class="page active">
-      <h1>GENIE: A Fine-Grained Measure for Novelty</h1>
-      <div class="abstract-text">
-        Large Language Models have consistently demonstrated a lack of creativity and diversity across tasks. We propose <strong>GENIE</strong> (Granular Evaluation of Novel Ideas with Explainability) — a fine-grained evaluation metric that measures the novelty of responses along task-specific features with respect to a population of responses.
-      </div>
-      <div class="link-row">
-        <a href="#" class="link-btn primary">&#128196;&nbsp;Paper</a>
-        <a href="https://github.com/AlliteraryAlligator/GENIE" class="link-btn">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
-          Code
-        </a>
-        <a href="https://huggingface.co/collections/AlliteraryAlligator/genie" class="link-btn">🤗&nbsp;Data</a>
-      </div>
-      <div class="divider"></div>
-      <h2>How GENIE works</h2>
-      <p>GENIE evaluates novelty in four stages: automatic feature discovery, question generation, population building, and population-relative dissimilarity scoring.</p>
-      <figure class="pipeline-figure">
-        <img src="pipeline.png" alt="GENIE pipeline diagram" onerror="this.parentElement.innerHTML='<div style=\'padding:3rem;text-align:center;color:var(--text3);font-size:13px\'>[pipeline.png — place in the same directory as this file]</div>'">
-        <figcaption>Figure 1. The GENIE evaluation pipeline.</figcaption>
-      </figure>
-    </div>
+<!-- OVERVIEW -->
+<div id="overview-page" class="page active">
+<h1>GENIE: A Fine-Grained Measure for Novelty</h1>
+<div class="abstract-text">
+Large Language Models have consistently demonstrated a lack of creativity and diversity across tasks. We propose <strong>GENIE</strong> (Granular Evaluation of Novel Ideas with Explainability) — a fine-grained evaluation metric that measures the novelty of responses along task-specific features with respect to a population of responses.
+</div>
+<div class="link-row">
+<a href="#" class="link-btn primary">&#128196;&nbsp;Paper</a>
+<a href="https://github.com/AlliteraryAlligator/GENIE" class="link-btn">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+Code
+</a>
+<a href="https://huggingface.co/collections/AlliteraryAlligator/genie" class="link-btn">🤗&nbsp;Data</a>
+</div>
+<div class="divider"></div>
+<h2>How GENIE works</h2>
+<p>GENIE evaluates novelty in four stages: automatic feature discovery, question generation, population building, and population-relative dissimilarity scoring.</p>
+<figure class="pipeline-figure">
+<img src="pipeline.png" alt="GENIE pipeline diagram" onerror="this.parentElement.innerHTML='<div style=\'padding:3rem;text-align:center;color:var(--text3);font-size:13px\'>[pipeline.png — place in the same directory as this file]</div>'">
+<figcaption>Figure 1. The GENIE evaluation pipeline.</figcaption>
+</figure>
 
-    <!-- DATASET -->
-    <div id="dataset-page" class="page">
-      <h2 style="margin-top:0">Dataset statistics</h2>
-      <div class="stat-grid">
-        <div class="stat-card"><div class="num">6</div><div class="lbl">Creative Writing Features</div></div>
-        <div class="stat-card"><div class="num">3,404</div><div class="lbl">Population responses</div></div>
-        <div class="stat-card"><div class="num">4,500</div><div class="lbl">Target responses</div></div>
-        <div class="stat-card"><div class="num">39</div><div class="lbl">Models used</div></div>
-        <div class="stat-card"><div class="num">50</div><div class="lbl">Writing prompts</div></div>
-      </div>
-      <div class="divider"></div>
-      <h2>Novelty score distribution by feature</h2>
-      <p>Kernel density estimates of GENIE scores across the target document set, per feature.</p>
-      <div id="distStatus" style="font-size:12px;color:var(--text3);margin-bottom:0.5rem"></div>
-      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text2)" id="distLegend"></div>
-      <div style="position:relative;width:100%;height:300px">
-        <canvas id="distChart" role="img" aria-label="Kernel density estimate of GENIE novelty scores per feature"></canvas>
-      </div>
-      <div class="divider"></div>
-    </div>
+<!-- Q-GENIE moved here: UI + visualizer -->
+<div style="margin-top:1rem;">
+<h2 style="margin-top:0">Q-GENIE Visualizer</h2>
+<p>Explore how individual target answers compare to the population along each feature and question. Hover over the dots to view target answers and click the population to study its contents. Dots that are close to the population denote answers with low GENIE scores (i.e. low novelty).</p>
 
-    <!-- LEADERBOARD -->
-    <div id="leaderboard-page" class="page">
-      <h2 style="margin-top:0">Model novelty scores</h2>
-      <p>Select a feature to rank models by their GENIE score for that dimension. Use the filters to narrow by model family or type.</p>
+<div id="qgenie-ui" style="display:none">
+<div class="qg-ui-grid">
+<div class="qg-left" id="qgLeft">
+<div class="label">Prompt</div>
+<button id="qgPromptBtn" class="qg-prompt-button" aria-expanded="false">Loading prompts…</button>
+<div id="qgPromptDropdown" class="qg-prompt-dropdown" style="display:none"></div>
 
-      <!-- Feature selector -->
-      <div class="feat-tabs" id="featTabs"></div>
+<div style="margin-top:6px" class="label">Questions</div>
+<div id="qgQuestionList" class="qg-question-list"></div>
 
-      <!-- Secondary filters -->
-      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:0.25rem">
-        <div style="display:flex;align-items:center;gap:6px">
-          <span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Family</span>
-          <div class="filter-row" id="famFilters"></div>
-        </div>
-        <div style="display:flex;align-items:center;gap:6px">
-          <span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Type</span>
-          <div class="filter-row" id="typeFilters"></div>
-        </div>
-      </div>
+<div class="qg-ctrls">
+<button id="qgPrev" class="qg-btn">← Prev</button>
+<button id="qgNext" class="qg-btn">Next →</button>
+<div style="flex:1"></div>
+<div id="qgRingLegend" style="font-size:12px;color:var(--text3)"></div>
+</div>
+</div>
 
-      <div class="model-list" id="modelList">
-        <div class="lb-loading">Switch to this tab to load scores&hellip;</div>
-      </div>
-    </div>
+<div style="flex:1;min-width:380px">
+<div class="qg-canvas-wrap" id="qgCanvasWrap">
+<svg id="qgSvg" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+<div class="qg-ring-labels" id="qgRingLabels" style="margin-top:8px"></div>
+</div>
+</div>
+</div>
 
-    <!-- Q-GENIE -->
-    <div id="qgenie-page" class="page">
-      <h2 style="margin-top:0">Q-GENIE Visualizer</h2>
-      <p>Select a prompt, then explore how individual target answers compare to the population along each feature and question. Hover over the dots to view target answers and click the population to study its contents. Dots that are close to the population denote answers with low GENIE scores (i.e. low novelty).</p>
+<div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div>
 
-      <div id="qgenie-ui" style="display:none">
+<div id="qgenie-empty" class="qg-empty-state" style="display:none">
+<strong>Dataset not yet available</strong>
+The target-q-genie dataset has not been published yet. Check back soon.
+</div>
+</div>
+<!-- end Q-GENIE -->
 
-        <!-- Prompt selector + question counter -->
-        <div class="qg-controls">
-          <select class="qg-prompt-select" id="qgPromptSelect" onchange="onPromptChange()">
-            <option value="">Loading prompts…</option>
-          </select>
-          <span class="qg-count-badge" id="qgCountBadge"></span>
-        </div>
+</div>
 
-        <div class="qg-canvas-wrap" id="qgCanvasWrap">
-          <svg id="qgSvg" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg"></svg>
-        </div>
-        <div class="qg-ring-labels" id="qgRingLabels"></div>
-      </div>
+<!-- DATASET -->
+<div id="dataset-page" class="page">
+<h2 style="margin-top:0">Dataset statistics</h2>
+<div class="stat-grid">
+<div class="stat-card"><div class="num">6</div><div class="lbl">Creative Writing Features</div></div>
+<div class="stat-card"><div class="num">3,404</div><div class="lbl">Population responses</div></div>
+<div class="stat-card"><div class="num">4,500</div><div class="lbl">Target responses</div></div>
+<div class="stat-card"><div class="num">39</div><div class="lbl">Models used</div></div>
+<div class="stat-card"><div class="num">50</div><div class="lbl">Writing prompts</div></div>
+</div>
+<div class="divider"></div>
+<h2>Novelty score distribution by feature</h2>
+<p>Kernel density estimates of GENIE scores across the target document set, per feature.</p>
+<div id="distStatus" style="font-size:12px;color:var(--text3);margin-bottom:0.5rem"></div>
+<div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--text2)" id="distLegend"></div>
+<div style="position:relative;width:100%;height:300px">
+<canvas id="distChart" role="img" aria-label="Kernel density estimate of GENIE novelty scores per feature"></canvas>
+</div>
+<div class="divider"></div>
+</div>
 
-      <div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div>
+<!-- LEADERBOARD -->
+<div id="leaderboard-page" class="page">
+<h2 style="margin-top:0">Model novelty scores</h2>
+<p>Select a feature to rank models by their GENIE score for that dimension. Use the filters to narrow by model family or type.</p>
 
-      <div id="qgenie-empty" class="qg-empty-state" style="display:none">
-        <strong>Dataset not yet available</strong>
-        The target-q-genie dataset has not been published yet. Check back soon.
-      </div>
-    </div>
+<!-- Feature selector -->
+<div class="feat-tabs" id="featTabs"></div>
 
-  </main>
+<!-- Secondary filters -->
+<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:0.25rem">
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Family</span>
+<div class="filter-row" id="famFilters"></div>
+</div>
+<div style="display:flex;align-items:center;gap:6px">
+<span style="font-size:11px;color:var(--text3);font-weight:500;letter-spacing:0.05em;text-transform:uppercase">Type</span>
+<div class="filter-row" id="typeFilters"></div>
+</div>
+</div>
+
+<div class="model-list" id="modelList">
+<div class="lb-loading">Switch to this tab to load scores&hellip;</div>
+</div>
+</div>
+
+</main>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 // ─── DARK MODE ────────────────────────────────────────────────────────────────
 function toggleDark() {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-  document.getElementById('darkBtn').innerHTML = dark ? '&#9790;' : '&#9728;';
-  if (window._qgData) renderQG();
+const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+document.getElementById('darkBtn').innerHTML = dark ? '&#9790;' : '&#9728;';
+if (window._qgData) renderQG();
 }
 
 // ─── TAB NAV ──────────────────────────────────────────────────────────────────
-const PAGES = ['overview','dataset','leaderboard','qgenie'];
+// removed qgenie page from tabs; qgenie now initializes when overview shown
+const PAGES = ['overview','dataset','leaderboard'];
 function showPage(id) {
-  hideQGTip();
-  hideTip();
-  PAGES.forEach(p => {
-    document.getElementById(p+'-page').classList.toggle('active', p===id);
-    document.getElementById('tab-'+p).classList.toggle('active', p===id);
-  });
-  if (id==='dataset'     && !window._distDone) initDistChart();
-  if (id==='leaderboard' && !window._lbDone)   initLeaderboard();
-  if (id==='qgenie'      && !window._qgDone)   initQGenie();
+hideQGTip();
+hideTip();
+PAGES.forEach(p => {
+const el = document.getElementById(p+'-page');
+if (el) el.classList.toggle('active', p===id);
+const tab = document.getElementById('tab-'+p);
+if (tab) tab.classList.toggle('active', p===id);
+});
+if (id==='dataset' && !window._distDone) initDistChart();
+if (id==='leaderboard' && !window._lbDone) initLeaderboard();
+// Initialize qgenie when showing overview
+if (id==='overview' && !window._qgDone) initQGenie();
 }
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const FEATURES = [
-  { key: 'agent',       label: 'Agent',            color: '#7F77DD' },
-  { key: 'perspective', label: 'Perspective',       color: '#1D9E75' },
-  { key: 'plot',        label: 'Plot',              color: '#378ADD' },
-  { key: 'setting',     label: 'Setting',           color: '#EF9F27' },
-  { key: 'social',      label: 'Social atmosphere', color: '#D85A30' },
-  { key: 'style',       label: 'Style',             color: '#D4537E' },
+{ key: 'agent', label: 'Agent', color: '#7F77DD' },
+{ key: 'perspective', label: 'Perspective', color: '#1D9E75' },
+{ key: 'plot', label: 'Plot', color: '#378ADD' },
+{ key: 'setting', label: 'Setting', color: '#EF9F27' },
+{ key: 'social', label: 'Social atmosphere', color: '#D85A30' },
+{ key: 'style', label: 'Style', color: '#D4537E' },
 ];
 
 const FEAT_COLORS = { agent:'#7F77DD', perspective:'#1D9E75', plot:'#378ADD', setting:'#EF9F27', social:'#D85A30', style:'#D4537E' };
-const FEAT_NAMES  = ['agent','perspective','plot','setting','social','style'];
+const FEAT_NAMES = ['agent','perspective','plot','setting','social','style'];
 const FEAT_LABELS = ['Agent','Perspective','Plot','Setting','Social Atmosphere','Style'];
 
 const FEAT_KEY_MAP = {
-  'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
-  'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
-  'social_atm':'social','social':'social','style':'style'
+'agent':'agent','perspective':'perspective','plot':'plot','setting':'setting',
+'social atmosphere':'social','social_atmosphere':'social','social atm':'social',
+'social_atm':'social','social':'social','style':'style'
 };
 function normFeature(raw) { return FEAT_KEY_MAP[(raw||'').toLowerCase().trim()] || null; }
 
 function inferFamily(n) {
-  n=(n||'').toLowerCase();
-  if(n.includes('gemma'))  return 'Gemma';
-  if(n.includes('llama'))  return 'Llama';
-  if(n.includes('olmo'))   return 'OLMo';
-  if(n.includes('qwen'))   return 'Qwen';
-  if(n.includes('gpt'))    return 'GPT';
-  if(n.includes('claude')) return 'Claude';
-  return 'Other';
+n=(n||'').toLowerCase();
+if(n.includes('gemma')) return 'Gemma';
+if(n.includes('llama')) return 'Llama';
+if(n.includes('olmo')) return 'OLMo';
+if(n.includes('qwen')) return 'Qwen';
+if(n.includes('gpt')) return 'GPT';
+if(n.includes('claude')) return 'Claude';
+return 'Other';
 }
 function inferType(n) {
-  n=(n||'').toLowerCase();
-  if(n.includes('instruct')||n.includes('-it')||n.includes('chat')||
-     n.includes('sonnet')||n.includes('opus')||n.includes('haiku')) return 'instruct';
-  return 'base';
+n=(n||'').toLowerCase();
+if(n.includes('instruct')||n.includes('-it')||n.includes('chat')||
+n.includes('sonnet')||n.includes('opus')||n.includes('haiku')) return 'instruct';
+return 'base';
 }
 
 async function fetchLocalJSON(path) {
-  const res = await fetch(path);
-  if (!res.ok) throw new Error(`HTTP ${res.status} loading ${path}`);
-  return res.json();
+const res = await fetch(path);
+if (!res.ok) throw new Error(`HTTP ${res.status} loading ${path}`);
+return res.json();
 }
 function normalizeRows(raw) {
-  if (Array.isArray(raw)) return raw;
-  const keys = Object.keys(raw);
-  const indices = Object.keys(raw[keys[0]]);
-  return indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
+if (Array.isArray(raw)) return raw;
+const keys = Object.keys(raw);
+const indices = Object.keys(raw[keys[0]]);
+return indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
 }
 
 // ─── LEADERBOARD ──────────────────────────────────────────────────────────────
-let modelData   = [];
-let activeFeat  = 'agent';
-let famFilter   = 'all';
-let typeFilter  = 'all';
+let modelData = [];
+let activeFeat = 'agent';
+let famFilter = 'all';
+let typeFilter = 'all';
 
 async function initLeaderboard() {
-  window._lbDone = true;
+window._lbDone = true;
 
-  const featTabsEl = document.getElementById('featTabs');
-  FEATURES.forEach(f => {
-    const btn = document.createElement('button');
-    btn.className = 'feat-tab' + (f.key === activeFeat ? ' active' : '');
-    btn.textContent = f.label;
-    btn.dataset.key = f.key;
-    if (f.key === activeFeat) btn.style.background = f.color;
-    btn.addEventListener('click', () => setActiveFeat(f.key));
-    featTabsEl.appendChild(btn);
-  });
+// Build feature tabs
+const featTabsEl = document.getElementById('featTabs');
+FEATURES.forEach(f => {
+const btn = document.createElement('button');
+btn.className = 'feat-tab' + (f.key === activeFeat ? ' active' : '');
+btn.textContent = f.label;
+btn.dataset.key = f.key;
+if (f.key === activeFeat) btn.style.background = f.color;
+btn.addEventListener('click', () => setActiveFeat(f.key));
+featTabsEl.appendChild(btn);
+});
 
-  const typeFiltersEl = document.getElementById('typeFilters');
-  [['all','All'],['instruct','Instruct'],['base','Base']].forEach(([val, label]) => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
-    btn.textContent = label;
-    btn.addEventListener('click', () => {
-      typeFilter = val;
-      document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      renderModels();
-    });
-    typeFiltersEl.appendChild(btn);
-  });
+// Build type filters (static — base / instruct / all)
+const typeFiltersEl = document.getElementById('typeFilters');
+[['all','All'],['instruct','Instruct'],['base','Base']].forEach(([val, label]) => {
+const btn = document.createElement('button');
+btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
+btn.textContent = label;
+btn.addEventListener('click', () => {
+typeFilter = val;
+document.querySelectorAll('#typeFilters .filter-btn').forEach(b => b.classList.remove('on'));
+btn.classList.add('on');
+renderModels();
+});
+typeFiltersEl.appendChild(btn);
+});
 
-  const listEl = document.getElementById('modelList');
-  try {
-    const res = await fetch('model_genie.json');
-    if (!res.ok) throw new Error('HTTP ' + res.status);
-    const raw = await res.json();
-    let rows;
-    if (Array.isArray(raw)) {
-      rows = raw;
-    } else {
-      const keys = Object.keys(raw);
-      const indices = Object.keys(raw[keys[0]]);
-      rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
-    }
-    const byModel = {};
-    rows.forEach(row => {
-      const model = row['Model_1'] || row['model'] || '';
-      const feat  = normFeature(row['Feature'] || row['feature'] || '');
-      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
-      if (!model || !feat || isNaN(score)) return;
-      if (!byModel[model]) byModel[model] = { name: model };
-      byModel[model][feat] = score;
-    });
-    modelData = Object.values(byModel).map(m => ({
-      name:        m.name,
-      family:      inferFamily(m.name),
-      type:        inferType(m.name),
-      agent:       m.agent       || 0,
-      perspective: m.perspective || 0,
-      plot:        m.plot        || 0,
-      setting:     m.setting     || 0,
-      social:      m.social      || 0,
-      style:       m.style       || 0,
-    }));
-  } catch(err) {
-    listEl.innerHTML = `<div class="lb-loading lb-error">Could not load model_genie.json: ${err.message}<br>
-      <span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span></div>`;
-    return;
-  }
+// Load data
+const listEl = document.getElementById('modelList');
+try {
+const res = await fetch('model_genie.json');
+if (!res.ok) throw new Error('HTTP ' + res.status);
+const raw = await res.json();
+let rows;
+if (Array.isArray(raw)) {
+rows = raw;
+} else {
+const keys = Object.keys(raw);
+const indices = Object.keys(raw[keys[0]]);
+rows = indices.map(i => Object.fromEntries(keys.map(k => [k, raw[k][i]])));
+}
+const byModel = {};
+rows.forEach(row => {
+const model = row['Model_1'] || row['model'] || '';
+const feat = normFeature(row['Feature'] || row['feature'] || '');
+const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+if (!model || !feat || isNaN(score)) return;
+if (!byModel[model]) byModel[model] = { name: model };
+byModel[model][feat] = score;
+});
+modelData = Object.values(byModel).map(m => ({
+name: m.name,
+family: inferFamily(m.name),
+type: inferType(m.name),
+agent: m.agent || 0,
+perspective: m.perspective || 0,
+plot: m.plot || 0,
+setting: m.setting || 0,
+social: m.social || 0,
+style: m.style || 0,
+}));
+} catch(err) {
+listEl.innerHTML = `<div class="lb-loading lb-error">Could not load model_genie.json: ${err.message}<br>
+<span style="font-size:12px;color:var(--text3)">Place model_genie.json in the same directory as this page.</span></div>`;
+return;
+}
 
-  buildFamFilters();
-  renderModels();
+buildFamFilters();
+renderModels();
 }
 
 function setActiveFeat(key) {
-  activeFeat = key;
-  document.querySelectorAll('#featTabs .feat-tab').forEach(btn => {
-    const isActive = btn.dataset.key === key;
-    btn.classList.toggle('active', isActive);
-    btn.style.background = isActive ? FEATURES.find(f => f.key === key).color : '';
-  });
-  renderModels();
+activeFeat = key;
+document.querySelectorAll('#featTabs .feat-tab').forEach(btn => {
+const isActive = btn.dataset.key === key;
+btn.classList.toggle('active', isActive);
+btn.style.background = isActive ? FEATURES.find(f => f.key === key).color : '';
+});
+renderModels();
 }
 
 function buildFamFilters() {
-  const families = [...new Set(modelData.map(m => m.family))].sort();
-  const el = document.getElementById('famFilters');
-  el.innerHTML = '';
-  [['all','All'], ...families.map(f => [f, f])].forEach(([val, label]) => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
-    btn.textContent = label;
-    btn.addEventListener('click', () => {
-      famFilter = val;
-      document.querySelectorAll('#famFilters .filter-btn').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      renderModels();
-    });
-    el.appendChild(btn);
-  });
+const families = [...new Set(modelData.map(m => m.family))].sort();
+const el = document.getElementById('famFilters');
+el.innerHTML = '';
+[['all','All'], ...families.map(f => [f, f])].forEach(([val, label]) => {
+const btn = document.createElement('button');
+btn.className = 'filter-btn' + (val === 'all' ? ' on' : '');
+btn.textContent = label;
+btn.addEventListener('click', () => {
+famFilter = val;
+document.querySelectorAll('#famFilters .filter-btn').forEach(b => b.classList.remove('on'));
+btn.classList.add('on');
+renderModels();
+});
+el.appendChild(btn);
+});
 }
 
 const tipEl = document.getElementById('tooltipLb');
@@ -709,296 +750,328 @@ function moveTip(evt) { tipEl.style.left = (evt.clientX + 14) + 'px'; tipEl.styl
 function hideTip() { tipEl.classList.remove('show'); }
 
 function renderModels() {
-  const list = document.getElementById('modelList');
-  if (!modelData.length) { list.innerHTML = '<div class="lb-loading">No data.</div>'; return; }
+const list = document.getElementById('modelList');
+if (!modelData.length) { list.innerHTML = '<div class="lb-loading">No data.</div>'; return; }
 
-  const feat = FEATURES.find(f => f.key === activeFeat);
+const feat = FEATURES.find(f => f.key === activeFeat);
 
-  let filtered = modelData.filter(m =>
-    (famFilter  === 'all' || m.family === famFilter) &&
-    (typeFilter === 'all' || m.type   === typeFilter)
-  );
+// Filter
+let filtered = modelData.filter(m =>
+(famFilter === 'all' || m.family === famFilter) &&
+(typeFilter === 'all' || m.type === typeFilter)
+);
 
-  filtered = filtered.slice().sort((a, b) => b[activeFeat] - a[activeFeat]);
+// Sort descending by the active feature score
+filtered = filtered.slice().sort((a, b) => b[activeFeat] - a[activeFeat]);
 
-  if (!filtered.length) {
-    list.innerHTML = '<div class="lb-loading">No models match the current filters.</div>';
-    return;
-  }
+if (!filtered.length) {
+list.innerHTML = '<div class="lb-loading">No models match the current filters.</div>';
+return;
+}
 
-  const maxScore = filtered[0][activeFeat] || 1;
+const maxScore = filtered[0][activeFeat] || 1;
 
-  list.innerHTML = filtered.map((m, i) => {
-    const score = m[activeFeat];
-    const barPct = ((score / maxScore) * 100).toFixed(1);
-    return `<div class="model-row">
-      <span class="lb-rank">${i + 1}</span>
-      <span class="model-name" title="${m.name}">${m.name}</span>
-      <span class="fam-badge fam-${m.family}">${m.family}</span>
-      <span class="type-badge">${m.type}</span>
-      <div class="lb-bar-wrap">
-        <div class="lb-bar" style="width:${barPct}%;background:${feat.color}"></div>
-      </div>
-      <span class="lb-score">${score.toFixed(3)}</span>
-    </div>`;
-  }).join('');
+list.innerHTML = filtered.map((m, i) => {
+const score = m[activeFeat];
+const barPct = ((score / maxScore) * 100).toFixed(1);
+return `<div class="model-row">
+<span class="lb-rank">${i + 1}</span>
+<span class="model-name" title="${m.name}">${m.name}</span>
+<span class="fam-badge fam-${m.family}">${m.family}</span>
+<span class="type-badge">${m.type}</span>
+<div class="lb-bar-wrap">
+<div class="lb-bar" style="width:${barPct}%;background:${feat.color}"></div>
+</div>
+<span class="lb-score">${score.toFixed(3)}</span>
+</div>`;
+}).join('');
 }
 
 // ─── DISTRIBUTION CHART ───────────────────────────────────────────────────────
 function gaussianKDE(values, bw) {
-  const pts = [];
-  for (let x = 0; x <= 1; x += 0.005) {
-    let sum = 0;
-    values.forEach(v => { const z = (x - v) / bw; sum += Math.exp(-0.5 * z * z); });
-    pts.push({ x: parseFloat(x.toFixed(3)), y: sum / (values.length * bw * Math.sqrt(2 * Math.PI)) });
-  }
-  return pts;
+const pts = [];
+for (let x = 0; x <= 1; x += 0.005) {
+let sum = 0;
+values.forEach(v => { const z = (x - v) / bw; sum += Math.exp(-0.5 * z * z); });
+pts.push({ x: parseFloat(x.toFixed(3)), y: sum / (values.length * bw * Math.sqrt(2 * Math.PI)) });
+}
+return pts;
 }
 let distChart;
 function buildDistLegend() {
-  document.getElementById('distLegend').innerHTML = FEAT_NAMES.map((f, i) =>
-    `<span style="display:flex;align-items:center;gap:5px">
-      <span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>
-      ${FEAT_LABELS[i]}
-    </span>`
-  ).join('');
+document.getElementById('distLegend').innerHTML = FEAT_NAMES.map((f, i) =>
+`<span style="display:flex;align-items:center;gap:5px">
+<span style="width:10px;height:10px;border-radius:2px;background:${FEAT_COLORS[f]};display:inline-block"></span>
+${FEAT_LABELS[i]}
+</span>`
+).join('');
 }
 async function initDistChart() {
-  window._distDone = true;
-  buildDistLegend();
-  let src = null;
-  try {
-    const raw  = await fetchLocalJSON('genie.json');
-    const rows = normalizeRows(raw);
-    const grouped = {}; FEAT_NAMES.forEach(f => grouped[f] = []);
-    rows.forEach(row => {
-      const feat  = normFeature(row['Feature'] || row['feature'] || '');
-      const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
-      if (feat && !isNaN(score)) grouped[feat].push(score);
-    });
-    const total = FEAT_NAMES.reduce((s, f) => s + grouped[f].length, 0);
-    if (total === 0) throw new Error('No valid rows in genie.json');
-    src = grouped;
-    document.getElementById('distStatus').textContent = `Loaded ${rows.length} rows`;
-  } catch(err) {
-    document.getElementById('distStatus').textContent =
-      `Could not load genie.json (${err.message}) — showing simulated data`;
-    function genSample(mean, std, n=80) {
-      return Array.from({length:n}, () => {
-        let u=0, v=0;
-        while(!u) u=Math.random(); while(!v) v=Math.random();
-        return Math.max(0.05, Math.min(0.99, mean + std * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v)));
-      });
-    }
-    src = {
-      agent:       genSample(0.63,0.12), perspective: genSample(0.48,0.15),
-      plot:        genSample(0.61,0.11), setting:     genSample(0.57,0.13),
-      social:      genSample(0.59,0.12), style:       genSample(0.52,0.14),
-    };
-  }
-  const datasets = FEAT_NAMES.map((f, i) => ({
-    label:           FEAT_LABELS[i],
-    data:            gaussianKDE(src[f].length > 0 ? src[f] : [0.5], 0.07),
-    borderColor:     FEAT_COLORS[f],
-    backgroundColor: FEAT_COLORS[f] + '22',
-    borderWidth:     2, pointRadius: 0, fill: true, tension: 0.4,
-    parsing:         { xAxisKey: 'x', yAxisKey: 'y' },
-  }));
-  if (distChart) distChart.destroy();
-  distChart = new Chart(document.getElementById('distChart'), {
-    type: 'line', data: { datasets },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      scales: {
-        x: { type: 'linear', min: 0, max: 1,
-          title: { display: true, text: 'GENIE score', font: { size: 12 } },
-          ticks: { font: { size: 11 } } },
-        y: { title: { display: true, text: 'Density', font: { size: 12 } },
-          ticks: { font: { size: 11 } }, grid: { color: 'rgba(128,128,128,0.1)' } }
-      }
-    }
-  });
+window._distDone = true;
+buildDistLegend();
+let src = null;
+try {
+const raw = await fetchLocalJSON('genie.json');
+const rows = normalizeRows(raw);
+const grouped = {}; FEAT_NAMES.forEach(f => grouped[f] = []);
+rows.forEach(row => {
+const feat = normFeature(row['Feature'] || row['feature'] || '');
+const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+if (feat && !isNaN(score)) grouped[feat].push(score);
+});
+const total = FEAT_NAMES.reduce((s, f) => s + grouped[f].length, 0);
+if (total === 0) throw new Error('No valid rows in genie.json');
+src = grouped;
+document.getElementById('distStatus').textContent = `Loaded ${rows.length} rows`;
+} catch(err) {
+document.getElementById('distStatus').textContent =
+`Could not load genie.json (${err.message}) — showing simulated data`;
+function genSample(mean, std, n=80) {
+return Array.from({length:n}, () => {
+let u=0, v=0;
+while(!u) u=Math.random(); while(!v) v=Math.random();
+return Math.max(0.05, Math.min(0.99, mean + std * Math.sqrt(-2*Math.log(u)) * Math.cos(2*Math.PI*v)));
+});
+}
+src = {
+agent: genSample(0.63,0.12), perspective: genSample(0.48,0.15),
+plot: genSample(0.61,0.11), setting: genSample(0.57,0.13),
+social: genSample(0.59,0.12), style: genSample(0.52,0.14),
+};
+}
+const datasets = FEAT_NAMES.map((f, i) => ({
+label: FEAT_LABELS[i],
+data: gaussianKDE(src[f].length > 0 ? src[f] : [0.5], 0.07),
+borderColor: FEAT_COLORS[f],
+backgroundColor: FEAT_COLORS[f] + '22',
+borderWidth: 2, pointRadius: 0, fill: true, tension: 0.4,
+parsing: { xAxisKey: 'x', yAxisKey: 'y' },
+}));
+if (distChart) distChart.destroy();
+distChart = new Chart(document.getElementById('distChart'), {
+type: 'line', data: { datasets },
+options: {
+responsive: true, maintainAspectRatio: false,
+plugins: { legend: { display: false } },
+scales: {
+x: { type: 'linear', min: 0, max: 1,
+title: { display: true, text: 'GENIE score', font: { size: 12 } },
+ticks: { font: { size: 11 } } },
+y: { title: { display: true, text: 'Density', font: { size: 12 } },
+ticks: { font: { size: 11 } }, grid: { color: 'rgba(128,128,128,0.1)' } }
+}
+}
+});
 }
 
 // ════════════════════════════════════════════════════════════════════════
-// Q-GENIE VISUALIZER
+// Q-GENIE VISUALIZER (moved to Overview, with left DOM panel + staggered reveal)
 // ════════════════════════════════════════════════════════════════════════
 
 const SVG_W = 760, SVG_H = 520;
 const INFO_X = 20, INFO_W = 245, DIVIDER_X = 275, INFO_MID = INFO_X + INFO_W / 2;
 const POP_CX = DIVIDER_X + 120;
 const POP_CY = 260;
-const POP_R  = 80;
+const POP_R = 80;
 const ARC_DEG_MIN = -75, ARC_DEG_MAX = 75;
 const ARC_MIN = ARC_DEG_MIN * Math.PI / 180;
 const ARC_MAX = ARC_DEG_MAX * Math.PI / 180;
 const RING_RADII = [140, 190, 240, 290, 340];
 const EXP_R = 230;
-const POP_COLOR      = '#7F77DD';
+const POP_COLOR = '#7F77DD';
 const POP_COLOR_DARK = '#534AB7';
-const DOT_R      = 7;
-const DOT_FILL      = '#1a1a18';
+const DOT_R = 7;
+const DOT_FILL = '#1a1a18';
 const DOT_FILL_DARK = '#f0f0ec';
 
 window._qgData = null;
-// qgIdx is now the index within the FILTERED combo list for the selected prompt
 let qgIdx = 0;
-let popAnimState = null;
+
+// animation state for population expansion and reveal
+let popAnimState = null; // null | expanding | expanded | collapsing
 let popAnimProgress = 0;
 let popAnimRAF = null;
-// Track which prompt is selected
-let selectedPrompt = '';
-// Filtered combos for the selected prompt
-let filteredCombos = [];
+
+// stagger reveal state
+let popRevealCount = 0;
+let popRevealTimer = null;
 
 function cancelPopAnim() {
-  if (popAnimRAF) { cancelAnimationFrame(popAnimRAF); popAnimRAF = null; }
+if (popAnimRAF) { cancelAnimationFrame(popAnimRAF); popAnimRAF = null; }
+}
+function cancelPopReveal() {
+if (popRevealTimer) { clearInterval(popRevealTimer); popRevealTimer = null; }
+popRevealCount = 0;
 }
 
+// ── Initialize Q-GENIE (loads data) ─────────────────────────────────────────
 async function initQGenie() {
-  window._qgDone = true;
-  const statusEl = document.getElementById('qgenie-load-status');
-  let popRows, qRows;
-  try {
-    statusEl.textContent = 'Loading sampled_population_answers.json…';
-    const popRaw = await fetchLocalJSON('sampled_population_answers.json');
-    popRows = normalizeRows(popRaw);
-  } catch(err) {
-    showQGEmpty('Could not load <code>sampled_population_answers.json</code>: ' + err.message);
-    statusEl.style.display = 'none';
-    return;
-  }
-  try {
-    statusEl.textContent = 'Loading q_genie.json…';
-    const qRaw = await fetchLocalJSON('q_genie.json');
-    qRows = normalizeRows(qRaw);
-  } catch(err) {
-    showQGEmpty('Could not load <code>q_genie.json</code>: ' + err.message);
-    statusEl.style.display = 'none';
-    return;
-  }
-  statusEl.style.display = 'none';
-  processQGData(popRows, qRows);
+window._qgDone = true;
+const statusEl = document.getElementById('qgenie-load-status');
+let popRows, qRows;
+try {
+statusEl.textContent = 'Loading sampled_population_answers.json…';
+const popRaw = await fetchLocalJSON('sampled_population_answers.json');
+popRows = normalizeRows(popRaw);
+} catch(err) {
+showQGEmpty('Could not load <code>sampled_population_answers.json</code>: ' + err.message);
+statusEl.style.display = 'none';
+return;
+}
+try {
+statusEl.textContent = 'Loading q_genie.json…';
+const qRaw = await fetchLocalJSON('q_genie.json');
+qRows = normalizeRows(qRaw);
+} catch(err) {
+showQGEmpty('Could not load <code>q_genie.json</code>: ' + err.message);
+statusEl.style.display = 'none';
+return;
+}
+statusEl.style.display = 'none';
+processQGData(popRows, qRows);
 }
 
 function showQGEmpty(html) {
-  const el = document.getElementById('qgenie-empty');
-  el.innerHTML = html;
-  el.style.display = 'block';
-  document.getElementById('qgenie-ui').style.display = 'none';
+const el = document.getElementById('qgenie-empty');
+el.innerHTML = html;
+el.style.display = 'block';
+document.getElementById('qgenie-ui').style.display = 'none';
 }
 
 function processQGData(popRows, qRows) {
-  const popMap = {};
-  popRows.forEach(r => {
-    const k = mkKey(r.Prompt||r.prompt||'', r.Question||r.question||'', r.Feature||r.feature||'');
-    if (!popMap[k]) popMap[k] = [];
-    popMap[k].push(String(r.Answer||r.answer||''));
-  });
-  const qMap = {};
-  qRows.forEach(r => {
-    const k = mkKey(r.Prompt||r.prompt||'', r.Question||r.question||'', r.Feature||r.feature||'');
-    if (!qMap[k]) qMap[k] = [];
-    const score = parseFloat(r.Q_GENIE ?? r.q_genie ?? r.QGENIE ?? NaN);
-    qMap[k].push({ answer: String(r.Answer||r.answer||''), score });
-  });
-  Object.values(qMap).forEach(arr => arr.sort((a,b) => a.score - b.score));
-
-  const seen = new Set(), combos = [];
-  qRows.forEach(r => {
-    const p=r.Prompt||r.prompt||'', q=r.Question||r.question||'', f=r.Feature||r.feature||'';
-    const k = mkKey(p,q,f);
-    if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
-  });
-
-  // Collect unique prompts (preserve insertion order = natural order in data)
-  const promptSet = new Set();
-  combos.forEach(c => promptSet.add(c.prompt));
-  const uniquePrompts = [...promptSet];
-
-  window._qgData = { combos, popMap, qMap, uniquePrompts };
-  qgIdx = 0;
-  popAnimState = null;
-  popAnimProgress = 0;
-
-  document.getElementById('qgenie-empty').style.display = 'none';
-  document.getElementById('qgenie-ui').style.display = 'block';
-  buildRingLabels();
-  buildPromptDropdown(uniquePrompts);
-  // Select the first prompt by default
-  selectedPrompt = uniquePrompts[0] || '';
-  document.getElementById('qgPromptSelect').value = selectedPrompt;
-  updateFilteredCombos();
-  renderQG();
+const popMap = {};
+popRows.forEach(r => {
+const k = mkKey(r.Prompt||r.prompt||'', r.Question||r.question||'', r.Feature||r.feature||'');
+if (!popMap[k]) popMap[k] = [];
+popMap[k].push(String(r.Answer||r.answer||''));
+});
+const qMap = {};
+qRows.forEach(r => {
+const k = mkKey(r.Prompt||r.prompt||'', r.Question||r.question||'', r.Feature||r.feature||'');
+if (!qMap[k]) qMap[k] = [];
+const score = parseFloat(r.Q_GENIE ?? r.q_genie ?? r.QGENIE ?? NaN);
+qMap[k].push({ answer: String(r.Answer||r.answer||''), score });
+});
+Object.values(qMap).forEach(arr => arr.sort((a,b) => a.score - b.score));
+const seen = new Set(), combos = [];
+qRows.forEach(r => {
+const p=r.Prompt||r.prompt||'', q=r.Question||r.question||'', f=r.Feature||r.feature||'';
+const k = mkKey(p,q,f);
+if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
+});
+window._qgData = { combos, popMap, qMap };
+qgIdx = 0; popAnimState = null; popAnimProgress = 0;
+document.getElementById('qgenie-empty').style.display = 'none';
+document.getElementById('qgenie-ui').style.display = 'block';
+buildRingLabels();
+buildLeftPanel(); // new: construct left DOM panel
+renderQG();
 }
 
-function buildPromptDropdown(prompts) {
-  const sel = document.getElementById('qgPromptSelect');
-  sel.innerHTML = '';
-  prompts.forEach((p, i) => {
-    const opt = document.createElement('option');
-    opt.value = p;
-    // Truncate long prompts for display; show index for quick reference
-    const short = p.length > 80 ? p.slice(0, 78) + '…' : p;
-    opt.textContent = `${i + 1}. ${short}`;
-    opt.title = p;
-    sel.appendChild(opt);
-  });
+// left panel building: prompt dropdown and question list
+let _promptGroups = []; // array of {prompt, combos: [indexes]}
+let _selectedPromptIndex = 0;
+function buildLeftPanel() {
+const combos = window._qgData.combos;
+// group by prompt
+const map = new Map();
+combos.forEach((c, idx) => {
+const p = (c.prompt||'').trim();
+if (!map.has(p)) map.set(p, []);
+map.get(p).push(idx);
+});
+_promptGroups = Array.from(map.entries()).map(([prompt, idxs]) => ({prompt, idxs}));
+// populate dropdown
+const btn = document.getElementById('qgPromptBtn');
+const dd = document.getElementById('qgPromptDropdown');
+btn.textContent = _promptGroups.length ? _promptGroups[0].prompt || '[empty prompt]' : 'No prompts';
+btn.onclick = () => {
+const isOpen = dd.style.display !== 'none';
+dd.style.display = isOpen ? 'none' : 'block';
+btn.setAttribute('aria-expanded', String(!isOpen));
+};
+dd.innerHTML = '';
+_promptGroups.forEach((g, i) => {
+const it = document.createElement('div');
+it.className = 'qg-prompt-item';
+it.innerText = g.prompt || '[empty prompt]';
+it.addEventListener('click', () => {
+dd.style.display = 'none';
+btn.setAttribute('aria-expanded','false');
+selectPrompt(i);
+});
+dd.appendChild(it);
+});
+// question list and controls
+document.getElementById('qgPrev').onclick = () => qgNav(-1);
+document.getElementById('qgNext').onclick = () => qgNav(1);
+// default to first prompt
+selectPrompt(0);
+// build ring legend
+const legend = document.getElementById('qgRingLegend');
+legend.innerHTML = 'Rings';
 }
 
-function onPromptChange() {
-  selectedPrompt = document.getElementById('qgPromptSelect').value;
-  cancelPopAnim();
-  popAnimState = null;
-  popAnimProgress = 0;
-  qgIdx = 0;
-  updateFilteredCombos();
-  renderQG();
+function selectPrompt(i) {
+if (!_promptGroups.length) return;
+_selectedPromptIndex = Math.max(0, Math.min(i, _promptGroups.length-1));
+const group = _promptGroups[_selectedPromptIndex];
+document.getElementById('qgPromptBtn').textContent = group.prompt || '[empty prompt]';
+// build question list
+const qList = document.getElementById('qgQuestionList');
+qList.innerHTML = '';
+const combos = window._qgData.combos;
+group.idxs.forEach(idx => {
+const c = combos[idx];
+const row = document.createElement('div');
+row.className = 'qg-question-row';
+const tag = document.createElement('div');
+const fk = normFeature(c.feature) || c.feature || '';
+tag.className = 'qg-feature-tag';
+tag.textContent = (FEAT_LABEL_MAP[fk] || c.feature || '').slice(0,40);
+const txt = document.createElement('div');
+txt.style.flex = '1';
+txt.innerText = c.question || '[no question]';
+row.appendChild(tag);
+row.appendChild(txt);
+row.addEventListener('click', () => {
+qgIdx = idx;
+cancelPopReveal();
+popAnimState = null; popAnimProgress = 0;
+renderQG();
+});
+qList.appendChild(row);
+});
 }
 
-function updateFilteredCombos() {
-  if (!window._qgData) return;
-  filteredCombos = window._qgData.combos.filter(c => c.prompt === selectedPrompt);
-  const badge = document.getElementById('qgCountBadge');
-  badge.textContent = filteredCombos.length > 0
-    ? `${filteredCombos.length} question${filteredCombos.length !== 1 ? 's' : ''}`
-    : '';
-}
-
-function buildRingLabels() {
-  const bands = ['0–0.2','0.2–0.4','0.4–0.6','0.6–0.8','0.8–1.0'];
-  document.getElementById('qgRingLabels').innerHTML =
-    bands.map((b,i) => `<span>Ring ${i+1}: score ${b}</span>`).join('');
-}
-
-function mkKey(p,q,f) { return [p,q,f].join('\x00'); }
-
+// navigation helpers
 function qgNav(dir) {
-  if (!window._qgData || !filteredCombos.length) return;
-  cancelPopAnim();
-  const n = filteredCombos.length;
-  qgIdx = (qgIdx + dir + n) % n;
-  popAnimState = null; popAnimProgress = 0;
-  renderQG();
+if (!window._qgData) return;
+cancelPopAnim(); cancelPopReveal();
+const n = window._qgData.combos.length;
+qgIdx = (qgIdx + dir + n) % n;
+popAnimState = null; popAnimProgress = 0;
+renderQG();
 }
 
+// simple seeded RNG
 function seededRand(seed) {
-  return function() {
-    seed |= 0; seed = seed + 0x6D2B79F5 | 0;
-    let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
-    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
-    return ((t ^ t >>> 14) >>> 0) / 4294967296;
-  };
+return function() {
+seed |= 0; seed = seed + 0x6D2B79F5 | 0;
+let t = Math.imul(seed ^ seed >>> 15, 1 | seed);
+t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+return ((t ^ t >>> 14) >>> 0) / 4294967296;
+};
 }
 
+// tooltips for qgenie
 const qgTip = document.getElementById('qgTooltip');
 function showQGTip(evt, text) { qgTip.textContent = text; qgTip.classList.add('show'); moveQGTip(evt); }
 function moveQGTip(evt) {
-  let x = evt.clientX + 14, y = evt.clientY - 38;
-  if (x + 330 > window.innerWidth) x = evt.clientX - 340;
-  if (y < 10) y = evt.clientY + 20;
-  qgTip.style.left = x + 'px'; qgTip.style.top = y + 'px';
+let x = evt.clientX + 14, y = evt.clientY - 38;
+if (x + 330 > window.innerWidth) x = evt.clientX - 340;
+if (y < 10) y = evt.clientY + 20;
+qgTip.style.left = x + 'px'; qgTip.style.top = y + 'px';
 }
 function hideQGTip() { qgTip.classList.remove('show'); }
 
@@ -1006,414 +1079,426 @@ const FEAT_BG = {agent:'#EEEDFE',perspective:'#E1F5EE',plot:'#E6F1FB',setting:'#
 const FEAT_FG = {agent:'#3C3489',perspective:'#085041',plot:'#0C447C',setting:'#633806',social:'#712B13',style:'#7A1B3A'};
 const FEAT_LABEL_MAP = {agent:'Agent',perspective:'Perspective',plot:'Plot',setting:'Setting',social:'Social Atmosphere',style:'Style'};
 
-function renderQG() {
-  const data = window._qgData;
-  if (!data || !filteredCombos.length) {
-    // Draw empty state in SVG
-    const svg = document.getElementById('qgSvg');
-    svg.innerHTML = '';
-    return;
-  }
-  const combo      = filteredCombos[qgIdx];
-  const n          = filteredCombos.length;
-  const popAnswers = data.popMap[combo.key] || [];
-  const qItems     = data.qMap[combo.key]   || [];
-  const featKey    = normFeature(combo.feature) || combo.feature.toLowerCase();
-  const isDark     = document.documentElement.getAttribute('data-theme') === 'dark';
-  const bgColor    = isDark ? '#222224' : '#f7f7f5';
-  const textCol    = isDark ? '#f0f0ec' : '#1a1a18';
-  const text2      = isDark ? '#a0a09a' : '#5a5a55';
-  const text3      = isDark ? '#686864' : '#8a8a82';
-  const borderC    = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
-  const popCol     = isDark ? POP_COLOR_DARK : POP_COLOR;
-  const dotFill    = isDark ? DOT_FILL_DARK : DOT_FILL;
-  const dotStroke  = isDark ? '#222224' : '#f7f7f5';
-  const svg = document.getElementById('qgSvg');
-  hideQGTip();
-  svg.innerHTML = '';
-  function el(tag, attrs, parent) {
-    const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
-    if (attrs) Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v));
-    (parent||svg).appendChild(e); return e;
-  }
-  function txt(str, attrs, parent) {
-    const t = el('text', attrs, parent); t.textContent = str; return t;
-  }
-  function wrapText(str, maxW, fontSize) {
-    const charW = fontSize * 0.52;
-    const maxChars = Math.floor(maxW / charW);
-    if (str.length <= maxChars) return [str];
-    const words = str.split(' '), lines = []; let cur = '';
-    for (const w of words) {
-      if ((cur + ' ' + w).trim().length > maxChars) { if (cur) lines.push(cur); cur = w; }
-      else cur = (cur + ' ' + w).trim();
-    }
-    if (cur) lines.push(cur);
-    return lines;
-  }
-  el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
-  const showInfo = (popAnimState !== 'expanded');
-  if (showInfo) {
-    el('line', {x1:DIVIDER_X,y1:20,x2:DIVIDER_X,y2:SVG_H-20,
-      stroke:borderC,'stroke-width':'0.8','stroke-dasharray':'4 5'});
-    drawInfoPanel(combo, featKey, qgIdx, n, isDark, textCol, text2, text3, borderC, el, txt, wrapText);
-  }
-  if (popAnimState === 'expanded') {
-    drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC);
-  } else if (popAnimState === 'expanding' || popAnimState === 'collapsing') {
-    drawAnimatingPop(popAnswers, qItems, combo, popAnimProgress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText);
-  } else {
-    drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke, borderC, textCol, el, txt);
-  }
+function buildRingLabels() {
+const bands = ['0–0.2','0.2–0.4','0.4–0.6','0.6–0.8','0.8–1.0'];
+document.getElementById('qgRingLabels').innerHTML =
+bands.map((b,i) => `<span>Ring ${i+1}: score ${b}</span>`).join('');
 }
 
+function mkKey(p,q,f) { return [p,q,f].join('\x00'); }
+
+// ── RENDER ──────────────────────────────────────────────────────────────────
+function renderQG() {
+const data = window._qgData;
+if (!data || !data.combos.length) return;
+const combo = data.combos[qgIdx];
+const n = data.combos.length;
+const popAnswers = data.popMap[combo.key] || [];
+const qItems = data.qMap[combo.key] || [];
+const featKey = normFeature(combo.feature) || combo.feature.toLowerCase();
+const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+const bgColor = isDark ? '#222224' : '#f7f7f5';
+const textCol = isDark ? '#f0f0ec' : '#1a1a18';
+const text2 = isDark ? '#a0a09a' : '#5a5a55';
+const text3 = isDark ? '#686864' : '#8a8a82';
+const borderC = isDark ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.12)';
+const popCol = isDark ? POP_COLOR_DARK : POP_COLOR;
+const dotFill = isDark ? DOT_FILL_DARK : DOT_FILL;
+const dotStroke = isDark ? '#222224' : '#f7f7f5';
+const svg = document.getElementById('qgSvg');
+hideQGTip();
+svg.innerHTML = '';
+function el(tag, attrs, parent) {
+const e = document.createElementNS('http://www.w3.org/2000/svg', tag);
+if (attrs) Object.entries(attrs).forEach(([k,v]) => e.setAttribute(k,v));
+(parent||svg).appendChild(e); return e;
+}
+function txt(str, attrs, parent) {
+const t = el('text', attrs, parent); t.textContent = str; return t;
+}
+function wrapText(str, maxW, fontSize) {
+const charW = fontSize * 0.52;
+const maxChars = Math.floor(maxW / charW);
+if (str.length <= maxChars) return [str];
+const words = str.split(' '), lines = []; let cur = '';
+for (const w of words) {
+if ((cur + ' ' + w).trim().length > maxChars) { if (cur) lines.push(cur); cur = w; }
+else cur = (cur + ' ' + w).trim();
+}
+if (cur) lines.push(cur);
+return lines;
+}
+// background
+el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:bgColor});
+
+// Draw rings (only in collapsed or during expansion)
+if (popAnimState !== 'expanded') {
+RING_RADII.forEach(r => {
+el('polyline', {
+points: arcPoints(POP_CX, POP_CY, r, ARC_MIN, ARC_MAX, 60),
+fill: 'none', stroke: borderC, 'stroke-width': '1', 'stroke-dasharray': '3 5'
+});
+});
+}
+
+// collapsed view: shows dots around rings and a population circle
+if (!popAnimState) {
+drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke, borderC, textCol, el, txt);
+} else if (popAnimState === 'expanding' || popAnimState === 'collapsing') {
+drawAnimatingPop(popAnswers, qItems, combo, popAnimProgress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText);
+} else if (popAnimState === 'expanded') {
+drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC);
+}
+
+// update left panel selection/scroll so that currently-selected question is visible
+updateLeftSelection(qgIdx, n, combo);
+}
+
+function updateLeftSelection(idx, total, combo) {
+// mark current question in the list
+const qList = document.getElementById('qgQuestionList');
+if (!qList) return;
+const rows = qList.querySelectorAll('.qg-question-row');
+rows.forEach((r, i) => r.classList.toggle('active', false));
+// find row corresponding to idx (it's in the current prompt group list)
+// if not present, pick the prompt that contains idx
+for (let pg = 0; pg < _promptGroups.length; pg++) {
+if (_promptGroups[pg].idxs.includes(idx)) { selectPrompt(pg); break; }
+}
+// highlight the row
+const group = _promptGroups[_selectedPromptIndex];
+if (!group) return;
+const offset = group.idxs.indexOf(idx);
+if (offset >= 0) {
+const row = qList.children[offset];
+if (row) {
+row.style.background = 'var(--bg)';
+// ensure visible
+row.scrollIntoView({block:'nearest', behavior:'auto'});
+}
+}
+}
+
+// ── DRAW HELPERS ────────────────────────────────────────────────────────────
 function arcPoints(cx, cy, r, a0, a1, steps) {
-  const pts = [];
-  for (let i = 0; i <= steps; i++) {
-    const a = a0 + (a1 - a0) * (i / steps);
-    pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
-  }
-  return pts.join(' ');
+const pts = [];
+for (let i = 0; i <= steps; i++) {
+const a = a0 + (a1 - a0) * (i / steps);
+pts.push(`${(cx + r * Math.cos(a)).toFixed(1)},${(cy + r * Math.sin(a)).toFixed(1)}`);
+}
+return pts.join(' ');
 }
 
 function drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke, borderC, textCol, el, txt) {
-  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-  RING_RADII.forEach(r => {
-    el('polyline', {
-      points: arcPoints(POP_CX, POP_CY, r, ARC_MIN, ARC_MAX, 60),
-      fill: 'none', stroke: borderC, 'stroke-width': '1', 'stroke-dasharray': '3 5'
-    });
-  });
-  const dotRand = seededRand(seed + 1);
-  const placed = [];
-  qItems.forEach(item => {
-    const band   = Math.min(4, Math.floor(item.score * 5));
-    const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band - 1] + DOT_R + 4;
-    const outerR = RING_RADII[band] - DOT_R - 4;
-    const rRange = Math.max(1, outerR - innerR);
-    let bestCx = POP_CX, bestCy = POP_CY, bestDist = -1;
-    for (let attempt = 0; attempt < 14; attempt++) {
-      const angle = ARC_MIN + dotRand() * (ARC_MAX - ARC_MIN);
-      const r     = innerR + dotRand() * rRange;
-      let cx = POP_CX + r * Math.cos(angle);
-      let cy = POP_CY + r * Math.sin(angle);
-      cx = Math.max(DOT_R + 6, Math.min(SVG_W - DOT_R - 6, cx));
-      cy = Math.max(DOT_R + 6, Math.min(SVG_H - DOT_R - 6, cy));
-      const minD = placed.length
-        ? Math.min(...placed.map(p => Math.hypot(p.cx - cx, p.cy - cy)))
-        : 999;
-      if (minD > bestDist) { bestDist = minD; bestCx = cx; bestCy = cy; }
-      if (bestDist > DOT_R * 2.2) break;
-    }
-    placed.push({cx: bestCx, cy: bestCy});
-    const dot = el('circle', {
-      cx: bestCx.toFixed(1), cy: bestCy.toFixed(1),
-      r: DOT_R, fill: dotFill, stroke: dotStroke, 'stroke-width': '2', style: 'cursor:pointer'
-    });
-    dot.addEventListener('mouseenter', e => showQGTip(e, item.answer));
-    dot.addEventListener('mousemove',  e => moveQGTip(e));
-    dot.addEventListener('mouseleave', hideQGTip);
-  });
-  const popG = el('g', {style:'cursor:pointer'});
-  el('circle', {cx:POP_CX, cy:POP_CY, r:POP_R, fill:popCol}, popG);
-  txt('Population', {
-    x:POP_CX, y:POP_CY-10, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'#fff','font-size':'13','font-weight':'600','font-family':'Inter,sans-serif'
-  }, popG);
-  txt(`${popAnswers.length} answers`, {
-    x:POP_CX, y:POP_CY+8, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.8)','font-size':'11','font-family':'Inter,sans-serif'
-  }, popG);
-  txt('click to expand ↗', {
-    x:POP_CX, y:POP_CY+24, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.55)','font-size':'10','font-family':'Inter,sans-serif'
-  }, popG);
-  popG.addEventListener('click', () => {
-    cancelPopAnim();
-    popAnimState = 'expanding'; popAnimProgress = 0;
-    animatePop(true);
-  });
+const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+RING_RADII.forEach(r => {
+el('polyline', {
+points: arcPoints(POP_CX, POP_CY, r, ARC_MIN, ARC_MAX, 60),
+fill: 'none', stroke: borderC, 'stroke-width': '1', 'stroke-dasharray': '3 5'
+});
+});
+const dotRand = seededRand(seed + 1);
+const placed = [];
+qItems.forEach((item, i) => {
+const band = Math.min(4, Math.floor(item.score * 5));
+const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band - 1] + DOT_R + 4;
+const outerR = RING_RADII[band] - DOT_R - 4;
+const rRange = Math.max(1, outerR - innerR);
+let bestCx = POP_CX, bestCy = POP_CY, bestDist = -1;
+for (let attempt = 0; attempt < 14; attempt++) {
+const angle = ARC_MIN + dotRand() * (ARC_MAX - ARC_MIN);
+const r = innerR + dotRand() * rRange;
+let cx = POP_CX + r * Math.cos(angle);
+let cy = POP_CY + r * Math.sin(angle);
+// clamp to SVG bounds
+cx = Math.max(DOT_R + 6, Math.min(SVG_W - DOT_R - 6, cx));
+cy = Math.max(DOT_R + 6, Math.min(SVG_H - DOT_R - 6, cy));
+// ensure not off the arc semicircle: keep angle within arc (already done) and radius within allowed
+const minD = placed.length
+? Math.min(...placed.map(p => Math.hypot(p.cx - cx, p.cy - cy)))
+: 999;
+if (minD > bestDist) { bestDist = minD; bestCx = cx; bestCy = cy; }
+if (bestDist > DOT_R * 2.2) break;
+}
+placed.push({cx: bestCx, cy: bestCy});
+const dot = el('circle', {
+cx: bestCx.toFixed(1), cy: bestCy.toFixed(1),
+r: DOT_R, fill: dotFill, stroke: dotStroke, 'stroke-width': '2', style: 'cursor:pointer'
+});
+dot.addEventListener('mouseenter', e => showQGTip(e, item.answer));
+dot.addEventListener('mousemove', e => moveQGTip(e));
+dot.addEventListener('mouseleave', hideQGTip);
+});
+const popG = el('g', {style:'cursor:pointer'});
+el('circle', {cx:POP_CX, cy:POP_CY, r:POP_R, fill:popCol}, popG);
+txt('Population', {
+x:POP_CX, y:POP_CY-10, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'#fff','font-size':'13','font-weight':'600','font-family':'Inter,sans-serif'
+}, popG);
+txt(`${popAnswers.length} answers`, {
+x:POP_CX, y:POP_CY+8, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.8)','font-size':'11','font-family':'Inter,sans-serif'
+}, popG);
+txt('click to expand ↗', {
+x:POP_CX, y:POP_CY+24, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.55)','font-size':'10','font-family':'Inter,sans-serif'
+}, popG);
+popG.addEventListener('click', () => {
+cancelPopAnim();
+cancelPopReveal();
+popAnimState = 'expanding'; popAnimProgress = 0;
+animatePop(true);
+});
 }
 
-// ── Two-phase animation: phase 1 = circle grows (0→0.55), phase 2 = pills appear (0.55→1)
+// animate pop expanding/collapsing (and start reveal after expansion)
 function animatePop(expanding) {
-  const duration = 600, start = performance.now();
-  function tick(now) {
-    const t = Math.min(1, (now - start) / duration);
-    // Ease in-out cubic
-    const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
-    popAnimProgress = expanding ? eased : 1 - eased;
-    if (t < 1) { renderQG(); popAnimRAF = requestAnimationFrame(tick); }
-    else {
-      popAnimState = expanding ? 'expanded' : null;
-      popAnimProgress = expanding ? 1 : 0;
-      renderQG();
-    }
-  }
-  popAnimRAF = requestAnimationFrame(tick);
+const duration = 500, start = performance.now();
+function tick(now) {
+const t = Math.min(1, (now - start) / duration);
+const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+popAnimProgress = expanding ? eased : 1 - eased;
+if (t < 1) { renderQG(); popAnimRAF = requestAnimationFrame(tick); }
+else {
+popAnimState = expanding ? 'expanded' : null;
+popAnimProgress = expanding ? 1 : 0;
+renderQG();
+// if we just expanded, start the staggered reveal of pill text
+if (expanding) startPillReveal();
+}
+}
+popAnimRAF = requestAnimationFrame(tick);
 }
 
-// Progress is 0→1 overall. Circle grows in 0→0.6, pills fade in 0.6→1 staggered.
-const CIRCLE_PHASE_END = 0.6;
+function startPillReveal() {
+cancelPopReveal();
+const combo = window._qgData.combos[qgIdx];
+const popAnswers = window._qgData.popMap[combo.key] || [];
+const SHOW_N = Math.min(28, popAnswers.length);
+popRevealCount = 0;
+// reveal one every 70ms — adjust for speed
+popRevealTimer = setInterval(() => {
+popRevealCount++;
+renderQG();
+if (popRevealCount >= SHOW_N) {
+cancelPopReveal();
+}
+}, 70);
+}
 
 function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText) {
-  const invA = 1 - progress;
-  const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  const circleP = Math.min(1, progress / CIRCLE_PHASE_END);
-  const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
-  const curCx = POP_CX + (ecx - POP_CX) * ease(circleP);
-  const curCy = POP_CY + (ecy - POP_CY) * ease(circleP);
-  const curR  = POP_R  + (EXP_R - POP_R) * ease(circleP);
+const invA = 1 - progress;
+const ecx = SVG_W / 2, ecy = SVG_H / 2;
+const curCx = POP_CX + (ecx - POP_CX) * progress;
+const curCy = POP_CY + (ecy - POP_CY) * progress;
+const curR = POP_R + (EXP_R - POP_R) * progress;
+if (invA > 0.01) {
+// fade the ring dots while expanding
+const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+const dotRand = seededRand(seed + 1);
+const placed2 = [];
+qItems.forEach(item => {
+const band = Math.min(4, Math.floor(item.score * 5));
+const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band-1] + DOT_R + 4;
+const outerR = RING_RADII[band] - DOT_R - 4;
+const rRange = Math.max(1, outerR - innerR);
+let bx=POP_CX,by=POP_CY,bd=-1;
+for (let a=0; a<12; a++) {
+const angle = ARC_MIN+dotRand()*(ARC_MAX-ARC_MIN);
+const r = innerR+dotRand()*rRange;
+let cx=POP_CX+r*Math.cos(angle), cy=POP_CY+r*Math.sin(angle);
+cx=Math.max(DOT_R+6, Math.min(SVG_W-DOT_R-6, cx));
+cy=Math.max(DOT_R+6, Math.min(SVG_H-DOT_R-6, cy));
+const minD=placed2.length?Math.min(...placed2.map(p=>Math.hypot(p.cx-cx,p.cy-cy))):999;
+if(minD>bd){bd=minD;bx=cx;by=cy;}
+if(bd>DOT_R*2.2)break;
+}
+placed2.push({cx:bx,cy:by});
+el('circle',{cx:bx.toFixed(1),cy:by.toFixed(1),r:DOT_R,fill:dotFill,stroke:dotStroke,'stroke-width':'2',opacity:invA.toFixed(3)});
+});
+}
+// draw expanding population circle
+el('circle', {cx:curCx.toFixed(1),cy:curCy.toFixed(1),r:curR.toFixed(1),fill:popCol});
 
-  if (invA > 0.01) {
-    RING_RADII.forEach(r => {
-      el('polyline', {
-        points: arcPoints(POP_CX, POP_CY, r, ARC_MIN, ARC_MAX, 60),
-        fill:'none', stroke:borderC, 'stroke-width':'1', 'stroke-dasharray':'3 5',
-        opacity: invA.toFixed(3)
-      });
-    });
-    const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-    const dotRand = seededRand(seed + 1);
-    const placed2 = [];
-    qItems.forEach(item => {
-      const band   = Math.min(4, Math.floor(item.score * 5));
-      const innerR = band === 0 ? POP_R + DOT_R + 6 : RING_RADII[band-1] + DOT_R + 4;
-      const outerR = RING_RADII[band] - DOT_R - 4;
-      const rRange = Math.max(1, outerR - innerR);
-      let bx=POP_CX,by=POP_CY,bd=-1;
-      for (let a=0; a<12; a++) {
-        const angle = ARC_MIN+dotRand()*(ARC_MAX-ARC_MIN);
-        const r     = innerR+dotRand()*rRange;
-        let cx=POP_CX+r*Math.cos(angle), cy=POP_CY+r*Math.sin(angle);
-        cx=Math.max(DOT_R+6, Math.min(SVG_W-DOT_R-6, cx));
-        cy=Math.max(DOT_R+6, Math.min(SVG_H-DOT_R-6, cy));
-        const minD=placed2.length?Math.min(...placed2.map(p=>Math.hypot(p.cx-cx,p.cy-cy))):999;
-        if(minD>bd){bd=minD;bx=cx;by=cy;}
-        if(bd>DOT_R*2.2)break;
-      }
-      placed2.push({cx:bx,cy:by});
-      el('circle',{cx:bx.toFixed(1),cy:by.toFixed(1),r:DOT_R,fill:dotFill,stroke:dotStroke,'stroke-width':'2',opacity:invA.toFixed(3)});
-    });
-  }
-
-  el('circle', {cx:curCx.toFixed(1),cy:curCy.toFixed(1),r:curR.toFixed(1),fill:popCol});
-
-  // Pills only appear after circle phase is done, staggered per item
-  if (progress > CIRCLE_PHASE_END && popAnswers.length > 0) {
-    const pillPhase = (progress - CIRCLE_PHASE_END) / (1 - CIRCLE_PHASE_END);
-    drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC,
-      curCx, curCy, curR, '1', pillPhase);
-  }
+// During animation, show pill backgrounds only (no text) until progress gets large.
+if (progress > 0.15) {
+const pillA = ((progress - 0.15) / 0.85).toFixed(3);
+// revealCount is zero during animation (text not shown), but show pill shapes
+drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, curCx, curCy, curR, pillA, 0);
+}
 }
 
 function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) {
-  const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  const overlay = el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:'transparent',style:'cursor:default'});
-  overlay.addEventListener('click', e => {
-    const svgEl = document.getElementById('qgSvg');
-    const pt = svgEl.createSVGPoint();
-    pt.x = e.clientX; pt.y = e.clientY;
-    const sp = pt.matrixTransform(svgEl.getScreenCTM().inverse());
-    const dx = sp.x - ecx, dy = sp.y - ecy;
-    if (Math.sqrt(dx*dx+dy*dy) > EXP_R) {
-      cancelPopAnim();
-      popAnimState = 'collapsing'; popAnimProgress = 1;
-      animatePop(false);
-    }
-  });
-  el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
-  // pillPhase = 1 means fully visible
-  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1', 1);
+const ecx = SVG_W / 2, ecy = SVG_H / 2;
+const overlay = el('rect', {x:0,y:0,width:SVG_W,height:SVG_H,fill:'transparent',style:'cursor:default'});
+overlay.addEventListener('click', e => {
+const svgEl = document.getElementById('qgSvg');
+const pt = svgEl.createSVGPoint();
+pt.x = e.clientX; pt.y = e.clientY;
+const sp = pt.matrixTransform(svgEl.getScreenCTM().inverse());
+const dx = sp.x - ecx, dy = sp.y - ecy;
+if (Math.sqrt(dx*dx+dy*dy) > EXP_R) {
+cancelPopAnim();
+cancelPopReveal();
+popAnimState = 'collapsing'; popAnimProgress = 1;
+animatePop(false);
+}
+});
+el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
+// show pill backgrounds and text according to popRevealCount
+drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1', popRevealCount);
 }
 
-// pillPhase: 0 = all hidden, 1 = all fully visible
-// Each pill has a random reveal order baked by its index
-function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, _unused, pillPhase) {
-  if (!popAnswers.length) return;
-  const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
-  const rand = seededRand(seed + 7);
-  const shuffled = [...popAnswers];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(rand() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-
-  // Build a random reveal order for pills (separate shuffle)
-  const SHOW_N = Math.min(28, shuffled.length);
-  const revealOrder = Array.from({length: SHOW_N}, (_, i) => i);
-  const revealRand = seededRand(seed + 99);
-  for (let i = revealOrder.length - 1; i > 0; i--) {
-    const j = Math.floor(revealRand() * (i + 1));
-    [revealOrder[i], revealOrder[j]] = [revealOrder[j], revealOrder[i]];
-  }
-  // revealOrder[i] = the original pill index that reveals at slot i
-  // revealRank[pillIdx] = which reveal slot it occupies (0 = first to appear)
-  const revealRank = new Array(SHOW_N);
-  revealOrder.forEach((pillIdx, slot) => { revealRank[pillIdx] = slot; });
-
-  const pText = '#ffffff';
-  const headerY = cy - r + 28;
-
-  const headerAlpha = Math.min(1, pillPhase * 3).toFixed(3);
-  txt('Population', {
-    x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:headerAlpha
-  });
-  txt(`${popAnswers.length} answers`, {
-    x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:headerAlpha
-  });
-  txt('click outside to close', {
-    x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:headerAlpha
-  });
-
-  const PILL_H  = 18, PILL_H2 = 28, PAD_X = 10, GAP_X = 6, ROW_GAP = 6;
-  const FS = 9, CHAR_W = FS * 0.52, MAX_TXT_W = 120, AVAIL_W = r * 1.6;
-
-  const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
-  function pillText(ans) {
-    const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
-    return words.length < ans.trim().length ? words + '…' : words;
-  }
-  function pillDims(ans) {
-    const t = pillText(ans), tW = t.length * CHAR_W;
-    const needsWrap = tW > MAX_TXT_W, clampedW = Math.min(tW, MAX_TXT_W);
-    return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
-  }
-  const shown = shuffled.slice(0, SHOW_N), hoverable = shuffled.slice(SHOW_N);
-  const rows = []; let curRow = [], curW = 0;
-  shown.forEach((ans, i) => {
-    const d = pillDims(ans);
-    const needed = curRow.length ? d.w + GAP_X : d.w;
-    if (curRow.length > 0 && curW + needed > AVAIL_W) {
-      rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
-    } else { curRow.push({ans,...d,idx:i}); curW += needed; }
-  });
-  if (curRow.length) rows.push(curRow);
-  const totalH = rows.reduce((s,row,ri) =>
-    s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
-  let py = contentStartY + (contentH - totalH) / 2;
-  if (py < contentStartY) py = contentStartY;
-  const placedRects = [];
-  rows.forEach(row => {
-    const rowH = Math.max(...row.map(p=>p.h));
-    const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
-    let px = cx - rowW / 2;
-    row.forEach(p => {
-      // Each pill fades in based on its reveal rank
-      const rank = revealRank[p.idx];
-      // stagger: pill at rank k becomes visible when pillPhase > k/SHOW_N
-      const threshold = rank / SHOW_N;
-      const localAlpha = pillPhase <= threshold ? 0 : Math.min(1, (pillPhase - threshold) / (1.5 / SHOW_N + 0.08));
-      const opacityStr = localAlpha.toFixed(3);
-
-      const g = el('g', {opacity: opacityStr});
-      const py2 = py + (rowH - p.h) / 2;
-      el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
-        fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
-      if (p.two) {
-        const lines = wrapText(p.txt, MAX_TXT_W, FS);
-        txt(lines[0]||'', {x:px+p.w/2, y:py2+11,'text-anchor':'middle','dominant-baseline':'middle',
-          fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-        txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,'text-anchor':'middle','dominant-baseline':'middle',
-          fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
-      } else {
-        txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,'text-anchor':'middle','dominant-baseline':'middle',
-          fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
-      }
-      const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
-      const fa = p.ans;
-      hit.addEventListener('mouseenter', e => showQGTip(e, fa));
-      hit.addEventListener('mousemove',  e => moveQGTip(e));
-      hit.addEventListener('mouseleave', hideQGTip);
-      placedRects.push({x:px, y:py2, w:p.w, h:p.h});
-      px += p.w + GAP_X;
-    });
-    py += rowH + ROW_GAP;
-  });
-  if (hoverable.length) {
-    const rand2 = seededRand(seed + 13);
-    const smallR = 9;
-    const placedCircles = [];
-    hoverable.forEach((ans, i) => {
-      let attempts = 0, placed = false, candX = cx, candY = cy;
-      while (attempts < 80 && !placed) {
-        attempts++;
-        const ang = rand2() * Math.PI * 2;
-        const rad = Math.sqrt(rand2()) * (r - 28);
-        candX = cx + rad * Math.cos(ang);
-        candY = cy + rad * Math.sin(ang);
-        if (candX < smallR+6 || candX > SVG_W-smallR-6 || candY < smallR+6 || candY > SVG_H-smallR-6) continue;
-        const overlapRect = placedRects.some(rr => {
-          const rx=Math.max(rr.x,candX-smallR), ry=Math.max(rr.y,candY-smallR);
-          const rw=Math.min(rr.x+rr.w,candX+smallR)-rx, rh=Math.min(rr.y+rr.h,candY+smallR)-ry;
-          return rw>0 && rh>0;
-        });
-        if (overlapRect) continue;
-        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x-candX, pc.y-candY) < smallR*2.2);
-        if (overlapCircle) continue;
-        placed = true;
-        placedCircles.push({x:candX, y:candY});
-      }
-      if (!placed) {
-        const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
-        candX = cx + (r-28) * Math.cos(angle);
-        candY = cy + (r-28) * Math.sin(angle);
-      }
-      // Hoverable dots also stagger in, using global pillPhase scaled by position
-      const dotThreshold = Math.min(0.9, i / hoverable.length * 0.5);
-      const dotAlpha = pillPhase === undefined ? 1 : (pillPhase <= dotThreshold ? 0 : Math.min(1, (pillPhase - dotThreshold) / 0.2));
-      const g = el('g', {opacity: dotAlpha.toFixed(3), style:'cursor:pointer'});
-      el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
-      g.addEventListener('mouseenter', e => showQGTip(e, ans));
-      g.addEventListener('mousemove',  e => moveQGTip(e));
-      g.addEventListener('mouseleave', hideQGTip);
-    });
-  }
+function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr='1', revealCount=0) {
+if (!popAnswers.length) return;
+const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
+const rand = seededRand(seed + 7);
+const shuffled = [...popAnswers];
+for (let i = shuffled.length - 1; i > 0; i--) {
+const j = Math.floor(rand() * (i + 1));
+[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+}
+const pText = '#ffffff';
+const headerY = cy - r + 28;
+txt('Population', {
+x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+txt(`${popAnswers.length} answers`, {
+x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+txt('click outside to close', {
+x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
+});
+const PILL_H = 18, PILL_H2 = 28, PAD_X = 10, GAP_X = 6, ROW_GAP = 6;
+const FS = 9, CHAR_W = FS * 0.52, MAX_TXT_W = 120, AVAIL_W = Math.max(220, r * 1.4);
+const SHOW_N = Math.min(28, shuffled.length);
+const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
+function pillText(ans) {
+const words = ans.trim().split(/\s+/).slice(0, 20).join(' ');
+return words.length < ans.trim().length ? words + '…' : words;
+}
+function pillDims(ans) {
+const t = pillText(ans), tW = t.length * CHAR_W;
+const needsWrap = tW > MAX_TXT_W, clampedW = Math.min(tW, MAX_TXT_W);
+return { txt:t, w:clampedW + PAD_X*2, h:needsWrap ? PILL_H2 : PILL_H, two:needsWrap };
+}
+const shown = shuffled.slice(0, SHOW_N), hoverable = shuffled.slice(SHOW_N);
+// build rows
+const rows = []; let curRow = [], curW = 0;
+shown.forEach((ans, i) => {
+const d = pillDims(ans);
+const needed = curRow.length ? d.w + GAP_X : d.w;
+if (curRow.length > 0 && curW + needed > AVAIL_W) {
+rows.push(curRow); curRow = [{ans,...d,idx:i}]; curW = d.w;
+} else { curRow.push({ans,...d,idx:i}); curW += needed; }
+});
+if (curRow.length) rows.push(curRow);
+const totalH = rows.reduce((s,row,ri) =>
+s + Math.max(...row.map(p=>p.h)) + (ri<rows.length-1 ? ROW_GAP : 0), 0);
+let py = contentStartY + (contentH - totalH) / 2;
+if (py < contentStartY) py = contentStartY;
+const placedRects = [];
+rows.forEach(row => {
+const rowH = Math.max(...row.map(p=>p.h));
+const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
+let px = cx - rowW / 2;
+// ensure the entire row fits within the circle bounds: if too far, nudge toward center
+// compute center positions and if any would be beyond radius-18, shift px slightly
+let safe = true;
+let shifts = 0;
+while (shifts < 8) {
+safe = true;
+for (const p of row) {
+const centerX = px + p.w/2;
+const centerY = py + (rowH - p.h)/2 + p.h/2;
+if (Math.hypot(centerX - cx, centerY - cy) > r - 18) { safe = false; break; }
+}
+if (safe) break;
+// nudge px toward center
+px += (cx - px) * 0.08;
+shifts++;
 }
 
-function drawInfoPanel(combo, featKey, idx, total, isDark, textCol, text2, text3, borderC, el, txt, wrapText) {
-  const x = INFO_X, midX = INFO_MID;
-  const featLabel = FEAT_LABEL_MAP[featKey] || combo.feature;
-  const featBg = FEAT_BG[featKey] || '#eee';
-  const featFg = FEAT_FG[featKey] || '#333';
-  const pillW = Math.min(INFO_W, featLabel.length * 8.5 + 28);
-  el('rect', {x:midX-pillW/2, y:30, width:pillW, height:26, rx:13, fill:featBg});
-  txt(featLabel, {x:midX, y:43,'text-anchor':'middle','dominant-baseline':'middle',
-    fill:featFg,'font-size':'12','font-weight':'600','font-family':'Inter,sans-serif'});
-  txt('QUESTION', {x, y:84,'text-anchor':'start','dominant-baseline':'middle',
-    fill:text3,'font-size':'9','font-weight':'500','font-family':'Inter,sans-serif','letter-spacing':'0.08em'});
-  const qLines = wrapText(combo.question, INFO_W - 4, 13.5);
-  qLines.slice(0, 5).forEach((ln, i) =>
-    txt(ln, {x, y:100+i*19,'text-anchor':'start','dominant-baseline':'middle',
-      fill:textCol,'font-size':'13.5','font-weight':'500','font-family':'Inter,sans-serif'})
-  );
-  const afterQ = 100 + Math.min(qLines.length, 5) * 19 + 16;
-  el('line', {x1:x,y1:afterQ,x2:x+INFO_W,y2:afterQ,stroke:borderC,'stroke-width':'0.5'});
-  txt('PROMPT', {x, y:afterQ+16,'text-anchor':'start','dominant-baseline':'middle',
-    fill:text3,'font-size':'9','font-weight':'500','font-family':'Inter,sans-serif','letter-spacing':'0.08em'});
-  const pLines = wrapText(combo.prompt, INFO_W - 4, 12);
-  pLines.slice(0, 7).forEach((ln, i) =>
-    txt(ln, {x, y:afterQ+32+i*16,'text-anchor':'start','dominant-baseline':'middle',
-      fill:text2,'font-size':'12','font-family':'Inter,sans-serif'})
-  );
-  const navY = SVG_H - 36;
-  const prevG = el('g', {style:`cursor:${idx>0?'pointer':'default'}`, opacity:idx>0?'1':'0.3'});
-  el('rect', {x, y:navY-14, width:28, height:28, rx:6, fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, prevG);
-  txt('←', {x:x+14, y:navY,'text-anchor':'middle','dominant-baseline':'middle',
-    fill:textCol,'font-size':'15','font-family':'Inter,sans-serif'}, prevG);
-  if (idx > 0) prevG.addEventListener('click', () => qgNav(-1));
-  txt(`${idx+1} / ${total}`, {x:x+38, y:navY,'text-anchor':'start','dominant-baseline':'middle',
-    fill:text3,'font-size':'12','font-family':'Inter,sans-serif'});
-  const nextX = x + INFO_W - 28;
-  const nextG = el('g', {style:`cursor:${idx<total-1?'pointer':'default'}`, opacity:idx<total-1?'1':'0.3'});
-  el('rect', {x:nextX, y:navY-14, width:28, height:28, rx:6, fill:'transparent', stroke:borderC,'stroke-width':'0.8'}, nextG);
-  txt('→', {x:nextX+14, y:navY,'text-anchor':'middle','dominant-baseline':'middle',
-    fill:textCol,'font-size':'15','font-family':'Inter,sans-serif'}, nextG);
-  if (idx < total-1) nextG.addEventListener('click', () => qgNav(1));
+row.forEach((p, idx) => {
+const g = el('g', {opacity:opacityStr});
+const py2 = py + (rowH - p.h) / 2;
+// pill background (always draw, faint)
+el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
+fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
+// draw text only if revealed (i < revealCount)
+if (p.idx < revealCount) {
+if (p.two) {
+const lines = wrapText(p.txt, MAX_TXT_W, FS);
+txt(lines[0]||'', {x:px+p.w/2, y:py2+11,'text-anchor':'middle','dominant-baseline':'middle',
+fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
+txt((lines.slice(1).join(' '))||'', {x:px+p.w/2, y:py2+24,'text-anchor':'middle','dominant-baseline':'middle',
+fill:'rgba(255,255,255,0.9)','font-size':FS,'font-family':'Inter,sans-serif'}, g);
+} else {
+txt(p.txt, {x:px+p.w/2, y:py2+p.h/2,'text-anchor':'middle','dominant-baseline':'middle',
+fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'}, g);
 }
+}
+// hit area
+const hit = el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'}, g);
+const fa = p.ans;
+hit.addEventListener('mouseenter', e => showQGTip(e, fa));
+hit.addEventListener('mousemove', e => moveQGTip(e));
+hit.addEventListener('mouseleave', hideQGTip);
+hit.addEventListener('click', () => {
+// clicking a pill can select that answer or do something; for now, zoom is not implemented
+});
+placedRects.push({x:px, y:py2, w:p.w, h:p.h});
+px += p.w + GAP_X;
+});
+py += rowH + ROW_GAP;
+});
+// hoverable small dots placed inside circle, constrained
+if (hoverable.length) {
+const rand2 = seededRand(seed + 13);
+const smallR = 9;
+const placedCircles = [];
+hoverable.forEach((ans, i) => {
+let attempts = 0, placed = false, candX = cx, candY = cy;
+while (attempts < 120 && !placed) {
+attempts++;
+const ang = rand2() * Math.PI * 2;
+const rad = Math.sqrt(rand2()) * (r - 36);
+candX = cx + rad * Math.cos(ang);
+candY = cy + rad * Math.sin(ang);
+if (candX < smallR+6 || candX > SVG_W-smallR-6 || candY < smallR+6 || candY > SVG_H-smallR-6) continue;
+// ensure inside circle
+if (Math.hypot(candX - cx, candY - cy) > r - 18) continue;
+const overlapRect = placedRects.some(rr => {
+const rx=Math.max(rr.x,candX-smallR), ry=Math.max(rr.y,candY-smallR);
+const rw=Math.min(rr.x+rr.w,candX+smallR)-rx, rh=Math.min(rr.y+rr.h,candY+smallR)-ry;
+return rw>0 && rh>0;
+});
+if (overlapRect) continue;
+const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x-candX, pc.y-candY) < smallR*2.2);
+if (overlapCircle) continue;
+placed = true;
+placedCircles.push({x:candX, y:candY});
+}
+if (!placed) {
+const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2;
+candX = cx + (r-36) * Math.cos(angle);
+candY = cy + (r-36) * Math.sin(angle);
+}
+const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
+el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
+g.addEventListener('mouseenter', e => showQGTip(e, ans));
+g.addEventListener('mousemove', e => moveQGTip(e));
+g.addEventListener('mouseleave', hideQGTip);
+});
+}
+}
+
+// drawInfoPanel removed: left DOM now provides prompt/question and nav
+
+// ── END Q-GENIE ─────────────────────────────────────────────────────────────
 </script>
 </body>
 </html>

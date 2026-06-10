@@ -317,24 +317,42 @@ align-items: flex-start;
 }
 
 /* Question list — 33.333% */
-.qg-question-panel {
+/* .qg-question-panel {
 width: 33.333%;
 flex-shrink: 0;
 display: flex;
 flex-direction: column;
 gap: 8px;
-/* make panel taller and responsive */
+/* make panel taller and responsive 
 max-height: calc(100vh - 260px);
 overflow-y: auto;
 scrollbar-width: thin;
 scrollbar-color: var(--border2) transparent;
 }
 .qg-question-panel::-webkit-scrollbar { width: 6px; }
-.qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+.qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; } */
+
+
+/* Question list — force one-third and provide comfortable spacing */
+.qg-question-panel {
+flex: 0 0 33.333%;
+max-width: 33.333%;
+display: flex;
+flex-direction: column;
+gap: 12px;
+max-height: calc(100vh - 260px);
+overflow-y: auto;
+scrollbar-width: thin;
+scrollbar-color: var(--border2) transparent;
+}
+.qg-question-panel::-webkit-scrollbar { width: 8px; }
+.qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+
 
 .qg-question-label { margin-bottom: 6px; }
 
-/* Each question card large enough to display full question + feature pill */
+/*  Each question card large enough to display full question + feature pill 
 .qg-q-row {
 display: flex;
 flex-direction: column;
@@ -345,30 +363,96 @@ border: 0.5px solid var(--border);
 cursor: pointer;
 transition: background 0.12s, border-color 0.12s;
 position: relative;
-overflow: visible; /* let the content define height */
-min-height: 68px; /* ensure space for text + pill */
+overflow: visible; / let the content define height 
+min-height: 68px; / ensure space for text + pill 
 background: transparent;
+} */
+/* .qg-q-row:hover { background: var(--bg2); border-color: var(--border2); } */
+/* .qg-q-row.selected { background: var(--bg2); border-color: var(--border2); }  */
+
+
+/* Question card — allow auto height, reserve room for accent bar */
+.qg-q-row {
+position: relative;
+display: flex;
+flex-direction: column;
+gap: 8px;
+padding: 14px 12px 14px 22px; /* left padding clears the accent bar */
+border-radius: var(--radius);
+border: 0.5px solid var(--border);
+background: var(--bg);
+cursor: pointer;
+transition: background 0.12s, border-color 0.12s;
+overflow: visible;
+z-index: 0;
 }
-.qg-q-row:hover { background: var(--bg2); border-color: var(--border2); }
-.qg-q-row.selected { background: var(--bg2); border-color: var(--border2); }
-.qg-q-accent {
+
+/* Hover / selected state should float above neighbors */
+.qg-q-row:hover,
+.qg-q-row.selected {
+background: var(--bg2);
+border-color: var(--border2);
+z-index: 2;
+}
+  
+/* .qg-q-accent {
 position: absolute;
 left: 0; top: 0; bottom: 0;
 width: 4px;
 border-radius: 2px 0 0 2px;
 background: transparent;
 transition: background 0.12s;
+} */
+
+/* Accent bar on the left edge of each card */
+.qg-q-accent {
+position: absolute;
+left: 0;
+top: 8px;
+bottom: 8px;
+width: 6px;
+border-radius: 3px;
+background: transparent;
+transition: background 0.12s;
+z-index: 1;
 }
+  
+/* .qg-q-text {
+font-size: 13px;
+font-weight: 500;
+color: var(--text);
+line-height: 1.45;
+white-space: normal;  allow wrapping 
+overflow: visible;
+word-break: break-word;
+} */
+
+
+/* Question text — wrap naturally */
 .qg-q-text {
 font-size: 13px;
 font-weight: 500;
 color: var(--text);
 line-height: 1.45;
-white-space: normal; /* allow wrapping */
-overflow: visible;
+white-space: normal;
 word-break: break-word;
+overflow: visible;
 }
+
+/* Feature pill — in the document flow and visible */
 .qg-feat-pill {
+display: inline-block;
+font-size: 11px;
+font-weight: 600;
+padding: 4px 10px;
+border-radius: 12px;
+align-self: flex-start;
+margin-top: 4px;
+position: relative;
+z-index: 3;
+}
+  
+/* .qg-feat-pill {
 display: inline-block;
 font-size: 11px;
 font-weight: 600;
@@ -376,11 +460,24 @@ padding: 4px 10px;
 border-radius: 12px;
 width: fit-content;
 align-self: flex-start;
-}
+} */
+
+
 
 /* Visualization — remaining width */
-.qg-canvas-wrap {
+/* .qg-canvas-wrap {
 flex: 1;
+min-width: 0;
+background: var(--bg2);
+border: 0.5px solid var(--border);
+border-radius: var(--radius-lg);
+overflow: hidden;
+}
+.qg-canvas-wrap svg { display: block; width: 100%; } */
+
+/* Visualization takes the remaining space */
+.qg-canvas-wrap {
+flex: 1 1 66.667%;
 min-width: 0;
 background: var(--bg2);
 border: 0.5px solid var(--border);

@@ -348,6 +348,42 @@ p:last-child { margin-bottom: 0; }
   font-size: 12px;
   color: var(--text3);
 }
+
+/* ── Q-GENIE prompt selector ── */
+.qg-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+.qg-prompt-select {
+  flex: 1;
+  min-width: 200px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 0.5px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 7px 10px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a8a82' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 28px;
+}
+.qg-prompt-select:hover { border-color: var(--border2); background-color: var(--bg2); }
+.qg-prompt-select:focus { outline: none; border-color: #7F77DD; }
+.qg-count-badge {
+  font-size: 12px;
+  color: var(--text3);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 [data-theme="dark"] .logo img { mix-blend-mode: screen; }
 .tooltip-lb {
   position: fixed;
@@ -459,9 +495,18 @@ p:last-child { margin-bottom: 0; }
     <!-- Q-GENIE -->
     <div id="qgenie-page" class="page">
       <h2 style="margin-top:0">Q-GENIE Visualizer</h2>
-      <p>Explore how individual target answers compare to the population along each feature and question. Hover over the dots to view target answers and click the population to study its contents. Dots that are close to the population denote answers with low GENIE scores (i.e. low novelty).</p>
+      <p>Select a prompt, then explore how individual target answers compare to the population along each feature and question. Hover over the dots to view target answers and click the population to study its contents. Dots that are close to the population denote answers with low GENIE scores (i.e. low novelty).</p>
 
       <div id="qgenie-ui" style="display:none">
+
+        <!-- Prompt selector + question counter -->
+        <div class="qg-controls">
+          <select class="qg-prompt-select" id="qgPromptSelect" onchange="onPromptChange()">
+            <option value="">Loading prompts…</option>
+          </select>
+          <span class="qg-count-badge" id="qgCountBadge"></span>
+        </div>
+
         <div class="qg-canvas-wrap" id="qgCanvasWrap">
           <svg id="qgSvg" viewBox="0 0 760 520" xmlns="http://www.w3.org/2000/svg"></svg>
         </div>
@@ -562,7 +607,6 @@ let typeFilter  = 'all';
 async function initLeaderboard() {
   window._lbDone = true;
 
-  // Build feature tabs
   const featTabsEl = document.getElementById('featTabs');
   FEATURES.forEach(f => {
     const btn = document.createElement('button');
@@ -574,7 +618,6 @@ async function initLeaderboard() {
     featTabsEl.appendChild(btn);
   });
 
-  // Build type filters (static — base / instruct / all)
   const typeFiltersEl = document.getElementById('typeFilters');
   [['all','All'],['instruct','Instruct'],['base','Base']].forEach(([val, label]) => {
     const btn = document.createElement('button');
@@ -589,7 +632,6 @@ async function initLeaderboard() {
     typeFiltersEl.appendChild(btn);
   });
 
-  // Load data
   const listEl = document.getElementById('modelList');
   try {
     const res = await fetch('model_genie.json');
@@ -672,13 +714,11 @@ function renderModels() {
 
   const feat = FEATURES.find(f => f.key === activeFeat);
 
-  // Filter
   let filtered = modelData.filter(m =>
     (famFilter  === 'all' || m.family === famFilter) &&
     (typeFilter === 'all' || m.type   === typeFilter)
   );
 
-  // Sort descending by the active feature score
   filtered = filtered.slice().sort((a, b) => b[activeFeat] - a[activeFeat]);
 
   if (!filtered.length) {
@@ -802,10 +842,15 @@ const DOT_FILL      = '#1a1a18';
 const DOT_FILL_DARK = '#f0f0ec';
 
 window._qgData = null;
+// qgIdx is now the index within the FILTERED combo list for the selected prompt
 let qgIdx = 0;
 let popAnimState = null;
 let popAnimProgress = 0;
 let popAnimRAF = null;
+// Track which prompt is selected
+let selectedPrompt = '';
+// Filtered combos for the selected prompt
+let filteredCombos = [];
 
 function cancelPopAnim() {
   if (popAnimRAF) { cancelAnimationFrame(popAnimRAF); popAnimRAF = null; }
@@ -859,18 +904,66 @@ function processQGData(popRows, qRows) {
     qMap[k].push({ answer: String(r.Answer||r.answer||''), score });
   });
   Object.values(qMap).forEach(arr => arr.sort((a,b) => a.score - b.score));
+
   const seen = new Set(), combos = [];
   qRows.forEach(r => {
     const p=r.Prompt||r.prompt||'', q=r.Question||r.question||'', f=r.Feature||r.feature||'';
     const k = mkKey(p,q,f);
     if (!seen.has(k)) { seen.add(k); combos.push({prompt:p, question:q, feature:f, key:k}); }
   });
-  window._qgData = { combos, popMap, qMap };
-  qgIdx = 0; popAnimState = null; popAnimProgress = 0;
+
+  // Collect unique prompts (preserve insertion order = natural order in data)
+  const promptSet = new Set();
+  combos.forEach(c => promptSet.add(c.prompt));
+  const uniquePrompts = [...promptSet];
+
+  window._qgData = { combos, popMap, qMap, uniquePrompts };
+  qgIdx = 0;
+  popAnimState = null;
+  popAnimProgress = 0;
+
   document.getElementById('qgenie-empty').style.display = 'none';
   document.getElementById('qgenie-ui').style.display = 'block';
   buildRingLabels();
+  buildPromptDropdown(uniquePrompts);
+  // Select the first prompt by default
+  selectedPrompt = uniquePrompts[0] || '';
+  document.getElementById('qgPromptSelect').value = selectedPrompt;
+  updateFilteredCombos();
   renderQG();
+}
+
+function buildPromptDropdown(prompts) {
+  const sel = document.getElementById('qgPromptSelect');
+  sel.innerHTML = '';
+  prompts.forEach((p, i) => {
+    const opt = document.createElement('option');
+    opt.value = p;
+    // Truncate long prompts for display; show index for quick reference
+    const short = p.length > 80 ? p.slice(0, 78) + '…' : p;
+    opt.textContent = `${i + 1}. ${short}`;
+    opt.title = p;
+    sel.appendChild(opt);
+  });
+}
+
+function onPromptChange() {
+  selectedPrompt = document.getElementById('qgPromptSelect').value;
+  cancelPopAnim();
+  popAnimState = null;
+  popAnimProgress = 0;
+  qgIdx = 0;
+  updateFilteredCombos();
+  renderQG();
+}
+
+function updateFilteredCombos() {
+  if (!window._qgData) return;
+  filteredCombos = window._qgData.combos.filter(c => c.prompt === selectedPrompt);
+  const badge = document.getElementById('qgCountBadge');
+  badge.textContent = filteredCombos.length > 0
+    ? `${filteredCombos.length} question${filteredCombos.length !== 1 ? 's' : ''}`
+    : '';
 }
 
 function buildRingLabels() {
@@ -882,9 +975,9 @@ function buildRingLabels() {
 function mkKey(p,q,f) { return [p,q,f].join('\x00'); }
 
 function qgNav(dir) {
-  if (!window._qgData) return;
+  if (!window._qgData || !filteredCombos.length) return;
   cancelPopAnim();
-  const n = window._qgData.combos.length;
+  const n = filteredCombos.length;
   qgIdx = (qgIdx + dir + n) % n;
   popAnimState = null; popAnimProgress = 0;
   renderQG();
@@ -915,9 +1008,14 @@ const FEAT_LABEL_MAP = {agent:'Agent',perspective:'Perspective',plot:'Plot',sett
 
 function renderQG() {
   const data = window._qgData;
-  if (!data || !data.combos.length) return;
-  const combo      = data.combos[qgIdx];
-  const n          = data.combos.length;
+  if (!data || !filteredCombos.length) {
+    // Draw empty state in SVG
+    const svg = document.getElementById('qgSvg');
+    svg.innerHTML = '';
+    return;
+  }
+  const combo      = filteredCombos[qgIdx];
+  const n          = filteredCombos.length;
   const popAnswers = data.popMap[combo.key] || [];
   const qItems     = data.qMap[combo.key]   || [];
   const featKey    = normFeature(combo.feature) || combo.feature.toLowerCase();
@@ -1037,24 +1135,36 @@ function drawCollapsedView(popAnswers, qItems, combo, popCol, dotFill, dotStroke
   });
 }
 
+// ── Two-phase animation: phase 1 = circle grows (0→0.55), phase 2 = pills appear (0.55→1)
 function animatePop(expanding) {
-  const duration = 500, start = performance.now();
+  const duration = 600, start = performance.now();
   function tick(now) {
     const t = Math.min(1, (now - start) / duration);
+    // Ease in-out cubic
     const eased = t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
     popAnimProgress = expanding ? eased : 1 - eased;
     if (t < 1) { renderQG(); popAnimRAF = requestAnimationFrame(tick); }
-    else { popAnimState = expanding ? 'expanded' : null; popAnimProgress = expanding ? 1 : 0; renderQG(); }
+    else {
+      popAnimState = expanding ? 'expanded' : null;
+      popAnimProgress = expanding ? 1 : 0;
+      renderQG();
+    }
   }
   popAnimRAF = requestAnimationFrame(tick);
 }
 
+// Progress is 0→1 overall. Circle grows in 0→0.6, pills fade in 0.6→1 staggered.
+const CIRCLE_PHASE_END = 0.6;
+
 function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, dotStroke, borderC, el, txt, wrapText) {
   const invA = 1 - progress;
   const ecx = SVG_W / 2, ecy = SVG_H / 2;
-  const curCx = POP_CX + (ecx - POP_CX) * progress;
-  const curCy = POP_CY + (ecy - POP_CY) * progress;
-  const curR  = POP_R  + (EXP_R - POP_R) * progress;
+  const circleP = Math.min(1, progress / CIRCLE_PHASE_END);
+  const ease = t => t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2,3)/2;
+  const curCx = POP_CX + (ecx - POP_CX) * ease(circleP);
+  const curCy = POP_CY + (ecy - POP_CY) * ease(circleP);
+  const curR  = POP_R  + (EXP_R - POP_R) * ease(circleP);
+
   if (invA > 0.01) {
     RING_RADII.forEach(r => {
       el('polyline', {
@@ -1086,10 +1196,14 @@ function drawAnimatingPop(popAnswers, qItems, combo, progress, popCol, dotFill, 
       el('circle',{cx:bx.toFixed(1),cy:by.toFixed(1),r:DOT_R,fill:dotFill,stroke:dotStroke,'stroke-width':'2',opacity:invA.toFixed(3)});
     });
   }
+
   el('circle', {cx:curCx.toFixed(1),cy:curCy.toFixed(1),r:curR.toFixed(1),fill:popCol});
-  if (progress > 0.15) {
-    const pillA = ((progress - 0.15) / 0.85).toFixed(3);
-    drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, curCx, curCy, curR, pillA);
+
+  // Pills only appear after circle phase is done, staggered per item
+  if (progress > CIRCLE_PHASE_END && popAnswers.length > 0) {
+    const pillPhase = (progress - CIRCLE_PHASE_END) / (1 - CIRCLE_PHASE_END);
+    drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC,
+      curCx, curCy, curR, '1', pillPhase);
   }
 }
 
@@ -1109,10 +1223,13 @@ function drawExpandedPop(popAnswers, combo, popCol, el, txt, wrapText, borderC) 
     }
   });
   el('circle', {cx:ecx, cy:ecy, r:EXP_R, fill:popCol});
-  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1');
+  // pillPhase = 1 means fully visible
+  drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, ecx, ecy, EXP_R, '1', 1);
 }
 
-function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
+// pillPhase: 0 = all hidden, 1 = all fully visible
+// Each pill has a random reveal order baked by its index
+function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, _unused, pillPhase) {
   if (!popAnswers.length) return;
   const seed = combo.key.split('').reduce((a,c) => a + c.charCodeAt(0), 0);
   const rand = seededRand(seed + 7);
@@ -1121,23 +1238,40 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     const j = Math.floor(rand() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+
+  // Build a random reveal order for pills (separate shuffle)
+  const SHOW_N = Math.min(28, shuffled.length);
+  const revealOrder = Array.from({length: SHOW_N}, (_, i) => i);
+  const revealRand = seededRand(seed + 99);
+  for (let i = revealOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(revealRand() * (i + 1));
+    [revealOrder[i], revealOrder[j]] = [revealOrder[j], revealOrder[i]];
+  }
+  // revealOrder[i] = the original pill index that reveals at slot i
+  // revealRank[pillIdx] = which reveal slot it occupies (0 = first to appear)
+  const revealRank = new Array(SHOW_N);
+  revealOrder.forEach((pillIdx, slot) => { revealRank[pillIdx] = slot; });
+
   const pText = '#ffffff';
   const headerY = cy - r + 28;
+
+  const headerAlpha = Math.min(1, pillPhase * 3).toFixed(3);
   txt('Population', {
     x:cx, y:headerY, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr
+    fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:headerAlpha
   });
   txt(`${popAnswers.length} answers`, {
     x:cx, y:headerY+16, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr
+    fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:headerAlpha
   });
   txt('click outside to close', {
     x:cx, y:headerY+30, 'text-anchor':'middle','dominant-baseline':'middle',
-    fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr
+    fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:headerAlpha
   });
+
   const PILL_H  = 18, PILL_H2 = 28, PAD_X = 10, GAP_X = 6, ROW_GAP = 6;
   const FS = 9, CHAR_W = FS * 0.52, MAX_TXT_W = 120, AVAIL_W = r * 1.6;
-  const SHOW_N = Math.min(28, shuffled.length);
+
   const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
   function pillText(ans) {
     const words = ans.trim().split(/\s+/).slice(0, 12).join(' ');
@@ -1168,7 +1302,14 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     const rowW = row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0), 0);
     let px = cx - rowW / 2;
     row.forEach(p => {
-      const g = el('g', {opacity:opacityStr});
+      // Each pill fades in based on its reveal rank
+      const rank = revealRank[p.idx];
+      // stagger: pill at rank k becomes visible when pillPhase > k/SHOW_N
+      const threshold = rank / SHOW_N;
+      const localAlpha = pillPhase <= threshold ? 0 : Math.min(1, (pillPhase - threshold) / (1.5 / SHOW_N + 0.08));
+      const opacityStr = localAlpha.toFixed(3);
+
+      const g = el('g', {opacity: opacityStr});
       const py2 = py + (rowH - p.h) / 2;
       el('rect', {x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,
         fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'}, g);
@@ -1221,7 +1362,10 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
         candX = cx + (r-28) * Math.cos(angle);
         candY = cy + (r-28) * Math.sin(angle);
       }
-      const g = el('g', {opacity:opacityStr, style:'cursor:pointer'});
+      // Hoverable dots also stagger in, using global pillPhase scaled by position
+      const dotThreshold = Math.min(0.9, i / hoverable.length * 0.5);
+      const dotAlpha = pillPhase === undefined ? 1 : (pillPhase <= dotThreshold ? 0 : Math.min(1, (pillPhase - dotThreshold) / 0.2));
+      const g = el('g', {opacity: dotAlpha.toFixed(3), style:'cursor:pointer'});
       el('circle', {cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'}, g);
       g.addEventListener('mouseenter', e => showQGTip(e, ans));
       g.addEventListener('mousemove',  e => moveQGTip(e));

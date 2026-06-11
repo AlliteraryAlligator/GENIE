@@ -309,11 +309,16 @@ line-height: 1.4;
 .qg-prompt-item:last-child { border-bottom: none; }
 .qg-prompt-item:hover { background: var(--bg2); }
 
-/* Main panel split */
+/* Main panel split — single unified panel with fixed height */
 .qg-body {
 display: flex;
-gap: 8px; /* reduced gap so less unused space between list and purple circle */
-align-items: flex-start;
+gap: 0;
+align-items: stretch;
+background: var(--bg2);
+border: 0.5px solid var(--border);
+border-radius: var(--radius-lg);
+overflow: hidden;
+height: 560px;
 }
 
 /* Question list — 33.333% */
@@ -333,24 +338,27 @@ scrollbar-color: var(--border2) transparent;
 .qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; } */
 
 
-/* Question list — force one-third and provide comfortable spacing */
+/* Question list — fixed left column inside unified panel */
 .qg-question-panel {
-flex: 0 0 33.333%;
-max-width: 33.333%;
+flex: 0 0 280px;
+width: 280px;
 display: flex;
 flex-direction: column;
-gap: 12px;
-max-height: calc(100vh - 260px);
+gap: 8px;
+height: 100%;
 overflow-y: auto;
+padding: 14px 10px 14px 14px;
+border-right: 0.5px solid var(--border);
+background: var(--bg);
 scrollbar-width: thin;
 scrollbar-color: var(--border2) transparent;
 }
-.qg-question-panel::-webkit-scrollbar { width: 8px; }
-.qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+.qg-question-panel::-webkit-scrollbar { width: 6px; }
+.qg-question-panel::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
 
 
 
-.qg-question-label { margin-bottom: 6px; }
+.qg-question-label { margin-bottom: 8px; flex-shrink: 0; }
 
 /*  Each question card large enough to display full question + feature pill 
 .qg-q-row {
@@ -475,16 +483,17 @@ overflow: hidden;
 }
 .qg-canvas-wrap svg { display: block; width: 100%; } */
 
-/* Visualization takes the remaining space */
+/* Visualization takes the remaining space inside the unified panel */
 .qg-canvas-wrap {
-flex: 1 1 66.667%;
+flex: 1 1 0;
 min-width: 0;
 background: var(--bg2);
-border: 0.5px solid var(--border);
-border-radius: var(--radius-lg);
 overflow: hidden;
+display: flex;
+align-items: center;
+justify-content: center;
 }
-.qg-canvas-wrap svg { display: block; width: 100%; }
+.qg-canvas-wrap svg { display: block; width: 100%; height: 100%; }
 
 .qg-ring-labels {
 display: flex;
@@ -652,10 +661,9 @@ Code
 
 <!-- 33% / rest body split -->
 <div class="qg-body">
-<!-- Question list (33.333%) -->
-<div>
+<!-- Question list (left column) -->
+<div class="qg-question-panel" id="qg-question-list">
 <div class="qg-question-label qg-prompt-label">Questions</div>
-<div class="qg-question-panel" id="qg-question-list"></div>
 </div>
 
 <!-- Visualization (remaining width) -->
@@ -1126,7 +1134,8 @@ const data = window._qgData;
 if (!data || !qgSelectedPrompt) return;
 const questions = data.promptMap[qgSelectedPrompt] || [];
 const listEl = document.getElementById('qg-question-list');
-listEl.innerHTML = '';
+// Remove question rows but preserve the label header
+Array.from(listEl.querySelectorAll('.qg-q-row')).forEach(el => el.remove());
 const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 const pillMap = isDark ? FEAT_PILL_DARK : FEAT_PILL;
 

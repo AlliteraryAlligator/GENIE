@@ -1696,8 +1696,8 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
   
   // Design Tokens
   const SINGLE_PILL_H = 18;
-  const LINE_HEIGHT = 13; // Vertical space allocation per line of text
-  const PAD_Y = 6;        // Top/bottom padding inside the multi-line pill
+  const LINE_HEIGHT = 13;
+  const PAD_Y = 6;
   const PAD_X = 10;
   const GAP_X = 6;
   const ROW_GAP = 6;
@@ -1705,53 +1705,73 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
   const CHAR_W = FS * 0.52;
   const MAX_TXT_W = 120;
   const AVAIL_W = r * 1.6;
-  const SHOW_N = Math.min(15, shuffled.length);
+  
   const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
 
-  // Clean string and handle smart ellipsis truncation
   function pillText(ans) { 
     const words = ans.trim().split(/\s+/).slice(0, 12).join(' '); 
     return words.length < ans.trim().length ? words + '\u2026' : words; 
   }
 
-  // Dynamically calculate dimensional footprint per pill
   function pillDims(ans) { 
     const cleanTxt = pillText(ans);
     const estimatedW = cleanTxt.length * CHAR_W;
-    
-    // Get actual wrap lines array up front
     const lines = estimatedW > MAX_TXT_W ? wrapText(cleanTxt, MAX_TXT_W, FS) : [cleanTxt];
     const isMultiLine = lines.length > 1;
-    
-    // Dynamically calculate height based on lines array length
     const calculatedH = isMultiLine ? (lines.length * LINE_HEIGHT) + (PAD_Y * 2) : SINGLE_PILL_H;
     const computedW = isMultiLine ? MAX_TXT_W : estimatedW;
 
-    return {
-      txt: cleanTxt,
-      lines: lines,
-      w: computedW + (PAD_X * 2),
-      h: calculatedH,
-      isMultiLine: isMultiLine
-    }; 
+    return { txt: cleanTxt, lines, w: computedW + (PAD_X * 2), h: calculatedH, isMultiLine }; 
   }
 
-  const shown = shuffled.slice(0, SHOW_N), hoverable = shuffled.slice(SHOW_N);
-  const rows = []; let curRow = [], curW = 0;
-  
-  shown.forEach((ans, i) => {
-    const d = pillDims(ans), needed = curRow.length ? d.w + GAP_X : d.w;
+  // Phase 1: Build rows up to a maximum item cap, but stop early if we exceed contentH
+  const initialPool = shuffled.slice(0, Math.min(15, shuffled.length));
+  const rows = []; 
+  let curRow = [], curW = 0, currentAccumulatedH = 0;
+  let dynamicShowCount = 0; // Tracks exactly how many successfully fit into the layout bounds
+
+  for (let i = 0; i < initialPool.length; i++) {
+    const ans = initialPool[i];
+    const d = pillDims(ans);
+    const needed = curRow.length ? d.w + GAP_X : d.w;
+
     if (curRow.length > 0 && curW + needed > AVAIL_W) {
+      // Before committing the built row, check if its height fits vertically
+      const rowH = Math.max(...curRow.map(p => p.h));
+      const nextH = currentAccumulatedH + rowH + (rows.length ? ROW_GAP : 0);
+      
+      if (nextH > contentH) break; // Out of vertical space! Stop processing entirely.
+
       rows.push(curRow);
+      currentAccumulatedH = nextH;
+      
+      // Start the new row
       curRow = [{ ans, ...d, idx: i }];
       curW = d.w;
+      dynamicShowCount += 1;
     } else {
       curRow.push({ ans, ...d, idx: i });
       curW += needed;
+      dynamicShowCount += 1;
     }
-  });
-  if (curRow.length) rows.push(curRow);
+  }
+  
+  // Handle processing for the final dangling row
+  if (curRow.length) {
+    const rowH = Math.max(...curRow.map(p => p.h));
+    if (currentAccumulatedH + rowH + (rows.length ? ROW_GAP : 0) <= contentH) {
+      rows.push(curRow);
+    } else {
+      // If the final row doesn't fit, roll back its items from the dynamic count
+      dynamicShowCount -= curRow.length;
+    }
+  }
 
+  // Phase 2: Recalculate your split arrays based on what actually managed to fit!
+  const shown = shuffled.slice(0, dynamicShowCount);
+  const hoverable = shuffled.slice(dynamicShowCount);
+
+  // Re-verify exact layout rendering total height 
   const totalH = rows.reduce((s, row, ri) => s + Math.max(...row.map(p => p.h)) + (ri < rows.length - 1 ? ROW_GAP : 0), 0);
   let py = contentStartY + (contentH - totalH) / 2;
   if (py < contentStartY) py = contentStartY;
@@ -1764,18 +1784,15 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     
     row.forEach(p => {
       const g = el('g', { opacity: opacityStr });
-      const py2 = py + (rowH - p.h) / 2; // Vertical alignment within row
+      const py2 = py + (rowH - p.h) / 2;
       
-      // Draw background pill shape
       el('rect', { 
         x: px, y: py2, width: p.w, height: p.h, rx: p.isMultiLine ? 6 : p.h / 2, 
         fill: 'rgba(255,255,255,0.18)', stroke: 'rgba(255,255,255,0.3)', 'stroke-width': '0.5' 
       }, g);
 
-      // Render text strings dynamically per line array
       if (p.isMultiLine) {
         p.lines.forEach((lineText, lineIdx) => {
-          // Compute Y offset line by line centering the whole block inside PAD_Y bounds
           const textY = py2 + PAD_Y + (lineIdx * LINE_HEIGHT) + (LINE_HEIGHT / 2);
           txt(lineText, { 
             x: px + p.w / 2, y: textY, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 
@@ -1789,7 +1806,6 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
         }, g);
       }
 
-      // Hitbox
       const hit = el('rect', { x: px, y: py2, width: p.w, height: p.h, rx: p.isMultiLine ? 6 : p.h / 2, fill: 'transparent', style: 'cursor:pointer' }, g);
       const fa = p.ans;
       hit.addEventListener('mouseenter', e => showQGTip(e, fa));
@@ -1802,7 +1818,7 @@ function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC
     py += rowH + ROW_GAP;
   });
 
-  // Floating Background Bubble nodes fallback positioning logic
+  // Background nodes fallback placement logic
   if (hoverable.length) {
     const rand2 = seededRand(seed + 13), smallR = 9, placedCircles = [];
     hoverable.forEach((ans, i) => {

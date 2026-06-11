@@ -1423,7 +1423,7 @@ txt(popAnswers.length+' answers',{x:cx,y:headerY+16,'text-anchor':'middle','domi
 txt('click outside to close',{x:cx,y:headerY+30,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr});
 const PILL_H=18,PILL_H2=28,PAD_X=10,GAP_X=6,ROW_GAP=6;
 const FS=9,CHAR_W=FS*0.52,MAX_TXT_W=120,AVAIL_W=r*1.6;
-const SHOW_N=Math.min(28,shuffled.length);
+const SHOW_N=Math.min(10,shuffled.length);
 const contentStartY=headerY+40,contentEndY=cy+r-20,contentH=contentEndY-contentStartY;
 function pillText(ans) { const words=ans.trim().split(/\s+/).slice(0,12).join(' '); return words.length<ans.trim().length?words+'\u2026':words; }
 function pillDims(ans) { const t=pillText(ans),tW=t.length*CHAR_W,needsWrap=tW>MAX_TXT_W,clampedW=Math.min(tW,MAX_TXT_W); return {txt:t,w:clampedW+PAD_X*2,h:needsWrap?PILL_H2:PILL_H,two:needsWrap}; }

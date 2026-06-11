@@ -1602,83 +1602,237 @@ drawExpandedPills(popAnswers,combo,popCol,el,txt,wrapText,borderC,POP_CX,POP_CY,
 // });
 // }
 // }
+// function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
+// if (!popAnswers.length) return;
+// const seed=combo.key.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+// const rand=seededRand(seed+7);
+// const shuffled=[...popAnswers];
+// for (let i=shuffled.length-1;i>0;i--) { const j=Math.floor(rand()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
+// const pText='#ffffff';
+// const headerY=cy-r+28;
+// // txt('Population',{x:cx,y:headerY,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr});
+// // txt(popAnswers.length+' answers',{x:cx,y:headerY+16,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr});
+// // txt('click outside to close',{x:cx,y:headerY+30,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr});
+// const PILL_H=18,PILL_H2=28,PAD_X=10,GAP_X=6,ROW_GAP=6;
+// const FS=9,CHAR_W=FS*0.52,MAX_TXT_W=120,AVAIL_W=r*1.6;
+// const SHOW_N=Math.min(15,shuffled.length);
+// const contentStartY=headerY+40,contentEndY=cy+r-20,contentH=contentEndY-contentStartY;
+// function pillText(ans) { const words=ans.trim().split(/\s+/).slice(0,12).join(' '); return words.length<ans.trim().length?words+'\u2026':words; }
+// function pillDims(ans) { const t=pillText(ans),tW=t.length*CHAR_W,needsWrap=tW>MAX_TXT_W,clampedW=Math.min(tW,MAX_TXT_W); return {txt:t,w:clampedW+PAD_X*2,h:needsWrap?PILL_H2:PILL_H,two:needsWrap}; }
+// const shown=shuffled.slice(0,SHOW_N),hoverable=shuffled.slice(SHOW_N);
+// const rows=[];let curRow=[],curW=0;
+// shown.forEach((ans,i)=>{
+// const d=pillDims(ans),needed=curRow.length?d.w+GAP_X:d.w;
+// if(curRow.length>0&&curW+needed>AVAIL_W){rows.push(curRow);curRow=[{ans,...d,idx:i}];curW=d.w;}
+// else{curRow.push({ans,...d,idx:i});curW+=needed;}
+// });
+// if(curRow.length)rows.push(curRow);
+// const totalH=rows.reduce((s,row,ri)=>s+Math.max(...row.map(p=>p.h))+(ri<rows.length-1?ROW_GAP:0),0);
+// let py=contentStartY+(contentH-totalH)/2;
+// if(py<contentStartY)py=contentStartY;
+// const placedRects=[];
+// rows.forEach(row=>{
+// const rowH=Math.max(...row.map(p=>p.h));
+// const rowW=row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0),0);
+// let px=cx-rowW/2;
+// row.forEach(p=>{
+// const g=el('g',{opacity:opacityStr});
+// const py2=py+(rowH-p.h)/2;
+// el('rect',{x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'},g);
+// if(p.two){
+// const lines=wrapText(p.txt,MAX_TXT_W,FS);
+// txt(lines[0]||'',{x:px+p.w/2,y:py2+11,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'},g);
+// txt((lines.slice(1).join(' '))||'',{x:px+p.w/2,y:py2+24,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'},g);
+// } else {
+// txt(p.txt,{x:px+p.w/2,y:py2+p.h/2,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'},g);
+// }
+// const hit=el('rect',{x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'},g);
+// const fa=p.ans;
+// hit.addEventListener('mouseenter',e=>showQGTip(e,fa));
+// hit.addEventListener('mousemove',e=>moveQGTip(e));
+// hit.addEventListener('mouseleave',hideQGTip);
+// placedRects.push({x:px,y:py2,w:p.w,h:p.h});
+// px+=p.w+GAP_X;
+// });
+// py+=rowH+ROW_GAP;
+// });
+// if(hoverable.length){
+// const rand2=seededRand(seed+13),smallR=9,placedCircles=[];
+// hoverable.forEach((ans,i)=>{
+// let attempts=0,placed=false,candX=cx,candY=cy;
+// while(attempts<80&&!placed){
+// attempts++;
+// const ang=rand2()*Math.PI*2,rad=Math.sqrt(rand2())*(r-28);
+// candX=cx+rad*Math.cos(ang); candY=cy+rad*Math.sin(ang);
+// if(candX<smallR+6||candX>SVG_W-smallR-6||candY<smallR+6||candY>SVG_H-smallR-6)continue;
+// const overlapRect=placedRects.some(rr=>{const rx=Math.max(rr.x,candX-smallR),ry=Math.max(rr.y,candY-smallR),rw=Math.min(rr.x+rr.w,candX+smallR)-rx,rh=Math.min(rr.y+rr.h,candY+smallR)-ry;return rw>0&&rh>0;});
+// if(overlapRect)continue;
+// const overlapCircle=placedCircles.some(pc=>Math.hypot(pc.x-candX,pc.y-candY)<smallR*2.2);
+// if(overlapCircle)continue;
+// placed=true; placedCircles.push({x:candX,y:candY});
+// }
+// if(!placed){const angle=(i/hoverable.length)*2*Math.PI-Math.PI/2;candX=cx+(r-28)*Math.cos(angle);candY=cy+(r-28)*Math.sin(angle);}
+// const g=el('g',{opacity:opacityStr,style:'cursor:pointer'});
+// el('circle',{cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'},g);
+// g.addEventListener('mouseenter',e=>showQGTip(e,ans));
+// g.addEventListener('mousemove',e=>moveQGTip(e));
+// g.addEventListener('mouseleave',hideQGTip);
+// });
+// }
+// }
+
 function drawExpandedPills(popAnswers, combo, popCol, el, txt, wrapText, borderC, cx, cy, r, opacityStr) {
-if (!popAnswers.length) return;
-const seed=combo.key.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-const rand=seededRand(seed+7);
-const shuffled=[...popAnswers];
-for (let i=shuffled.length-1;i>0;i--) { const j=Math.floor(rand()*(i+1)); [shuffled[i],shuffled[j]]=[shuffled[j],shuffled[i]]; }
-const pText='#ffffff';
-const headerY=cy-r+28;
-// txt('Population',{x:cx,y:headerY,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':'13','font-weight':'600','font-family':'Inter,sans-serif',opacity:opacityStr});
-// txt(popAnswers.length+' answers',{x:cx,y:headerY+16,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.75)','font-size':'11','font-family':'Inter,sans-serif',opacity:opacityStr});
-// txt('click outside to close',{x:cx,y:headerY+30,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.42)','font-size':'9.5','font-family':'Inter,sans-serif',opacity:opacityStr});
-const PILL_H=18,PILL_H2=28,PAD_X=10,GAP_X=6,ROW_GAP=6;
-const FS=9,CHAR_W=FS*0.52,MAX_TXT_W=120,AVAIL_W=r*1.6;
-const SHOW_N=Math.min(10,shuffled.length);
-const contentStartY=headerY+40,contentEndY=cy+r-20,contentH=contentEndY-contentStartY;
-function pillText(ans) { const words=ans.trim().split(/\s+/).slice(0,12).join(' '); return words.length<ans.trim().length?words+'\u2026':words; }
-function pillDims(ans) { const t=pillText(ans),tW=t.length*CHAR_W,needsWrap=tW>MAX_TXT_W,clampedW=Math.min(tW,MAX_TXT_W); return {txt:t,w:clampedW+PAD_X*2,h:needsWrap?PILL_H2:PILL_H,two:needsWrap}; }
-const shown=shuffled.slice(0,SHOW_N),hoverable=shuffled.slice(SHOW_N);
-const rows=[];let curRow=[],curW=0;
-shown.forEach((ans,i)=>{
-const d=pillDims(ans),needed=curRow.length?d.w+GAP_X:d.w;
-if(curRow.length>0&&curW+needed>AVAIL_W){rows.push(curRow);curRow=[{ans,...d,idx:i}];curW=d.w;}
-else{curRow.push({ans,...d,idx:i});curW+=needed;}
-});
-if(curRow.length)rows.push(curRow);
-const totalH=rows.reduce((s,row,ri)=>s+Math.max(...row.map(p=>p.h))+(ri<rows.length-1?ROW_GAP:0),0);
-let py=contentStartY+(contentH-totalH)/2;
-if(py<contentStartY)py=contentStartY;
-const placedRects=[];
-rows.forEach(row=>{
-const rowH=Math.max(...row.map(p=>p.h));
-const rowW=row.reduce((s,p,i)=>s+p.w+(i?GAP_X:0),0);
-let px=cx-rowW/2;
-row.forEach(p=>{
-const g=el('g',{opacity:opacityStr});
-const py2=py+(rowH-p.h)/2;
-el('rect',{x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'rgba(255,255,255,0.18)',stroke:'rgba(255,255,255,0.3)','stroke-width':'0.5'},g);
-if(p.two){
-const lines=wrapText(p.txt,MAX_TXT_W,FS);
-txt(lines[0]||'',{x:px+p.w/2,y:py2+11,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'},g);
-txt((lines.slice(1).join(' '))||'',{x:px+p.w/2,y:py2+24,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.8)','font-size':FS,'font-family':'Inter,sans-serif'},g);
-} else {
-txt(p.txt,{x:px+p.w/2,y:py2+p.h/2,'text-anchor':'middle','dominant-baseline':'middle',fill:pText,'font-size':FS,'font-family':'Inter,sans-serif'},g);
-}
-const hit=el('rect',{x:px,y:py2,width:p.w,height:p.h,rx:p.h/2,fill:'transparent',style:'cursor:pointer'},g);
-const fa=p.ans;
-hit.addEventListener('mouseenter',e=>showQGTip(e,fa));
-hit.addEventListener('mousemove',e=>moveQGTip(e));
-hit.addEventListener('mouseleave',hideQGTip);
-placedRects.push({x:px,y:py2,w:p.w,h:p.h});
-px+=p.w+GAP_X;
-});
-py+=rowH+ROW_GAP;
-});
-if(hoverable.length){
-const rand2=seededRand(seed+13),smallR=9,placedCircles=[];
-hoverable.forEach((ans,i)=>{
-let attempts=0,placed=false,candX=cx,candY=cy;
-while(attempts<80&&!placed){
-attempts++;
-const ang=rand2()*Math.PI*2,rad=Math.sqrt(rand2())*(r-28);
-candX=cx+rad*Math.cos(ang); candY=cy+rad*Math.sin(ang);
-if(candX<smallR+6||candX>SVG_W-smallR-6||candY<smallR+6||candY>SVG_H-smallR-6)continue;
-const overlapRect=placedRects.some(rr=>{const rx=Math.max(rr.x,candX-smallR),ry=Math.max(rr.y,candY-smallR),rw=Math.min(rr.x+rr.w,candX+smallR)-rx,rh=Math.min(rr.y+rr.h,candY+smallR)-ry;return rw>0&&rh>0;});
-if(overlapRect)continue;
-const overlapCircle=placedCircles.some(pc=>Math.hypot(pc.x-candX,pc.y-candY)<smallR*2.2);
-if(overlapCircle)continue;
-placed=true; placedCircles.push({x:candX,y:candY});
-}
-if(!placed){const angle=(i/hoverable.length)*2*Math.PI-Math.PI/2;candX=cx+(r-28)*Math.cos(angle);candY=cy+(r-28)*Math.sin(angle);}
-const g=el('g',{opacity:opacityStr,style:'cursor:pointer'});
-el('circle',{cx:candX,cy:candY,r:smallR,fill:'rgba(255,255,255,0.28)',stroke:'rgba(255,255,255,0.6)','stroke-width':'1.2'},g);
-g.addEventListener('mouseenter',e=>showQGTip(e,ans));
-g.addEventListener('mousemove',e=>moveQGTip(e));
-g.addEventListener('mouseleave',hideQGTip);
-});
-}
+  if (!popAnswers.length) return;
+  const seed = combo.key.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const rand = seededRand(seed + 7);
+  const shuffled = [...popAnswers];
+  for (let i = shuffled.length - 1; i > 0; i--) { 
+    const j = Math.floor(rand() * (i + 1)); 
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; 
+  }
+  
+  const pText = '#ffffff';
+  const headerY = cy - r + 28;
+  
+  // Design Tokens
+  const SINGLE_PILL_H = 18;
+  const LINE_HEIGHT = 13; // Vertical space allocation per line of text
+  const PAD_Y = 6;        // Top/bottom padding inside the multi-line pill
+  const PAD_X = 10;
+  const GAP_X = 6;
+  const ROW_GAP = 6;
+  const FS = 9;
+  const CHAR_W = FS * 0.52;
+  const MAX_TXT_W = 120;
+  const AVAIL_W = r * 1.6;
+  const SHOW_N = Math.min(15, shuffled.length);
+  const contentStartY = headerY + 40, contentEndY = cy + r - 20, contentH = contentEndY - contentStartY;
+
+  // Clean string and handle smart ellipsis truncation
+  function pillText(ans) { 
+    const words = ans.trim().split(/\s+/).slice(0, 12).join(' '); 
+    return words.length < ans.trim().length ? words + '\u2026' : words; 
+  }
+
+  // Dynamically calculate dimensional footprint per pill
+  function pillDims(ans) { 
+    const cleanTxt = pillText(ans);
+    const estimatedW = cleanTxt.length * CHAR_W;
+    
+    // Get actual wrap lines array up front
+    const lines = estimatedW > MAX_TXT_W ? wrapText(cleanTxt, MAX_TXT_W, FS) : [cleanTxt];
+    const isMultiLine = lines.length > 1;
+    
+    // Dynamically calculate height based on lines array length
+    const calculatedH = isMultiLine ? (lines.length * LINE_HEIGHT) + (PAD_Y * 2) : SINGLE_PILL_H;
+    const computedW = isMultiLine ? MAX_TXT_W : estimatedW;
+
+    return {
+      txt: cleanTxt,
+      lines: lines,
+      w: computedW + (PAD_X * 2),
+      h: calculatedH,
+      isMultiLine: isMultiLine
+    }; 
+  }
+
+  const shown = shuffled.slice(0, SHOW_N), hoverable = shuffled.slice(SHOW_N);
+  const rows = []; let curRow = [], curW = 0;
+  
+  shown.forEach((ans, i) => {
+    const d = pillDims(ans), needed = curRow.length ? d.w + GAP_X : d.w;
+    if (curRow.length > 0 && curW + needed > AVAIL_W) {
+      rows.push(curRow);
+      curRow = [{ ans, ...d, idx: i }];
+      curW = d.w;
+    } else {
+      curRow.push({ ans, ...d, idx: i });
+      curW += needed;
+    }
+  });
+  if (curRow.length) rows.push(curRow);
+
+  const totalH = rows.reduce((s, row, ri) => s + Math.max(...row.map(p => p.h)) + (ri < rows.length - 1 ? ROW_GAP : 0), 0);
+  let py = contentStartY + (contentH - totalH) / 2;
+  if (py < contentStartY) py = contentStartY;
+  
+  const placedRects = [];
+  rows.forEach(row => {
+    const rowH = Math.max(...row.map(p => p.h));
+    const rowW = row.reduce((s, p, i) => s + p.w + (i ? GAP_X : 0), 0);
+    let px = cx - rowW / 2;
+    
+    row.forEach(p => {
+      const g = el('g', { opacity: opacityStr });
+      const py2 = py + (rowH - p.h) / 2; // Vertical alignment within row
+      
+      // Draw background pill shape
+      el('rect', { 
+        x: px, y: py2, width: p.w, height: p.h, rx: p.isMultiLine ? 6 : p.h / 2, 
+        fill: 'rgba(255,255,255,0.18)', stroke: 'rgba(255,255,255,0.3)', 'stroke-width': '0.5' 
+      }, g);
+
+      // Render text strings dynamically per line array
+      if (p.isMultiLine) {
+        p.lines.forEach((lineText, lineIdx) => {
+          // Compute Y offset line by line centering the whole block inside PAD_Y bounds
+          const textY = py2 + PAD_Y + (lineIdx * LINE_HEIGHT) + (LINE_HEIGHT / 2);
+          txt(lineText, { 
+            x: px + p.w / 2, y: textY, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 
+            fill: lineIdx === 0 ? pText : 'rgba(255,255,255,0.8)', 'font-size': FS, 'font-family': 'Inter,sans-serif' 
+          }, g);
+        });
+      } else {
+        txt(p.txt, { 
+          x: px + p.w / 2, y: py2 + p.h / 2, 'text-anchor': 'middle', 'dominant-baseline': 'middle', 
+          fill: pText, 'font-size': FS, 'font-family': 'Inter,sans-serif' 
+        }, g);
+      }
+
+      // Hitbox
+      const hit = el('rect', { x: px, y: py2, width: p.w, height: p.h, rx: p.isMultiLine ? 6 : p.h / 2, fill: 'transparent', style: 'cursor:pointer' }, g);
+      const fa = p.ans;
+      hit.addEventListener('mouseenter', e => showQGTip(e, fa));
+      hit.addEventListener('mousemove', e => moveQGTip(e));
+      hit.addEventListener('mouseleave', hideQGTip);
+      
+      placedRects.push({ x: px, y: py2, w: p.w, h: p.h });
+      px += p.w + GAP_X;
+    });
+    py += rowH + ROW_GAP;
+  });
+
+  // Floating Background Bubble nodes fallback positioning logic
+  if (hoverable.length) {
+    const rand2 = seededRand(seed + 13), smallR = 9, placedCircles = [];
+    hoverable.forEach((ans, i) => {
+      let attempts = 0, placed = false, candX = cx, candY = cy;
+      while (attempts < 80 && !placed) {
+        attempts++;
+        const ang = rand2() * Math.PI * 2, rad = Math.sqrt(rand2()) * (r - 28);
+        candX = cx + rad * Math.cos(ang); candY = cy + rad * Math.sin(ang);
+        if (candX < smallR + 6 || candX > SVG_W - smallR - 6 || candY < smallR + 6 || candY > SVG_H - smallR - 6) continue;
+        const overlapRect = placedRects.some(rr => { 
+          const rx = Math.max(rr.x, candX - smallR), ry = Math.max(rr.y, candY - smallR), 
+                rw = Math.min(rr.x + rr.w, candX + smallR) - rx, rh = Math.min(rr.y + rr.h, candY + smallR) - ry; 
+          return rw > 0 && rh > 0; 
+        });
+        if (overlapRect) continue;
+        const overlapCircle = placedCircles.some(pc => Math.hypot(pc.x - candX, pc.y - candY) < smallR * 2.2);
+        if (overlapCircle) continue;
+        placed = true; placedCircles.push({ x: candX, y: candY });
+      }
+      if (!placed) { 
+        const angle = (i / hoverable.length) * 2 * Math.PI - Math.PI / 2; 
+        candX = cx + (r - 28) * Math.cos(angle); candY = cy + (r - 28) * Math.sin(angle); 
+      }
+      const g = el('g', { opacity: opacityStr, style: 'cursor:pointer' });
+      el('circle', { cx: candX, cy: candY, r: smallR, fill: 'rgba(255,255,255,0.28)', stroke: 'rgba(255,255,255,0.6)', 'stroke-width': '1.2' }, g);
+      g.addEventListener('mouseenter', e => showQGTip(e, ans));
+      g.addEventListener('mousemove', e => moveQGTip(e));
+      g.addEventListener('mouseleave', hideQGTip);
+    });
+  }
 }
 /* End visualization code */
 initQGenie()

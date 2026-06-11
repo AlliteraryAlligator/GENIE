@@ -857,7 +857,7 @@ if (!model || !feat || isNaN(score)) return;
 if (!byModel[model]) {
     byModel[model] = { 
       name: model,
-      type: rawType.trim() || inferType(model), 
+      type: rawType.trim().toLowerCase() || inferType(model), 
       family: rawFamily.trim() || inferFamily(model)
     };
 }  

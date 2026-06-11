@@ -597,6 +597,52 @@ Code
 <img src="pipeline.png" alt="GENIE pipeline diagram" onerror="this.parentElement.innerHTML='<div style=\'padding:3rem;text-align:center;color:var(--text3);font-size:13px\'>[pipeline.png — place in the same directory as this file]</div>'">
 <figcaption>Figure 1. The GENIE evaluation pipeline.</figcaption>
 </figure>
+
+<!-- Q-GENIE -->
+<!-- <div id="qgenie-page" class="page"> -->
+<div class="divider"></div>
+<h2 style="margin-top:0">Q-GENIE Visualizer</h2>
+<p>Select a prompt, then choose a question to see how target answers compare to the population. Hover dots to read answers; click the population bubble to explore its contents.</p>
+
+<div id="qgenie-ui" style="display:none">
+<!-- Full-width custom prompt dropdown -->
+<div class="qg-prompt-wrap">
+<div class="qg-prompt-label">Writing prompt</div>
+
+<div class="qg-prompt-dropdown" id="qg-prompt-dropdown" aria-expanded="false">
+<div id="qg-prompt-current" class="qg-prompt-current" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false">
+<div id="qg-prompt-current-text" style="flex:1;color:var(--text2)">Loading…</div>
+<div class="qg-prompt-caret" id="qg-prompt-caret">&#9662;</div>
+</div>
+<div id="qg-prompt-menu" class="qg-prompt-menu" role="listbox" hidden></div>
+</div>
+</div>
+
+<!-- 33% / rest body split -->
+<div class="qg-body">
+<!-- Question list (left column) -->
+<div class="qg-question-panel" id="qg-question-list">
+<div class="qg-question-label qg-prompt-label">Questions</div>
+</div>
+
+<!-- Visualization (remaining width) -->
+<div class="qg-canvas-wrap" id="qgCanvasWrap">
+<svg id="qgSvg" viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg"></svg>
+</div>
+</div>
+
+<div class="qg-ring-labels" id="qgRingLabels"></div>
+</div>
+
+<div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div>
+
+<div id="qgenie-empty" class="qg-empty-state" style="display:none">
+<strong>Dataset not yet available</strong>
+The target-q-genie dataset has not been published yet. Check back soon.
+</div>
+<!-- </div> -->
+
+  
 </div>
 
 <!-- DATASET -->
@@ -641,47 +687,47 @@ Code
 </div>
 
 <!-- Q-GENIE -->
-<div id="qgenie-page" class="page">
-<h2 style="margin-top:0">Q-GENIE Visualizer</h2>
-<p>Select a prompt, then choose a question to see how target answers compare to the population. Hover dots to read answers; click the population bubble to explore its contents.</p>
+<!-- <div id="qgenie-page" class="page"> -->
+<!-- <h2 style="margin-top:0">Q-GENIE Visualizer</h2> -->
+<!-- <p>Select a prompt, then choose a question to see how target answers compare to the population. Hover dots to read answers; click the population bubble to explore its contents.</p> -->
 
-<div id="qgenie-ui" style="display:none">
+<!-- <div id="qgenie-ui" style="display:none"> -->
 <!-- Full-width custom prompt dropdown -->
-<div class="qg-prompt-wrap">
-<div class="qg-prompt-label">Writing prompt</div>
+<!-- <div class="qg-prompt-wrap"> -->
+<!-- <div class="qg-prompt-label">Writing prompt</div> -->
 
-<div class="qg-prompt-dropdown" id="qg-prompt-dropdown" aria-expanded="false">
-<div id="qg-prompt-current" class="qg-prompt-current" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false">
-<div id="qg-prompt-current-text" style="flex:1;color:var(--text2)">Loading…</div>
-<div class="qg-prompt-caret" id="qg-prompt-caret">&#9662;</div>
-</div>
-<div id="qg-prompt-menu" class="qg-prompt-menu" role="listbox" hidden></div>
-</div>
-</div>
+<!-- <div class="qg-prompt-dropdown" id="qg-prompt-dropdown" aria-expanded="false"> -->
+<!-- <div id="qg-prompt-current" class="qg-prompt-current" tabindex="0" role="button" aria-haspopup="listbox" aria-expanded="false"> -->
+<!-- <div id="qg-prompt-current-text" style="flex:1;color:var(--text2)">Loading…</div> -->
+<!-- <div class="qg-prompt-caret" id="qg-prompt-caret">&#9662;</div> -->
+<!-- </div> -->
+<!-- <div id="qg-prompt-menu" class="qg-prompt-menu" role="listbox" hidden></div> -->
+<!-- </div> -->
+<!-- </div> -->
 
 <!-- 33% / rest body split -->
-<div class="qg-body">
+<!-- <div class="qg-body"> -->
 <!-- Question list (left column) -->
-<div class="qg-question-panel" id="qg-question-list">
-<div class="qg-question-label qg-prompt-label">Questions</div>
-</div>
+<!-- <div class="qg-question-panel" id="qg-question-list"> -->
+<!-- <div class="qg-question-label qg-prompt-label">Questions</div> -->
+<!-- </div> -->
 
 <!-- Visualization (remaining width) -->
-<div class="qg-canvas-wrap" id="qgCanvasWrap">
-<svg id="qgSvg" viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg"></svg>
-</div>
-</div>
+<!-- <div class="qg-canvas-wrap" id="qgCanvasWrap"> -->
+<!-- <svg id="qgSvg" viewBox="0 0 640 520" xmlns="http://www.w3.org/2000/svg"></svg> -->
+<!-- </div> -->
+<!-- </div> -->
 
-<div class="qg-ring-labels" id="qgRingLabels"></div>
-</div>
+<!-- <div class="qg-ring-labels" id="qgRingLabels"></div> -->
+<!-- </div> -->
 
-<div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div>
+<!-- <div id="qgenie-load-status" style="font-size:12px;color:var(--text3);margin-bottom:1rem"></div> -->
 
-<div id="qgenie-empty" class="qg-empty-state" style="display:none">
-<strong>Dataset not yet available</strong>
-The target-q-genie dataset has not been published yet. Check back soon.
-</div>
-</div>
+<!-- <div id="qgenie-empty" class="qg-empty-state" style="display:none"> -->
+<!-- <strong>Dataset not yet available</strong> -->
+<!-- The target-q-genie dataset has not been published yet. Check back soon. -->
+<!-- </div> -->
+<!-- </div> -->
 
 </main>
 </div>
@@ -704,9 +750,10 @@ PAGES.forEach(p => {
 document.getElementById(p+'-page').classList.toggle('active', p===id);
 document.getElementById('tab-'+p).classList.toggle('active', p===id);
 });
+if (id==='overview' && !window._qgDone) initQGenie();
 if (id==='dataset' && !window._distDone) initDistChart();
 if (id==='leaderboard' && !window._lbDone) initLeaderboard();
-if (id==='qgenie' && !window._qgDone) initQGenie();
+// if (id==='qgenie' && !window._qgDone) initQGenie();
 }
 
 // ─── CONSTANTS ────────────────────────────────────────────────────────────────
@@ -1442,7 +1489,7 @@ g.addEventListener('mouseleave',hideQGTip);
 }
 }
 /* End visualization code */
-
+initQGenie()
 </script>
 </body>
 </html>

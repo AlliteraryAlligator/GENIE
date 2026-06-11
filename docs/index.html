@@ -849,12 +849,22 @@ rows.forEach(row => {
 const model = row['Model_1'] || row['model'] || '';
 const feat = normFeature(row['Feature'] || row['feature'] || '');
 const score = parseFloat(row['GENIE'] ?? row['genie'] ?? NaN);
+const rawType = row['Type'] || row['type'] || '';
+const rawFamily = row['Family'] || row['family'] || '';
+  
 if (!model || !feat || isNaN(score)) return;
-if (!byModel[model]) byModel[model] = { name: model };
+// if (!byModel[model]) byModel[model] = { name: model };
+if (!byModel[model]) {
+    byModel[model] = { 
+      name: model,
+      type: rawType.trim() || inferType(model), 
+      family: rawFamily.trim() || inferFamily(model)
+    };
+}  
 byModel[model][feat] = score;
 });
 modelData = Object.values(byModel).map(m => ({
-name:m.name, family:inferFamily(m.name), type:inferType(m.name),
+name:m.name, family:m.family, type:m.type,
 agent:m.agent||0, perspective:m.perspective||0, plot:m.plot||0,
 setting:m.setting||0, social:m.social||0, style:m.style||0,
 }));

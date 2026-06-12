@@ -1353,7 +1353,6 @@ dot.addEventListener('mouseleave', hideQGTip);
 const popG = el('g', {style:'cursor:pointer'});
 el('circle',{cx:POP_CX,cy:POP_CY,r:POP_R,fill:popCol},popG);
 txt('Population',{x:POP_CX,y:POP_CY-10,'text-anchor':'middle','dominant-baseline':'middle',fill:'#fff','font-size':'13','font-weight':'600','font-family':'Inter,sans-serif'},popG);
-txt(popAnswers.length+' answers',{x:POP_CX,y:POP_CY+8,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.8)','font-size':'11','font-family':'Inter,sans-serif'},popG);
 txt('click to expand \u2197',{x:POP_CX,y:POP_CY+24,'text-anchor':'middle','dominant-baseline':'middle',fill:'rgba(255,255,255,0.55)','font-size':'10','font-family':'Inter,sans-serif'},popG);
 popG.addEventListener('click', () => { cancelPopAnim(); popAnimState='expanding'; popAnimProgress=0; animatePop(true); });
 }
